@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="CVITFusion-Client" />
+        <module name="cvitfusion-client" />
       </profile>
     </annotationProcessing>
   </component>
