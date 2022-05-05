@@ -3,6 +3,7 @@ module com.apextalos.cvitfusionclient {
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
+    requires org.joda.time;
 
     opens com.apextalos.cvitfusionclient to javafx.fxml;
     exports com.apextalos.cvitfusionclient;
