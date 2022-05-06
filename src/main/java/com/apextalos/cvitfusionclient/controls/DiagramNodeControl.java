@@ -2,6 +2,7 @@ package com.apextalos.cvitfusionclient.controls;
 
 import com.apextalos.cvitfusionclient.HelloApplication;
 import com.apextalos.cvitfusionclient.controllers.DiagramNodeController;
+import com.apextalos.cvitfusionclient.models.DiagramNodeModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -11,6 +12,10 @@ import java.io.IOException;
 
 
 public class DiagramNodeControl extends AnchorPane {
+
+    public DiagramNodeController getController() {
+        return controller;
+    }
 
     DiagramNodeController controller;
     SimpleStringProperty nodeName = new SimpleStringProperty();

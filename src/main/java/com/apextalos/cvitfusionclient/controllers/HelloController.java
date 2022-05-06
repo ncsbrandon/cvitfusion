@@ -32,10 +32,10 @@ public class HelloController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         //get model
-        model = new HelloModel("Maxwell Planck", 6626, 1000d);
+        model = new HelloModel(1000d);
 
         // create bindings model to view
-        welcomeText.textProperty().bind(model.accountBalanceProperty().asString());
+        welcomeText.textProperty().bind(model.getAccountBalanceProperty().asString());
         propertiesListView.setItems(model.getListItems());
 
         propertiesColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
@@ -70,14 +70,18 @@ public class HelloController implements Initializable {
         r.setLayoutY(20);
         designPane.getChildren().add(r);
 
-        /*r.onMouseClickedProperty().set((EventHandler<MouseEvent>) (MouseEvent t) -> {
+        r.getController().getModel().setNodeName("Node 1");
+
+        /*
+        r.onMouseClickedProperty().set((EventHandler<MouseEvent>) (MouseEvent t) -> {
             Rectangle r2 = new Rectangle();
             r2.setX(100);
             r2.setY(100);
             r2.setWidth(50);
             r2.setHeight(50);
             designPane.getChildren().add(r2);
-        });*/
+        });
+        */
     }
 
     @FXML
@@ -88,6 +92,4 @@ public class HelloController implements Initializable {
         model.getTableItems().add(new KeyValuePairModel("last", "withdraw"));
         model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
     }
-
-
 }

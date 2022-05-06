@@ -5,45 +5,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class HelloModel {
-    private final StringProperty accountHolder;
-    private final IntegerProperty accountNumber;
+
     private final DoubleProperty accountBalance;
     private final ObservableList<String> listItems;
     private final ObservableList<KeyValuePairModel> tableItems;
 
-    public HelloModel(String accountHolder, Integer accountNumber, Double accountBalance) {
-        this.accountHolder = new SimpleStringProperty(accountHolder);
-        this.accountNumber = new SimpleIntegerProperty(accountNumber);
+    public HelloModel(Double accountBalance) {
         this.accountBalance = new SimpleDoubleProperty(accountBalance);
         this.listItems = FXCollections.observableArrayList();
         this.tableItems = FXCollections.observableArrayList();
     }
 
-    public ObservableList<String> getListItems() { return listItems; }
-
-    public ObservableList<KeyValuePairModel> getTableItems() { return tableItems; }
-
-    public String getAccountHolder() {
-        return accountHolder.get();
+    public ObservableList<String> getListItems() {
+        return listItems;
     }
 
-    public StringProperty accountHolderProperty() {
-        return accountHolder;
+    public ObservableList<KeyValuePairModel> getTableItems() {
+        return tableItems;
     }
 
-    public int getAccountNumber() {
-        return accountNumber.get();
-    }
-
-    public IntegerProperty accountNumberProperty() {
-        return accountNumber;
-    }
-
-    public double getAccountBalance() {
-        return accountBalance.get();
-    }
-
-    public DoubleProperty accountBalanceProperty() {
+    public DoubleProperty getAccountBalanceProperty() {
         return accountBalance;
     }
 

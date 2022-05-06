@@ -21,17 +21,10 @@ public class DiagramNodeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         model = new DiagramNodeModel("TBD");
 
+        // create bindings
         nodeName.textProperty().bind(model.getNodeNameProperty());
     }
 
-    public Label getNodeName() {
-        return nodeName;
-    }
-
-    public void setNodeName(Label nodeName) {
-        this.nodeName = nodeName;
-    }
-    
     public void onMenuAction(ActionEvent actionEvent) {
         System.out.println("onMenuAction " + actionEvent.toString());
     }

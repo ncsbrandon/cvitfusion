@@ -6,11 +6,15 @@ public class DiagramNodeModel {
 
     private final StringProperty nodeName;
 
-    public DiagramNodeModel(String nodeName) {
-        this.nodeName = new SimpleStringProperty(nodeName);
+    public DiagramNodeModel(String name) {
+        this.nodeName = new SimpleStringProperty(name);
     }
 
     public StringProperty getNodeNameProperty() {
         return nodeName;
+    }
+
+    public void setNodeName(String name) {
+        nodeName.set(name);
     }
 }
