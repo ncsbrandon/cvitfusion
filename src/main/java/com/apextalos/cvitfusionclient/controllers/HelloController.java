@@ -61,7 +61,7 @@ public class HelloController {
         model.withdraw(50);
         model.getListItems().add("withdraw");
         model.getTableItems().clear();
-        model.getTableItems().add(new KeyValuePair("last", "deposit"));
+        model.getTableItems().add(new KeyValuePair("last", "withdraw"));
         model.getTableItems().add(new KeyValuePair("ts", DateTime.now().toString()));
     }
 }
