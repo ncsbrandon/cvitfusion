@@ -9,7 +9,7 @@ public class HelloModel {
     private final IntegerProperty accountNumber;
     private final DoubleProperty accountBalance;
     private final ObservableList<String> listItems;
-    private final ObservableList<KeyValuePair> tableItems;
+    private final ObservableList<KeyValuePairModel> tableItems;
 
     public HelloModel(String accountHolder, Integer accountNumber, Double accountBalance) {
         this.accountHolder = new SimpleStringProperty(accountHolder);
@@ -21,7 +21,7 @@ public class HelloModel {
 
     public ObservableList<String> getListItems() { return listItems; }
 
-    public ObservableList<KeyValuePair> getTableItems() { return tableItems; }
+    public ObservableList<KeyValuePairModel> getTableItems() { return tableItems; }
 
     public String getAccountHolder() {
         return accountHolder.get();

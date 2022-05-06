@@ -11,4 +11,5 @@ module com.apextalos.cvitfusionclient {
     opens com.apextalos.cvitfusionclient.controllers to javafx.fxml;
     exports com.apextalos.cvitfusionclient.models;
     opens com.apextalos.cvitfusionclient.models to javafx.fxml;
+    opens com.apextalos.cvitfusionclient.controls  to javafx.fxml;
 }

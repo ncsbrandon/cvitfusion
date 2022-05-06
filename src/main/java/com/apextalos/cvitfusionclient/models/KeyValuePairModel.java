@@ -2,11 +2,11 @@ package com.apextalos.cvitfusionclient.models;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class KeyValuePair {
+public class KeyValuePairModel {
     private final SimpleStringProperty key;
     private final SimpleStringProperty value;
 
-    public KeyValuePair(String key, String value) {
+    public KeyValuePairModel(String key, String value) {
         this.key = new SimpleStringProperty(key);
         this.value = new SimpleStringProperty(value);
     }
