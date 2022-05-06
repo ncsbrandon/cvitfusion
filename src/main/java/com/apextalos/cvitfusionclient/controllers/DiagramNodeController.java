@@ -14,6 +14,10 @@ public class DiagramNodeController implements Initializable {
     // Model
     private DiagramNodeModel model;
 
+    public DiagramNodeModel getModel() {
+        return model;
+    }
+
     // View
     @FXML private Label nodeName;
 
@@ -25,7 +29,8 @@ public class DiagramNodeController implements Initializable {
         nodeName.textProperty().bind(model.getNodeNameProperty());
     }
 
-    public void onMenuAction(ActionEvent actionEvent) {
+    @FXML
+    protected void onMenuAction(ActionEvent actionEvent) {
         System.out.println("onMenuAction " + actionEvent.toString());
     }
 }
