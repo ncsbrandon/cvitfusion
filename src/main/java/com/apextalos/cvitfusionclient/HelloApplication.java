@@ -17,6 +17,7 @@ public class HelloApplication extends Application {
         stage.setTitle("Apex Talos CVITFusion Client");
         stage.getIcons().add(new Image(getClass().getResource("/img/missile.png").toExternalForm()));
         stage.setScene(scene);
+        stage.setResizable(true);
         stage.show();
     }
     public static void main(String[] args) {

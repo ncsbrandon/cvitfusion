@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: com.apextalos.cvitfusionclient.HelloApplication
-Class-Path: javafx-fxml-18-ea+6.jar javafx-swt.jar javafx.web.jar javafx
- .base.jar javafx.fxml.jar javafx.media.jar javafx.swing.jar javafx.cont
- rols.jar javafx.graphics.jar javafx-controls-18-ea+6-linux.jar javafx-g
- raphics-18-ea+6-linux.jar javafx-fxml-18-ea+6-linux.jar javafx-base-18-
- ea+6.jar javafx-graphics-18-ea+6.jar javafx-controls-18-ea+6.jar javafx
- -base-18-ea+6-linux.jar controlsfx-11.1.1.jar
-
