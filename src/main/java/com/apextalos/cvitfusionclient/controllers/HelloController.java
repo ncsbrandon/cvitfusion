@@ -18,6 +18,9 @@ public class HelloController implements Initializable {
 
     // Model
     private HelloModel model;
+    public HelloModel getModel() {
+        return model;
+    }
 
     // View
     @FXML private Label welcomeText;
@@ -30,14 +33,12 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        //get model
+        // create model
         model = new HelloModel(1000d);
 
-        // create bindings model to view
+        // create bindings
         welcomeText.textProperty().bind(model.getAccountBalanceProperty().asString());
         propertiesListView.setItems(model.getListItems());
-
         propertiesColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
         propertiesColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
         propertiesTable.setItems(model.getTableItems());

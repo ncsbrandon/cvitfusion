@@ -12,7 +12,6 @@ import java.io.IOException;
 public class DiagramNodeControl extends AnchorPane {
 
     private DiagramNodeController controller;
-
     public DiagramNodeController getController() {
         return controller;
     }
@@ -30,7 +29,5 @@ public class DiagramNodeControl extends AnchorPane {
             throw new RuntimeException(e);
         }
         this.getChildren().add(node);
-
-        //controller.getNodeName().textProperty().bind(nodeName);
     }
 }

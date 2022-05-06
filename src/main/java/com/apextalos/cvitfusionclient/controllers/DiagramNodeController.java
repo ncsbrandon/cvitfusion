@@ -13,7 +13,6 @@ public class DiagramNodeController implements Initializable {
 
     // Model
     private DiagramNodeModel model;
-
     public DiagramNodeModel getModel() {
         return model;
     }
@@ -23,6 +22,7 @@ public class DiagramNodeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // create model
         model = new DiagramNodeModel("TBD");
 
         // create bindings
