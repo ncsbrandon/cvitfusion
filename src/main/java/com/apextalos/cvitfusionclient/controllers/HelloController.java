@@ -52,14 +52,11 @@ public class HelloController implements Initializable {
         welcomeTextField.setTextFormatter(new TextFormatter<>(change -> {
             if (change.getText().matches("\\d+") || change.getText().equals("")) {
                 return change;
-            } else {
-                change.setText("");
-                change.setRange(
-                        change.getRangeStart(),
-                        change.getRangeStart()
-                );
-                return change;
             }
+
+            change.setText("");
+            change.setRange(change.getRangeStart(), change.getRangeStart());
+            return change;
         }));
     }
 

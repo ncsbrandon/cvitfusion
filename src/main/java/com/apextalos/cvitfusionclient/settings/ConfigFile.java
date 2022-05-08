@@ -1,13 +1,14 @@
 package com.apextalos.cvitfusionclient.settings;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Properties;
-import java.util.TreeSet;
+import java.util.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static com.apextalos.cvitfusionclient.app.Strings.*;
 
@@ -15,7 +16,7 @@ public class ConfigFile {
 
     private static final Logger logger = LogManager.getLogger(ConfigFile.class.getSimpleName());
 
-    //private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     // The derived class makes sure the keys are returned
     // in alphabetical order. This way the configuration file
@@ -194,12 +195,11 @@ public class ConfigFile {
         return defaultValue;
     }
 
-    /*
-    public static void setJSON(ConfigFile cf, String key, Object obj) throws JsonProcessingException {
-        cf.setString(key, new ObjectMapper().writeValueAsString(obj), false);
+    public void setJSON(ConfigFile cf, String key, Object obj) throws JsonProcessingException {
+        cf.setString(key, mapper.writeValueAsString(obj), false);
     }
 
-    public static <T> T getJSON(ConfigFile cf, String key, Class typeclass) throws IOException {
+    public <T> T getJSON(ConfigFile cf, String key, Class typeClass) throws IOException {
         if(cf == null)
             return null;
 
@@ -207,8 +207,7 @@ public class ConfigFile {
         if (value == null || value.length() == 0)
             return null;
 
-        JavaType type = mapper.getTypeFactory().constructCollectionType(List.class, typeclass);
-        return mapper.<T>readValue(value, type);
+        JavaType type = mapper.getTypeFactory().constructCollectionType(List.class, typeClass);
+        return mapper.readValue(value, type);
     }
-    */
 }
