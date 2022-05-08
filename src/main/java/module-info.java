@@ -4,6 +4,7 @@ module com.apextalos.cvitfusionclient {
 
     requires org.controlsfx.controls;
     requires org.joda.time;
+    requires org.apache.logging.log4j;
 
     exports com.apextalos.cvitfusionclient;
     opens com.apextalos.cvitfusionclient to javafx.fxml;

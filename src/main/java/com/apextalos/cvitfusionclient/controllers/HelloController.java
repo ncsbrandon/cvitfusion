@@ -14,7 +14,12 @@ import org.joda.time.DateTime;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class HelloController implements Initializable {
+
+    private static final Logger logger = LogManager.getLogger(HelloController.class.getSimpleName());
 
     // Model
     private HelloModel model;
@@ -72,6 +77,9 @@ public class HelloController implements Initializable {
         designPane.getChildren().add(r);
 
         r.getController().getModel().setNodeName("Node 1");
+
+        logger.debug("this is DEBUG");
+        logger.error("this is ERROR");
 
         /*
         r.onMouseClickedProperty().set((EventHandler<MouseEvent>) (MouseEvent t) -> {
