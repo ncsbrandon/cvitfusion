@@ -1,5 +1,6 @@
 package com.apextalos.cvitfusionclient.controllers;
 
+import com.apextalos.cvitfusionclient.app.Version;
 import com.apextalos.cvitfusionclient.controls.DiagramNodeControl;
 import com.apextalos.cvitfusionclient.models.HelloModel;
 import com.apextalos.cvitfusionclient.models.KeyValuePairModel;
@@ -35,6 +36,7 @@ public class HelloController implements Initializable {
     @FXML private TableColumn propertiesColumnKey;
     @FXML private TableColumn propertiesColumnValue;
     @FXML private AnchorPane designPane;
+    @FXML private Label versionInfo;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -47,6 +49,8 @@ public class HelloController implements Initializable {
         propertiesColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
         propertiesColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
         propertiesTable.setItems(model.getTableItems());
+
+        versionInfo.setText(String.format("%s.%s", Version.getInstance().getVersion(), Version.getInstance().getBuild()));
 
         //link Controller to View - ensure only numeric input (integers) in text field
         welcomeTextField.setTextFormatter(new TextFormatter<>(change -> {
