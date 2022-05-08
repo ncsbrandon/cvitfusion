@@ -15,6 +15,8 @@ public class ConfigFile {
 
     private static final Logger logger = LogManager.getLogger(ConfigFile.class.getSimpleName());
 
+    //private ObjectMapper mapper = new ObjectMapper();
+
     // The derived class makes sure the keys are returned
     // in alphabetical order. This way the configuration file
     // will have sorted entries instead of random mess.
@@ -50,11 +52,9 @@ public class ConfigFile {
             p.load(fis);
         } catch (FileNotFoundException e) {
             logger.error("FileNotFoundException while loading the configuration: " + e.getMessage());
-            logger.error("Using application default config");
             return false;
         } catch (IOException e) {
             logger.error("IOException while loading the configuration: " + e.getMessage());
-            logger.error("Using application default config");
             return false;
         }
 
@@ -193,4 +193,22 @@ public class ConfigFile {
 
         return defaultValue;
     }
+
+    /*
+    public static void setJSON(ConfigFile cf, String key, Object obj) throws JsonProcessingException {
+        cf.setString(key, new ObjectMapper().writeValueAsString(obj), false);
+    }
+
+    public static <T> T getJSON(ConfigFile cf, String key, Class typeclass) throws IOException {
+        if(cf == null)
+            return null;
+
+        String value = cf.getString(key, "");
+        if (value == null || value.length() == 0)
+            return null;
+
+        JavaType type = mapper.getTypeFactory().constructCollectionType(List.class, typeclass);
+        return mapper.<T>readValue(value, type);
+    }
+    */
 }
