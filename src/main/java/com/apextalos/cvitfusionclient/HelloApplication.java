@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class HelloApplication extends Application {
 
@@ -19,7 +20,10 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         logger.info("app starting");
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        //file:/home/firstuser/Documents/GitHub/cvitfusion-client/target/classes/com/apextalos/cvitfusionclient/hello-view.fxml
+
+        URL url = getClass().getResource("hello-view.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(url);
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Apex Talos CVITFusion Client");
         stage.getIcons().add(new Image(getClass().getResource("/img/missile.png").toExternalForm()));

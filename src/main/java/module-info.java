@@ -4,6 +4,7 @@ module com.apextalos.cvitfusionclient {
     requires org.joda.time;
     requires org.apache.logging.log4j;
     requires com.fasterxml.jackson.databind;
+    requires com.apextalos.cvitfusioncommon;
 
     exports com.apextalos.cvitfusionclient;
     opens com.apextalos.cvitfusionclient to javafx.fxml;

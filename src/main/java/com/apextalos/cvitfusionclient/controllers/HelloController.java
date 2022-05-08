@@ -5,6 +5,7 @@ import com.apextalos.cvitfusionclient.controls.DiagramNodeControl;
 import com.apextalos.cvitfusionclient.models.HelloModel;
 import com.apextalos.cvitfusionclient.models.KeyValuePairModel;
 
+import com.apextalos.cvitfusioncommon.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -82,7 +83,8 @@ public class HelloController implements Initializable {
         logger.debug("this is DEBUG");
         logger.error("this is ERROR");
 
-        //Main m = new Main();
+        Main main = new Main();
+        main.test();
 
         /*
         r.onMouseClickedProperty().set((EventHandler<MouseEvent>) (MouseEvent t) -> {
