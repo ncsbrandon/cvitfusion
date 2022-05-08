@@ -82,6 +82,8 @@ public class HelloController implements Initializable {
         logger.debug("this is DEBUG");
         logger.error("this is ERROR");
 
+        //Main m = new Main();
+
         /*
         r.onMouseClickedProperty().set((EventHandler<MouseEvent>) (MouseEvent t) -> {
             Rectangle r2 = new Rectangle();
