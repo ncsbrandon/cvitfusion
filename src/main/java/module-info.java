@@ -1,8 +1,6 @@
 module com.apextalos.cvitfusionclient {
     requires javafx.controls;
     requires javafx.fxml;
-
-    //requires org.controlsfx.controls;
     requires org.joda.time;
     requires org.apache.logging.log4j;
     requires com.fasterxml.jackson.databind;
