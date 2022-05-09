@@ -1,5 +1,5 @@
-# cvitfusion-client
-Connected Vehicle and Intelligent Transportation Fusion Client
+# cvitfusion
+Connected Vehicle and Intelligent Transportation Fusion.  Consisting of 3 components:  Client, Server, and Common
 
 ## tools
 - IntelliJ
