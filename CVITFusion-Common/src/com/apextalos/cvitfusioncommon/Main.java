@@ -7,7 +7,8 @@ public class Main {
 
     private static final Logger logger = LogManager.getLogger(Main.class.getSimpleName());
 
-    public void test() {
+    public int test() {
         logger.info("Commons INFO");
+        return 69;
     }
 }
