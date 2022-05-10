@@ -42,9 +42,9 @@ public class HelloApplication extends Application {
     public static void main(String[] args) {
         logger.info("app main");
 
-        ConfigFile cf = new ConfigFile("cvitfusion.properties");
-        if(!cf.load())
-            System.exit(0);
+        //ConfigFile cf = new ConfigFile("cvitfusion.properties");
+        //if(!cf.load())
+         //   System.exit(0);
 
         launch();
     }
