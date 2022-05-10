@@ -2,7 +2,8 @@
 Connected Vehicle and Intelligent Transportation Fusion.  Consisting of 3 components:  Client, Server, and Common
 
 ## tools
-- IntelliJ
+- Eclipse IDE
+  - Plugins https://download.eclipse.org/efxclipse/updates-released/3.8.0/site/
 - Github Desktop
 - SceneBuilder
 - JavaFX
