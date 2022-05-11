@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="779.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.apextalos.cvitfusion.controllers.HelloController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="756.0" prefWidth="1127.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.apextalos.cvitfusion.controllers.HelloController">
    <bottom>
       <BorderPane>
          <left>
@@ -48,7 +48,7 @@
    <center>
       <SplitPane fx:id="sp1" dividerPositions="0.5" orientation="VERTICAL" BorderPane.alignment="CENTER">
          <items>
-            <SplitPane fx:id="sp11" dividerPositions="0.5">
+            <SplitPane fx:id="sp11" dividerPositions="0.2">
                <items>
                   <Accordion>
                     <panes>
@@ -79,9 +79,9 @@
                      <items>
                         <VBox>
                            <children>
-                              <TitledPane animated="false" collapsible="false" text="Design">
+                              <TitledPane fx:id="designTitle" animated="false" collapsible="false" text="Design">
                                  <content>
-                                    <AnchorPane fx:id="designPane" prefHeight="200.0" prefWidth="200.0" />
+                                    <AnchorPane fx:id="designPane" style="-fx-background-color: orange;" />
                                  </content>
                               </TitledPane>
                            </children>

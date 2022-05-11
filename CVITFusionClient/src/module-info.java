@@ -1,12 +1,12 @@
 module CVITFusionClient {
 	requires javafx.controls;
-	requires javafx.graphics;
+	requires transitive javafx.graphics;
 	requires javafx.fxml;
 	requires org.joda.time;
     requires org.apache.logging.log4j;
     requires com.fasterxml.jackson.databind;
 	requires transitive cvitfusioncommon;
-	requires javafx.base;
+	requires transitive javafx.base;
     
 	exports com.apextalos.cvitfusion.client.app;
     opens com.apextalos.cvitfusion.client.app to javafx.graphics, javafx.fxml;

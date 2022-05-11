@@ -22,6 +22,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -49,7 +50,8 @@ public class HelloController extends BaseController {
     @FXML private SplitPane sp1;
     @FXML private SplitPane sp11;
     @FXML private SplitPane sp112;
-
+    @FXML private TitledPane designTitle;
+    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // create model
@@ -74,6 +76,9 @@ public class HelloController extends BaseController {
             change.setRange(change.getRangeStart(), change.getRangeStart());
             return change;
         }));
+        
+        //designPane.prefHeight(designTitle.getHeight());
+        designPane.prefHeightProperty().bind(designTitle.heightProperty());
     }
     
     @Override

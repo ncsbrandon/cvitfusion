@@ -1,14 +1,13 @@
 package com.apextalos.cvitfusion.controllers;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.apextalos.cvitfusion.models.DiagramNodeModel;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 
 public class DiagramNodeController extends BaseController {
 
