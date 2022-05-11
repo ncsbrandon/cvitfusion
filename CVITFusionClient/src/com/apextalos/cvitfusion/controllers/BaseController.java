@@ -1,6 +1,6 @@
 package com.apextalos.cvitfusion.controllers;
 
-import com.apextalos.cvitfusioncommon.settings.ConfigFile;
+import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.fxml.Initializable;
 

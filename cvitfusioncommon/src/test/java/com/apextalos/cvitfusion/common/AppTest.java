@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusioncommon;
+package com.apextalos.cvitfusion.common;
 
 import static org.junit.Assert.assertTrue;
 

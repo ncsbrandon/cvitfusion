@@ -1,6 +1,6 @@
-package com.apextalos.cvitfusioncommon.settings;
+package com.apextalos.cvitfusion.common.settings;
 
-import com.apextalos.cvitfusioncommon.Strings;
+import com.apextalos.cvitfusion.common.Strings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import org.apache.logging.log4j.LogManager;

@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusioncommon.settings;
+package com.apextalos.cvitfusion.common.settings;
 
 public class ConfigItems {
 

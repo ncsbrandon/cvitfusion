@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.controllers.HelloController;
-import com.apextalos.cvitfusioncommon.settings.ConfigFile;
+import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -36,19 +36,19 @@ public class Main extends Application {
 		stage.setScene(scene);
 		stage.setResizable(true);
 		((HelloController)fxmlLoader.getController()).begin(cf);	
-		stage.setX(cf.getDouble(Strings.WINDOW_POSITION_X_CONFIG, Strings.WINDOW_POSITION_X_DEFAULT));
-        stage.setY(cf.getDouble(Strings.WINDOW_POSITION_Y_CONFIG, Strings.WINDOW_POSITION_Y_DEFAULT));
-        stage.setWidth(cf.getDouble(Strings.WINDOW_WIDTH_CONFIG, Strings.WINDOW_WIDTH_DEFAULT));
-        stage.setHeight(cf.getDouble(Strings.WINDOW_HEIGHT_CONFIG, Strings.WINDOW_HEIGHT_DEFAULT));
+		stage.setX(cf.getDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, ConfigItems.WINDOW_POSITION_X_DEFAULT));
+        stage.setY(cf.getDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, ConfigItems.WINDOW_POSITION_Y_DEFAULT));
+        stage.setWidth(cf.getDouble(ConfigItems.WINDOW_WIDTH_CONFIG, ConfigItems.WINDOW_WIDTH_DEFAULT));
+        stage.setHeight(cf.getDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, ConfigItems.WINDOW_HEIGHT_DEFAULT));
         stage.show();
         
         // save window size and position at close
         stage.setOnCloseRequest((final WindowEvent event) -> {
         	((HelloController)fxmlLoader.getController()).end();	
-            cf.setDouble(Strings.WINDOW_POSITION_X_CONFIG, stage.getX());
-            cf.setDouble(Strings.WINDOW_POSITION_Y_CONFIG, stage.getY());
-            cf.setDouble(Strings.WINDOW_WIDTH_CONFIG, stage.getWidth());
-            cf.setDouble(Strings.WINDOW_HEIGHT_CONFIG, stage.getHeight());
+            cf.setDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, stage.getX());
+            cf.setDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, stage.getY());
+            cf.setDouble(ConfigItems.WINDOW_WIDTH_CONFIG, stage.getWidth());
+            cf.setDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, stage.getHeight());
             cf.save();
         });
 	}

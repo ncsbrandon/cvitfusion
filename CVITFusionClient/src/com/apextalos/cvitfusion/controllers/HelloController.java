@@ -11,7 +11,7 @@ import com.apextalos.cvitfusion.client.app.Version;
 import com.apextalos.cvitfusion.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.models.HelloModel;
 import com.apextalos.cvitfusion.models.KeyValuePairModel;
-import com.apextalos.cvitfusioncommon.settings.ConfigFile;
+import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
