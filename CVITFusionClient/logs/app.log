@@ -1,7 +1,0 @@
-2022-05-10 15:25:53,627 INFO Main [main] app main
-2022-05-10 15:25:53,754 INFO ConfigFile [main] Loading config file: cvitfusion.properties
-2022-05-10 15:25:53,754 INFO ConfigFile [main] Loading config file success
-2022-05-10 15:25:53,778 INFO Main [JavaFX Application Thread] app starting
-2022-05-10 15:26:01,291 DEBUG HelloController [JavaFX Application Thread] this is DEBUG
-2022-05-10 15:26:01,291 ERROR HelloController [JavaFX Application Thread] this is ERROR
-2022-05-10 15:26:04,005 INFO Main [JavaFX Application Thread] app stopping
