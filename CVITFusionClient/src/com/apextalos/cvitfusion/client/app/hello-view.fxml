@@ -46,9 +46,9 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane dividerPositions="0.5" orientation="VERTICAL" BorderPane.alignment="CENTER">
+      <SplitPane fx:id="sp1" dividerPositions="0.5" orientation="VERTICAL" BorderPane.alignment="CENTER">
          <items>
-            <SplitPane dividerPositions="0.5">
+            <SplitPane fx:id="sp11" dividerPositions="0.5">
                <items>
                   <Accordion>
                     <panes>
@@ -75,7 +75,7 @@
                       </TitledPane>
                     </panes>
                   </Accordion>
-                  <SplitPane dividerPositions="0.5">
+                  <SplitPane fx:id="sp112" dividerPositions="0.5">
                      <items>
                         <VBox>
                            <children>

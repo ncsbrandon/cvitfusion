@@ -17,6 +17,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -45,6 +46,9 @@ public class HelloController extends BaseController {
     @FXML private TableColumn propertiesColumnValue;
     @FXML private AnchorPane designPane;
     @FXML private Label versionInfo;
+    @FXML private SplitPane sp1;
+    @FXML private SplitPane sp11;
+    @FXML private SplitPane sp112;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -75,9 +79,20 @@ public class HelloController extends BaseController {
     @Override
 	public void begin(ConfigFile cf) {
 		super.begin(cf);
+		sp1.setDividerPosition(0, cf.getDouble("sp1_divider_position", -1));
+		sp11.setDividerPosition(0, cf.getDouble("sp11_divider_position", -1));
+		sp112.setDividerPosition(0, cf.getDouble("sp112_divider_position", -1));
 		model.getListItems().add(String.format("begin [%s]",  cf.getString("some_setting", "default_value")));
 	}
-
+    
+    @Override
+    public void end() {
+		super.end();
+		cf.setDouble("sp1_divider_position", sp1.getDividerPositions()[0]);
+		cf.setDouble("sp11_divider_position", sp11.getDividerPositions()[0]);
+		cf.setDouble("sp112_divider_position", sp112.getDividerPositions()[0]);
+	}
+    
 	@FXML
     protected void onHelloButtonClick() {
         model.deposit(100);

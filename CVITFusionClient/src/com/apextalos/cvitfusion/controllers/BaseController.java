@@ -11,4 +11,7 @@ public abstract class BaseController implements Initializable {
 	 public void begin(ConfigFile cf) {
 		 this.cf = cf;
 	 }
+	 
+	 public void end() {
+	 }
 }

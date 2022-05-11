@@ -35,17 +35,16 @@ public class Main extends Application {
 		stage.getIcons().add(new Image(getClass().getResource("missile.png").toExternalForm()));
 		stage.setScene(scene);
 		stage.setResizable(true);
-		
-		
-		((HelloController)fxmlLoader.getController()).begin(cf);
-		
+		((HelloController)fxmlLoader.getController()).begin(cf);	
 		stage.setX(cf.getDouble(Strings.WINDOW_POSITION_X_CONFIG, Strings.WINDOW_POSITION_X_DEFAULT));
         stage.setY(cf.getDouble(Strings.WINDOW_POSITION_Y_CONFIG, Strings.WINDOW_POSITION_Y_DEFAULT));
         stage.setWidth(cf.getDouble(Strings.WINDOW_WIDTH_CONFIG, Strings.WINDOW_WIDTH_DEFAULT));
         stage.setHeight(cf.getDouble(Strings.WINDOW_HEIGHT_CONFIG, Strings.WINDOW_HEIGHT_DEFAULT));
         stage.show();
         
+        // save window size and position at close
         stage.setOnCloseRequest((final WindowEvent event) -> {
+        	((HelloController)fxmlLoader.getController()).end();	
             cf.setDouble(Strings.WINDOW_POSITION_X_CONFIG, stage.getX());
             cf.setDouble(Strings.WINDOW_POSITION_Y_CONFIG, stage.getY());
             cf.setDouble(Strings.WINDOW_WIDTH_CONFIG, stage.getWidth());
@@ -57,15 +56,11 @@ public class Main extends Application {
 	@Override
 	public void stop() throws Exception {
 		logger.info("app stopping");
-
 		super.stop();
 	}
 
 	public static void main(String[] args) {
 		logger.info("app main");
-
-		
-
 		launch(args);
 	}
 }
