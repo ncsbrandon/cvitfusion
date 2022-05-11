@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusion.common;
+package com.apextalos.cvitfusion.common.settings;
 
 import static org.junit.Assert.*;
 

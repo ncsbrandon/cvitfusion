@@ -10,10 +10,10 @@ module CVITFusionClient {
     
 	exports com.apextalos.cvitfusion.client.app;
     opens com.apextalos.cvitfusion.client.app to javafx.graphics, javafx.fxml;
-    exports com.apextalos.cvitfusion.controllers;
-    opens com.apextalos.cvitfusion.controllers to javafx.graphics, javafx.fxml;
-    exports com.apextalos.cvitfusion.models;
-    opens com.apextalos.cvitfusion.models to javafx.graphics, javafx.fxml;
-    exports com.apextalos.cvitfusion.controls;
-    opens com.apextalos.cvitfusion.controls  to javafx.graphics, javafx.fxml;
+    exports com.apextalos.cvitfusion.client.controllers;
+    opens com.apextalos.cvitfusion.client.controllers to javafx.graphics, javafx.fxml;
+    exports com.apextalos.cvitfusion.client.models;
+    opens com.apextalos.cvitfusion.client.models to javafx.graphics, javafx.fxml;
+    exports com.apextalos.cvitfusion.client.controls;
+    opens com.apextalos.cvitfusion.client.controls  to javafx.graphics, javafx.fxml;
 }

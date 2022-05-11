@@ -6,7 +6,7 @@ import java.net.URL;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.apextalos.cvitfusion.controllers.HelloController;
+import com.apextalos.cvitfusion.client.controllers.HelloController;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.application.Application;

@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusion.models;
+package com.apextalos.cvitfusion.client.models;
 
 import javafx.beans.property.*;
 

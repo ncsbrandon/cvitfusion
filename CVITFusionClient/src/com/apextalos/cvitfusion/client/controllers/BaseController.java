@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusion.controllers;
+package com.apextalos.cvitfusion.client.controllers;
 
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 

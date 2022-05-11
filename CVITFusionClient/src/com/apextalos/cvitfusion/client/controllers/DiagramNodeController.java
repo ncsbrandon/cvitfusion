@@ -1,9 +1,9 @@
-package com.apextalos.cvitfusion.controllers;
+package com.apextalos.cvitfusion.client.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.apextalos.cvitfusion.models.DiagramNodeModel;
+import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

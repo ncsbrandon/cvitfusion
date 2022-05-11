@@ -1,11 +1,11 @@
-package com.apextalos.cvitfusion.controls;
+package com.apextalos.cvitfusion.client.controls;
 
 import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.apextalos.cvitfusion.controllers.DiagramNodeController;
+import com.apextalos.cvitfusion.client.controllers.DiagramNodeController;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

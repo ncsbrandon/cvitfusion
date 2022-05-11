@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusion.controllers;
+package com.apextalos.cvitfusion.client.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -8,9 +8,9 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.client.app.Version;
-import com.apextalos.cvitfusion.controls.DiagramNodeControl;
-import com.apextalos.cvitfusion.models.HelloModel;
-import com.apextalos.cvitfusion.models.KeyValuePairModel;
+import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
+import com.apextalos.cvitfusion.client.models.HelloModel;
+import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.event.EventHandler;
