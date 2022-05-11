@@ -6,7 +6,7 @@ import javafx.fxml.Initializable;
 
 public abstract class BaseController implements Initializable {
 
-	 private ConfigFile cf;
+	 protected ConfigFile cf = null;
 	    
 	 public void begin(ConfigFile cf) {
 		 this.cf = cf;

@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 import com.apextalos.cvitfusion.models.DiagramNodeModel;
 
-public class DiagramNodeController implements Initializable {
+public class DiagramNodeController extends BaseController {
 
     // Model
     private DiagramNodeModel model;

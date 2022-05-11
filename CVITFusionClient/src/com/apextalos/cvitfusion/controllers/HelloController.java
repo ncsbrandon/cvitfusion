@@ -15,7 +15,6 @@ import com.apextalos.cvitfusioncommon.settings.ConfigFile;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -27,7 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
-public class HelloController implements Initializable {
+public class HelloController extends BaseController {
 
     private static final Logger logger = LogManager.getLogger(HelloController.class.getSimpleName());
 
@@ -37,8 +36,6 @@ public class HelloController implements Initializable {
         return model;
     }
     
-   
-
     // View
     @FXML private Label welcomeText;
     @FXML private ListView propertiesListView;
@@ -75,12 +72,13 @@ public class HelloController implements Initializable {
         }));
     }
     
-    public void begin() {
-    	//model.getListItems().add(String.format("begin [%s]",  cf.getString("some_setting", "default_value")));
-    }
-    
+    @Override
+	public void begin(ConfigFile cf) {
+		super.begin(cf);
+		model.getListItems().add(String.format("begin [%s]",  cf.getString("some_setting", "default_value")));
+	}
 
-    @FXML
+	@FXML
     protected void onHelloButtonClick() {
         model.deposit(100);
         model.getListItems().add("deposit");
@@ -93,6 +91,8 @@ public class HelloController implements Initializable {
         r.setLayoutY(20);
         designPane.getChildren().add(r);
         r.getController().getModel().setNodeName("Node 1");
+        
+        r.getController().begin(cf);
 
         logger.debug("this is DEBUG");
         logger.error("this is ERROR");

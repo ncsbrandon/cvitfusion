@@ -197,7 +197,7 @@ public class ConfigFile {
         cf.setString(key, mapper.writeValueAsString(obj), false);
     }
 
-    public <T> T getJSON(ConfigFile cf, String key, Class typeClass) throws IOException {
+    public <T> T getJSON(ConfigFile cf, String key, Class<?> typeClass) throws IOException {
         if(cf == null)
             return null;
 

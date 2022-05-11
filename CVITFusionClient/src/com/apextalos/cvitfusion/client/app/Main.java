@@ -36,8 +36,8 @@ public class Main extends Application {
 		stage.setResizable(true);
 		stage.show();
 		
-		//HelloController hc = fxmlLoader.getController();
-		//hc.begin(cf);
+		HelloController hc = fxmlLoader.getController();
+		hc.begin(cf);
 	}
 
 	@Override

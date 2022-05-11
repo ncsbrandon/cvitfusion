@@ -5,7 +5,7 @@ module CVITFusionClient {
 	requires org.joda.time;
     requires org.apache.logging.log4j;
     requires com.fasterxml.jackson.databind;
-	requires cvitfusioncommon;
+	requires transitive cvitfusioncommon;
 	requires javafx.base;
     
 	exports com.apextalos.cvitfusion.client.app;
