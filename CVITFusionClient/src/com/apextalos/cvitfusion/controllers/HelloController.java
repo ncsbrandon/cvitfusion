@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.client.app.Version;
+import com.apextalos.cvitfusion.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.models.HelloModel;
 import com.apextalos.cvitfusion.models.KeyValuePairModel;
 
@@ -76,17 +77,14 @@ public class HelloController implements Initializable {
         model.getTableItems().add(new KeyValuePairModel("last", "deposit"));
         model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
 
-        //DiagramNodeControl r = new DiagramNodeControl();
-        //r.setLayoutX(20);
-        //r.setLayoutY(20);
-        //designPane.getChildren().add(r);
-        //r.getController().getModel().setNodeName("Node 1");
+        DiagramNodeControl r = new DiagramNodeControl();
+        r.setLayoutX(20);
+        r.setLayoutY(20);
+        designPane.getChildren().add(r);
+        r.getController().getModel().setNodeName("Node 1");
 
         logger.debug("this is DEBUG");
         logger.error("this is ERROR");
-
-       // Main main = new Main();
-       // main.test();
 
         /*
         r.onMouseClickedProperty().set((EventHandler<MouseEvent>) (MouseEvent t) -> {
