@@ -26,6 +26,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
 public class HelloController extends BaseController {
@@ -50,7 +51,9 @@ public class HelloController extends BaseController {
     @FXML private SplitPane sp1;
     @FXML private SplitPane sp11;
     @FXML private SplitPane sp112;
-    @FXML private TitledPane designTitle;
+    @FXML private VBox vbox;
+    @FXML private VBox vbox2;
+    @FXML private TitledPane propertiesPanel;
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -77,8 +80,8 @@ public class HelloController extends BaseController {
             return change;
         }));
         
-        //designPane.prefHeight(designTitle.getHeight());
-        designPane.prefHeightProperty().bind(designTitle.heightProperty());
+        propertiesTable.prefHeightProperty().bind(vbox2.heightProperty());
+        designPane.prefHeightProperty().bind(vbox.heightProperty());
     }
     
     @Override

@@ -77,18 +77,14 @@
                   </Accordion>
                   <SplitPane fx:id="sp112" dividerPositions="0.5">
                      <items>
-                        <VBox>
+                        <VBox fx:id="vbox">
                            <children>
-                              <TitledPane fx:id="designTitle" animated="false" collapsible="false" text="Design">
-                                 <content>
-                                    <AnchorPane fx:id="designPane" style="-fx-background-color: orange;" />
-                                 </content>
-                              </TitledPane>
+                              <AnchorPane fx:id="designPane" style="-fx-background-color: orange;" />
                            </children>
                         </VBox>
-                        <VBox>
+                        <VBox fx:id="vbox2">
                            <children>
-                              <TitledPane animated="false" collapsible="false" text="Properties">
+                              <TitledPane fx:id="propertiesPanel" animated="false" collapsible="false" text="Properties">
                                  <content>
                                     <TableView fx:id="propertiesTable">
                                       <columns>
