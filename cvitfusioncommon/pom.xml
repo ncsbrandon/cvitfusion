@@ -55,6 +55,33 @@
             <artifactId>joda-time</artifactId>
             <version>2.10.14</version>
         </dependency>
+        <dependency>
+		    <groupId>org.rxtx</groupId>
+		    <artifactId>rxtx</artifactId>
+		    <version>2.1.7</version>
+		</dependency>
+		<!--
+		<dependency>
+		    <groupId>org.snmp4j</groupId>
+		    <artifactId>snmp4j</artifactId>
+		    <version>3.6.7</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz</artifactId>
+		    <version>2.3.2</version>
+		</dependency>
+		<dependency>
+	    	<groupId>org.xerial</groupId>
+	    	<artifactId>sqlite-jdbc</artifactId>
+	    	<version>3.36.0.3</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.influxdb</groupId>
+		    <artifactId>influxdb-java</artifactId>
+		    <version>2.22</version>
+		</dependency>
+		-->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

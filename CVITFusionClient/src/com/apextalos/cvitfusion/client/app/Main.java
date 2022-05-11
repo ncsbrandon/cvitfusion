@@ -6,6 +6,7 @@ import java.net.URL;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.controllers.HelloController;
 import com.apextalos.cvitfusioncommon.settings.ConfigFile;
 
 import javafx.application.Application;
@@ -22,6 +23,10 @@ public class Main extends Application {
 	public void start(Stage stage) throws IOException {
 		logger.info("app starting");
 
+		ConfigFile cf = new ConfigFile("cvitfusion.properties");
+		if (!cf.load())
+			System.exit(0);
+		
 		URL url = getClass().getResource("hello-view.fxml");
 		FXMLLoader fxmlLoader = new FXMLLoader(url);
 		Scene scene = new Scene(fxmlLoader.load());
@@ -30,6 +35,9 @@ public class Main extends Application {
 		stage.setScene(scene);
 		stage.setResizable(true);
 		stage.show();
+		
+		//HelloController hc = fxmlLoader.getController();
+		//hc.begin(cf);
 	}
 
 	@Override
@@ -42,9 +50,7 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		logger.info("app main");
 
-		ConfigFile cf = new ConfigFile("cvitfusion.properties");
-		if (!cf.load())
-			System.exit(0);
+		
 
 		launch(args);
 	}

@@ -6,6 +6,7 @@ module CVITFusionClient {
     requires org.apache.logging.log4j;
     requires com.fasterxml.jackson.databind;
 	requires cvitfusioncommon;
+	requires javafx.base;
     
 	exports com.apextalos.cvitfusion.client.app;
     opens com.apextalos.cvitfusion.client.app to javafx.graphics, javafx.fxml;

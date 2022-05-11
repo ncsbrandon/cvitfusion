@@ -1,16 +1,15 @@
 package com.apextalos.cvitfusion.controls;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
-
 import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.controllers.DiagramNodeController;
-import com.apextalos.cvitfusion.controllers.HelloController;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 
 
 public class DiagramNodeControl extends AnchorPane {

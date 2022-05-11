@@ -11,7 +11,9 @@ import com.apextalos.cvitfusion.client.app.Version;
 import com.apextalos.cvitfusion.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.models.HelloModel;
 import com.apextalos.cvitfusion.models.KeyValuePairModel;
+import com.apextalos.cvitfusioncommon.settings.ConfigFile;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -21,7 +23,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Rectangle;
 
 public class HelloController implements Initializable {
 
@@ -32,6 +36,8 @@ public class HelloController implements Initializable {
     public HelloModel getModel() {
         return model;
     }
+    
+   
 
     // View
     @FXML private Label welcomeText;
@@ -68,6 +74,11 @@ public class HelloController implements Initializable {
             return change;
         }));
     }
+    
+    public void begin() {
+    	//model.getListItems().add(String.format("begin [%s]",  cf.getString("some_setting", "default_value")));
+    }
+    
 
     @FXML
     protected void onHelloButtonClick() {
@@ -86,7 +97,6 @@ public class HelloController implements Initializable {
         logger.debug("this is DEBUG");
         logger.error("this is ERROR");
 
-        /*
         r.onMouseClickedProperty().set((EventHandler<MouseEvent>) (MouseEvent t) -> {
             Rectangle r2 = new Rectangle();
             r2.setX(100);
@@ -95,7 +105,7 @@ public class HelloController implements Initializable {
             r2.setHeight(50);
             designPane.getChildren().add(r2);
         });
-        */
+
     }
 
     @FXML
