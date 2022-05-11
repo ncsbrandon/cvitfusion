@@ -11,6 +11,7 @@ import com.apextalos.cvitfusioncommon.settings.ConfigFile;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -25,7 +26,7 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(url);
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Apex Talos CVITFusion Client");
-        //stage.getIcons().add(new Image(getClass().getResource("/img/missile.png").toExternalForm()));
+        stage.getIcons().add(new Image(getClass().getResource("missile.png").toExternalForm()));
         stage.setScene(scene);
         stage.setResizable(true);
         stage.show();
