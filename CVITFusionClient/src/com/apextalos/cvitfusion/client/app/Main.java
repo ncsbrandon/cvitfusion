@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 
@@ -34,10 +35,23 @@ public class Main extends Application {
 		stage.getIcons().add(new Image(getClass().getResource("missile.png").toExternalForm()));
 		stage.setScene(scene);
 		stage.setResizable(true);
-		stage.show();
 		
-		HelloController hc = fxmlLoader.getController();
-		hc.begin(cf);
+		
+		((HelloController)fxmlLoader.getController()).begin(cf);
+		
+		stage.setX(cf.getDouble(Strings.WINDOW_POSITION_X_CONFIG, Strings.WINDOW_POSITION_X_DEFAULT));
+        stage.setY(cf.getDouble(Strings.WINDOW_POSITION_Y_CONFIG, Strings.WINDOW_POSITION_Y_DEFAULT));
+        stage.setWidth(cf.getDouble(Strings.WINDOW_WIDTH_CONFIG, Strings.WINDOW_WIDTH_DEFAULT));
+        stage.setHeight(cf.getDouble(Strings.WINDOW_HEIGHT_CONFIG, Strings.WINDOW_HEIGHT_DEFAULT));
+        stage.show();
+        
+        stage.setOnCloseRequest((final WindowEvent event) -> {
+            cf.setDouble(Strings.WINDOW_POSITION_X_CONFIG, stage.getX());
+            cf.setDouble(Strings.WINDOW_POSITION_Y_CONFIG, stage.getY());
+            cf.setDouble(Strings.WINDOW_WIDTH_CONFIG, stage.getWidth());
+            cf.setDouble(Strings.WINDOW_HEIGHT_CONFIG, stage.getHeight());
+            cf.save();
+        });
 	}
 
 	@Override
