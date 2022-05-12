@@ -1,10 +1,8 @@
 package com.apextalos.cvitfusion.common.settings;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
-
-import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 public class ConfigFileTest {
 

@@ -1,6 +1,9 @@
 package com.apextalos.cvitfusion.client.app;
 
 public class ConfigItems {
+	
+	// THESE ARE CLIENT ONLY
+	
 	public static final String WINDOW_POSITION_X_CONFIG = "window_position_x";
     public static final double WINDOW_POSITION_X_DEFAULT = -1;
     public static final String WINDOW_POSITION_Y_CONFIG = "window_position_y";
