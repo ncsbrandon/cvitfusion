@@ -47,5 +47,15 @@ public class Type {
 	}
 	public void setSupportedOutputs(List<Integer> supportedOutputs) {
 		this.supportedOutputs = supportedOutputs;
-	}	
+	}
+	
+	public Type(int typeID, int version, String name, Properties properties, List<Integer> supportedInputs, List<Integer> supportedOutputs) {
+		super();
+		this.typeID = typeID;
+		this.version = version;
+		this.name = name;
+		this.properties = properties;
+		this.supportedInputs = supportedInputs;
+		this.supportedOutputs = supportedOutputs;
+	}
 }

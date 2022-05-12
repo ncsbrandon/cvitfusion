@@ -1,7 +1,5 @@
 package com.apextalos.cvitfusion.common.opflow;
 
-import java.awt.Color;
-
 public class Style {
 
 	private int nodeStyleID;
@@ -32,5 +30,13 @@ public class Style {
 	}
 	public void setOutline(Color outline) {
 		this.outline = outline;
+	}
+	
+	public Style(int nodeStyleID, int shape, Color color, Color color2) {
+		super();
+		this.nodeStyleID = nodeStyleID;
+		this.shape = shape;
+		this.fill = color;
+		this.outline = color2;
 	}
 }
