@@ -6,7 +6,6 @@ import java.util.Properties;
 public class Node {
 
 	private int nodeID;
-	private String name;
 	private boolean enabled;
 	private int typeID;
 	private List<Node> children;
@@ -19,12 +18,6 @@ public class Node {
 	}
 	public void setNodeID(int nodeID) {
 		this.nodeID = nodeID;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public boolean isEnabled() {
 		return enabled;
@@ -63,11 +56,10 @@ public class Node {
 		this.properties = properties;
 	}
 	
-	public Node(int nodeID, String name, boolean enabled, int typeID, List<Node> children, String notes, int status,
+	public Node(int nodeID, boolean enabled, int typeID, List<Node> children, String notes, int status,
 			Properties properties) {
 		super();
 		this.nodeID = nodeID;
-		this.name = name;
 		this.enabled = enabled;
 		this.typeID = typeID;
 		this.children = children;

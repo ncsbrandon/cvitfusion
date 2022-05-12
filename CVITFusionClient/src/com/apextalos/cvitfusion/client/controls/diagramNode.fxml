@@ -1,20 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="75.0" prefWidth="150.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Rectangle fx:id="nodeBody" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="75.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="150.0" />
-      <MenuButton layoutX="114.0" layoutY="2.0" mnemonicParsing="false">
-        <items>
-          <MenuItem mnemonicParsing="false" onAction="#onMenuAction" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
-        </items>
-      </MenuButton>
-      <Label fx:id="nodeName" layoutX="24.0" layoutY="14.0" text="node name" />
+      <Rectangle fx:id="connectOut" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="65.0" layoutY="75.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="20.0">
+         <effect>
+            <Blend opacity="0.0" />
+         </effect>
+      </Rectangle>
+      <Rectangle fx:id="connectIn" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="65.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="20.0">
+         <effect>
+            <Blend opacity="0.0" />
+         </effect>
+      </Rectangle>
+      <Rectangle fx:id="body" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="75.0" layoutY="10.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="150.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+         <effect>
+            <Blend opacity="0.0" />
+         </effect></Rectangle>
+      <Rectangle fx:id="header" fill="#0b1825" height="22.0" layoutX="4.0" layoutY="14.0" opacity="0.65" stroke="BLACK" strokeMiterLimit="0.0" strokeWidth="0.0" width="142.0">
+         <effect>
+            <Blend opacity="0.0" />
+         </effect>
+      </Rectangle>
+      <Line endX="145.0" layoutY="36.0" strokeWidth="2.0" />
+      <CheckBox fx:id="enabled" layoutX="125.0" layoutY="15.0" mnemonicParsing="false" onAction="#onEnabledCheckboxAction" selected="true" />
+      <Label fx:id="name" alignment="BOTTOM_LEFT" layoutX="6.0" layoutY="35.0" prefHeight="45.0" prefWidth="130.0" text="node" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="4.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="id" layoutX="6.0" layoutY="15.0" prefHeight="20.0" prefWidth="50.0" text="ID" textFill="WHITE">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

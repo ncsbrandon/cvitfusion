@@ -32,9 +32,9 @@ public class OperationalFlowTest {
 				new ArrayList<>(),
 				new HashMap<>());
 		
-		Node n3 = new Node(3, "email",  true, 1, null, "", 4317, new Properties());
-		Node n2 = new Node(2, "queue",  true, 1, new ArrayList<>() {{add(n3);}}, "", 420, new Properties());
-		Node n1 = new Node(1, "camera", true, 1, new ArrayList<>() {{add(n2);}}, "", 69,  new Properties());
+		Node n3 = new Node(3, true, 1, null, "", 4317, new Properties());
+		Node n2 = new Node(2, true, 1, new ArrayList<>() {{add(n3);}}, "", 420, new Properties());
+		Node n1 = new Node(1, true, 1, new ArrayList<>() {{add(n2);}}, "", 69,  new Properties());
 		
 		of.getNodes().add(n1);
 		

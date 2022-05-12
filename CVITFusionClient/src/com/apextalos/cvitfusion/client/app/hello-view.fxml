@@ -79,7 +79,7 @@
                      <items>
                         <VBox fx:id="vbox">
                            <children>
-                              <AnchorPane fx:id="designPane" style="-fx-background-color: orange;" />
+                              <AnchorPane fx:id="designPane" />
                            </children>
                         </VBox>
                         <VBox fx:id="vbox2">

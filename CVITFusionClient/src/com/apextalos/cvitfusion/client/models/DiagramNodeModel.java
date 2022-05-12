@@ -4,17 +4,33 @@ import javafx.beans.property.*;
 
 public class DiagramNodeModel {
 
-    private final StringProperty nodeName;
+    private final StringProperty name;
+    private final StringProperty id;
+    private final BooleanProperty enabled;
+    
 
-    public DiagramNodeModel(String name) {
-        this.nodeName = new SimpleStringProperty(name);
+    public StringProperty getNameProperty() {
+        return name;
     }
-
-    public StringProperty getNodeNameProperty() {
-        return nodeName;
-    }
-
     public void setNodeName(String name) {
-        nodeName.set(name);
+        this.name.set(name);
+    } 
+    public StringProperty getIDProperty() {
+        return id;
+    }
+    public void setID(String id) {
+        this.id.set(id);
+    }
+    public BooleanProperty getEnabledProperty() {
+        return enabled;
+    }
+    public void setEnabled(boolean enabled) {
+        this.enabled.set(enabled);
+    }
+    
+    public DiagramNodeModel(String name, String id, boolean enabled) {
+        this.name = new SimpleStringProperty(name);
+        this.id = new SimpleStringProperty(id);
+        this.enabled = new SimpleBooleanProperty(enabled);
     }
 }
