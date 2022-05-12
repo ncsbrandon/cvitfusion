@@ -113,22 +113,11 @@ public class HelloController extends BaseController {
         r.setLayoutX(20);
         r.setLayoutY(20);
         designPane.getChildren().add(r);
-        r.getController().getModel().setNodeName("Node 1");
-        
+        r.getController().getModel().setName("Node 1");
         r.getController().begin(cf);
 
         logger.debug("this is DEBUG");
         logger.error("this is ERROR");
-
-        r.onMouseClickedProperty().set((EventHandler<MouseEvent>) (MouseEvent t) -> {
-            Rectangle r2 = new Rectangle();
-            r2.setX(100);
-            r2.setY(100);
-            r2.setWidth(50);
-            r2.setHeight(50);
-            designPane.getChildren().add(r2);
-        });
-
     }
 
     @FXML

@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="75.0" prefWidth="150.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane onMouseClicked="#onMouseClicked" prefHeight="75.0" prefWidth="150.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle fx:id="connectOut" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="65.0" layoutY="75.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="20.0">
          <effect>
@@ -33,11 +33,11 @@
       <CheckBox fx:id="enabled" layoutX="125.0" layoutY="15.0" mnemonicParsing="false" onAction="#onEnabledCheckboxAction" selected="true" />
       <Label fx:id="name" alignment="BOTTOM_LEFT" layoutX="6.0" layoutY="35.0" prefHeight="45.0" prefWidth="130.0" text="node" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="4.0">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font size="12.0" />
          </font></Label>
       <Label fx:id="id" layoutX="6.0" layoutY="15.0" prefHeight="20.0" prefWidth="50.0" text="ID" textFill="WHITE">
          <font>
-            <Font size="12.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
       </Label>
    </children>

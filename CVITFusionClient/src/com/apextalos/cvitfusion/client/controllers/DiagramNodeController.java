@@ -12,7 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
 public class DiagramNodeController extends BaseController {
@@ -49,5 +49,10 @@ public class DiagramNodeController extends BaseController {
     @FXML
     protected void onEnabledCheckboxAction(ActionEvent actionEvent) {
         logger.debug("onEnabledCheckboxAction " + actionEvent.toString());
+    }
+    
+    @FXML
+    protected void onMouseClicked(MouseEvent mouseEvent) {
+    	logger.debug("onEnabledCheckboxAction " + mouseEvent.toString());
     }
 }

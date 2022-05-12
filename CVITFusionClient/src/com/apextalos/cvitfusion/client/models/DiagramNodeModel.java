@@ -12,7 +12,7 @@ public class DiagramNodeModel {
     public StringProperty getNameProperty() {
         return name;
     }
-    public void setNodeName(String name) {
+    public void setName(String name) {
         this.name.set(name);
     } 
     public StringProperty getIDProperty() {
