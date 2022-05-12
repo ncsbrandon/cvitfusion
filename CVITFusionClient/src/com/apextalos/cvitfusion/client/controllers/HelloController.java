@@ -9,11 +9,11 @@ import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.client.app.Version;
 import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
+import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.client.models.HelloModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -24,10 +24,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 
 public class HelloController extends BaseController {
 
@@ -115,7 +113,7 @@ public class HelloController extends BaseController {
         designPane.getChildren().add(r);
         r.getController().getModel().setName("Node 1");
         r.getController().begin(cf);
-
+        r.getController().addActionListener(this);
         logger.debug("this is DEBUG");
         logger.error("this is ERROR");
     }
@@ -128,4 +126,11 @@ public class HelloController extends BaseController {
         model.getTableItems().add(new KeyValuePairModel("last", "withdraw"));
         model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
     }
+
+	@Override
+	public void onActionPerformed(Object o, EventType et) {
+		if(et == EventType.SELECTED && o instanceof DiagramNodeModel) {
+			model.getListItems().add("selected " + ((DiagramNodeModel)o).getIDProperty().get());
+		}
+	}
 }

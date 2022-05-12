@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.client.controllers.BaseController.EventType;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 
 import javafx.event.ActionEvent;
@@ -54,5 +55,11 @@ public class DiagramNodeController extends BaseController {
     @FXML
     protected void onMouseClicked(MouseEvent mouseEvent) {
     	logger.debug("onEnabledCheckboxAction " + mouseEvent.toString());
+    	actionPerformed(model, EventType.SELECTED);
     }
+
+	@Override
+	public void onActionPerformed(Object o, EventType et) {
+		
+	}
 }
