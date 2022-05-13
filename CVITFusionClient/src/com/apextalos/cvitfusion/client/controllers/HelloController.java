@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.client.app.Version;
 import com.apextalos.cvitfusion.client.controllers.BaseController.EventType;
+import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.client.models.HelloModel;
@@ -28,6 +29,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
 
 public class HelloController extends BaseController {
 
@@ -130,13 +132,15 @@ public class HelloController extends BaseController {
     protected void onMouseClicked(MouseEvent mouseEvent) {
     	logger.debug("onMouseClicked " + mouseEvent.toString());
     	mouseEvent.consume();
-    	actionPerformed(model, EventType.DESELECTED);
+    	onActionPerformed(model, EventType.DESELECTED);
     }
 
 	@Override
 	public void onActionPerformed(Object o, EventType et) {
-		if(et == EventType.SELECTED && o instanceof DiagramNodeModel) {
-			model.getListItems().add("selected " + ((DiagramNodeModel)o).getIDProperty().get());
+		if(et == EventType.SELECTED && o instanceof Line) {
+			model.getListItems().add("line selected " + ((Line)o).getUserData());
+		} else if(et == EventType.SELECTED && o instanceof DiagramNodeControl) {
+			model.getListItems().add("node selected " + ((DiagramNodeControl)o).getController().getModel().getIDProperty().get());
 		} else if(et == EventType.DESELECTED) {
 			model.getListItems().add("deselected");
 		}

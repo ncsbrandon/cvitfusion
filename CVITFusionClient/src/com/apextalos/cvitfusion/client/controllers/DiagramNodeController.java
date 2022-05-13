@@ -55,7 +55,7 @@ public class DiagramNodeController extends BaseController {
     protected void onMouseClicked(MouseEvent mouseEvent) {
     	logger.debug("onMouseClicked " + mouseEvent.toString());
     	mouseEvent.consume();
-    	actionPerformed(model, EventType.SELECTED);
+    	actionPerformed(this, EventType.SELECTED);
     }
 
 	@Override

@@ -7,7 +7,7 @@ import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.fxml.Initializable;
 
-public abstract class BaseController implements Initializable {
+public abstract class BaseController implements Initializable, ActionListener {
 
 	public enum EventType {
 		SELECTED,
@@ -23,14 +23,14 @@ public abstract class BaseController implements Initializable {
 	public void end() {
 	}
 
-	private final List<BaseController> listeners = new ArrayList<BaseController>();
+	private final List<ActionListener> listeners = new ArrayList<>();
 
-	public void addActionListener(BaseController l) {
+	public void addActionListener(ActionListener l) {
 		listeners.add(l);
 	}
 
 	public void actionPerformed(Object o, EventType et) {
-		for (BaseController l : listeners) {
+		for (ActionListener l : listeners) {
 			l.onActionPerformed(o, et);
 		}
 	}
