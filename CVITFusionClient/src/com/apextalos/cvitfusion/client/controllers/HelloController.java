@@ -17,6 +17,7 @@ import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
@@ -26,6 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -56,6 +58,8 @@ public class HelloController extends BaseController {
     @FXML private VBox vbox;
     @FXML private VBox vbox2;
     @FXML private TitledPane propertiesPanel;
+    
+    private Node activeSelection = null;
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -139,10 +143,20 @@ public class HelloController extends BaseController {
 	public void onActionPerformed(Object o, EventType et) {
 		if(et == EventType.SELECTED && o instanceof Line) {
 			model.getListItems().add("line selected " + ((Line)o).getUserData());
+			((Line)o).setEffect(new Glow(1));
+			activeSelection = ((Line)o);
 		} else if(et == EventType.SELECTED && o instanceof DiagramNodeControl) {
 			model.getListItems().add("node selected " + ((DiagramNodeControl)o).getController().getModel().getIDProperty().get());
-		} else if(et == EventType.DESELECTED) {
+			((DiagramNodeControl)o).getController().select(true);
+			activeSelection = ((DiagramNodeControl)o);
+		} else if(et == EventType.DESELECTED ) {
 			model.getListItems().add("deselected");
+			
+			if(activeSelection != null && activeSelection instanceof Line) {
+				((Line)activeSelection).setEffect(new Glow(0));
+			} else if(activeSelection != null && activeSelection instanceof DiagramNodeControl) {
+				((DiagramNodeControl)activeSelection).getController().select(false);
+			} 
 		}
 	}
 }

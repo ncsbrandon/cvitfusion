@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
@@ -45,7 +46,14 @@ public class DiagramNodeController extends BaseController {
         enabled.selectedProperty().setValue(model.getEnabledProperty().getValue());
         connectIn.visibleProperty().set(false);
     }
-
+    
+    public void select(boolean on) {
+    	connectOut.setEffect(new Glow(on ? 1 : 0));
+    	connectIn.setEffect(new Glow(on ? 1 : 0));
+    	body.setEffect(new Glow(on ? 1 : 0));
+    	header.setEffect(new Glow(on ? 1 : 0));
+    }
+    
     @FXML
     protected void onEnabledCheckboxAction(ActionEvent actionEvent) {
         logger.debug("onEnabledCheckboxAction " + actionEvent.toString());
