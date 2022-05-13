@@ -1,7 +1,5 @@
 package com.apextalos.cvitfusion.common.opflow;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
@@ -24,17 +22,20 @@ public class OperationalFlowTest {
 		Configurator.setRootLevel(Level.DEBUG);
 	}
 	
-	@Test
-	public void test() {
+	public OperationalFlow sample1() {
 		OperationalFlow of = new OperationalFlow(
 				new ArrayList<>(),
 				new ArrayList<>(),
 				new ArrayList<>(),
 				new HashMap<>());
 		
-		Node n3 = new Node(3, true, 1, null, "", 4317, new Properties());
-		Node n2 = new Node(2, true, 1, new ArrayList<>() {{add(n3);}}, "", 420, new Properties());
-		Node n1 = new Node(1, true, 1, new ArrayList<>() {{add(n2);}}, "", 69,  new Properties());
+		Node n111 = new Node(111, true, 1, null, "", 4317, new Properties());
+		Node n112 = new Node(112, true, 1, null, "", 4317, new Properties());
+		Node n121 = new Node(121, true, 1, null, "", 4317, new Properties());
+		Node n122 = new Node(122, true, 1, null, "", 4317, new Properties());
+		Node n12 = new Node(12, true, 1, new ArrayList<>() {{add(n121); add(n122);}}, "", 420, new Properties());
+		Node n11 = new Node(11, true, 1, new ArrayList<>() {{add(n111); add(n112);}}, "", 420, new Properties());
+		Node n1 = new Node(1, true, 1, new ArrayList<>() {{add(n11); add(n12);}}, "", 69,  new Properties());
 		
 		of.getNodes().add(n1);
 		
@@ -65,7 +66,11 @@ public class OperationalFlowTest {
 		of.getTypeStyle().put(1, 1);
 		of.getTypeStyle().put(2, 2);
 		
-		logger.debug(OperationalFlow.toJSON(of));
+		return of;
 	}
-
+	
+	@Test
+	public void test() {
+		logger.debug(OperationalFlow.toJSON(sample1()));
+	}
 }

@@ -26,11 +26,9 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class HelloController extends BaseController {
@@ -117,7 +115,7 @@ public class HelloController extends BaseController {
 
         // add DiagramNodeControls and Lines to the pane
         DiagramBuilder db = new DiagramBuilder();
-        designPane.getChildren().addAll(db.fromJSON("", this));
+        designPane.getChildren().addAll(db.generateNodes(null, this));
         
         logger.debug("this is DEBUG");
         logger.error("this is ERROR");
