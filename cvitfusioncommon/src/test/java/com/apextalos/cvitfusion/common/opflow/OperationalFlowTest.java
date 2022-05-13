@@ -65,7 +65,7 @@ public class OperationalFlowTest {
 		of.getTypeStyle().put(1, 1);
 		of.getTypeStyle().put(2, 2);
 		
-		logger.debug(of.toJSON());
+		logger.debug(OperationalFlow.toJSON(of));
 	}
 
 }

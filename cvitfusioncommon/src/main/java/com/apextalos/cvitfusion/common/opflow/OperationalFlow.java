@@ -3,12 +3,13 @@ package com.apextalos.cvitfusion.common.opflow;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class OperationalFlow {
 
-	private final ObjectMapper mapper = new ObjectMapper();
+	private static final ObjectMapper mapper = new ObjectMapper();
 	
 	private List<Node> nodes;
 	private List<Type> types;
@@ -48,12 +49,23 @@ public class OperationalFlow {
 		this.typeStyle = typeStyle;
 	}
 	
-	public String toJSON() {
+	@JsonIgnore
+	public static String toJSON(OperationalFlow instance) {
 		try {
-			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(instance);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		return "";
+	}
+	
+	@JsonIgnore
+	public static OperationalFlow fromJSON(String json) {
+		try {
+			return mapper.readValue(json, OperationalFlow.class);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -8,10 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.client.app.Version;
-import com.apextalos.cvitfusion.client.controllers.BaseController.EventType;
 import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
-import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.client.models.HelloModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
@@ -27,10 +25,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class HelloController extends BaseController {
@@ -143,20 +143,25 @@ public class HelloController extends BaseController {
 	public void onActionPerformed(Object o, EventType et) {
 		if(et == EventType.SELECTED && o instanceof Line) {
 			model.getListItems().add("line selected " + ((Line)o).getUserData());
-			((Line)o).setEffect(new Glow(1));
+			
+			onActionPerformed(null, EventType.DESELECTED);
+			((Line)o).setEffect(new DropShadow());
 			activeSelection = ((Line)o);
 		} else if(et == EventType.SELECTED && o instanceof DiagramNodeControl) {
 			model.getListItems().add("node selected " + ((DiagramNodeControl)o).getController().getModel().getIDProperty().get());
+			
+			onActionPerformed(null, EventType.DESELECTED);
 			((DiagramNodeControl)o).getController().select(true);
 			activeSelection = ((DiagramNodeControl)o);
 		} else if(et == EventType.DESELECTED ) {
 			model.getListItems().add("deselected");
 			
 			if(activeSelection != null && activeSelection instanceof Line) {
-				((Line)activeSelection).setEffect(new Glow(0));
+				((Line)activeSelection).setEffect(null);
 			} else if(activeSelection != null && activeSelection instanceof DiagramNodeControl) {
 				((DiagramNodeControl)activeSelection).getController().select(false);
-			} 
+			}
+			activeSelection = null;
 		}
 	}
 }

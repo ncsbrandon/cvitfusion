@@ -12,8 +12,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class DiagramNodeController extends BaseController {
@@ -48,10 +50,10 @@ public class DiagramNodeController extends BaseController {
     }
     
     public void select(boolean on) {
-    	connectOut.setEffect(new Glow(on ? 1 : 0));
-    	connectIn.setEffect(new Glow(on ? 1 : 0));
-    	body.setEffect(new Glow(on ? 1 : 0));
-    	header.setEffect(new Glow(on ? 1 : 0));
+    	connectOut.setEffect(on ? new DropShadow() : null);
+	    connectIn.setEffect(on ? new DropShadow() : null);
+	    body.setEffect(on ? new DropShadow() : null);
+	    header.setEffect(on ? new DropShadow() : null);
     }
     
     @FXML
