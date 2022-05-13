@@ -79,7 +79,7 @@
                      <items>
                         <VBox fx:id="vbox">
                            <children>
-                              <AnchorPane fx:id="designPane" />
+                              <AnchorPane fx:id="designPane" onMouseClicked="#onMouseClicked" />
                            </children>
                         </VBox>
                         <VBox fx:id="vbox2">

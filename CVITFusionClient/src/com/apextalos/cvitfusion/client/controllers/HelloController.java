@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.client.app.Version;
+import com.apextalos.cvitfusion.client.controllers.BaseController.EventType;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.client.models.HelloModel;
@@ -24,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -107,6 +109,7 @@ public class HelloController extends BaseController {
         model.getTableItems().add(new KeyValuePairModel("last", "deposit"));
         model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
 
+        // add DiagramNodeControls and Lines to the pane
         DiagramBuilder db = new DiagramBuilder();
         designPane.getChildren().addAll(db.fromJSON("", this));
         
@@ -122,11 +125,20 @@ public class HelloController extends BaseController {
         model.getTableItems().add(new KeyValuePairModel("last", "withdraw"));
         model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
     }
+    
+    @FXML
+    protected void onMouseClicked(MouseEvent mouseEvent) {
+    	logger.debug("onMouseClicked " + mouseEvent.toString());
+    	mouseEvent.consume();
+    	actionPerformed(model, EventType.DESELECTED);
+    }
 
 	@Override
 	public void onActionPerformed(Object o, EventType et) {
 		if(et == EventType.SELECTED && o instanceof DiagramNodeModel) {
 			model.getListItems().add("selected " + ((DiagramNodeModel)o).getIDProperty().get());
+		} else if(et == EventType.DESELECTED) {
+			model.getListItems().add("deselected");
 		}
 	}
 }

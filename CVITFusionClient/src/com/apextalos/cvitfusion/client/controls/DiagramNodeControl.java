@@ -26,6 +26,7 @@ public class DiagramNodeControl extends AnchorPane {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("diagramNode.fxml"));
         controller = new DiagramNodeController();
+        //controller.
         loader.setController(controller);
         Node node;
         try {
