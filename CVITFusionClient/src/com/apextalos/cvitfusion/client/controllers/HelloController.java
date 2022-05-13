@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.client.app.Version;
-import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
+import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.client.models.HelloModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
@@ -107,13 +107,9 @@ public class HelloController extends BaseController {
         model.getTableItems().add(new KeyValuePairModel("last", "deposit"));
         model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
 
-        DiagramNodeControl r = new DiagramNodeControl();
-        r.setLayoutX(20);
-        r.setLayoutY(20);
-        designPane.getChildren().add(r);
-        r.getController().getModel().setName("Node 1");
-        r.getController().begin(cf);
-        r.getController().addActionListener(this);
+        DiagramBuilder db = new DiagramBuilder();
+        designPane.getChildren().addAll(db.fromJSON("", this));
+        
         logger.debug("this is DEBUG");
         logger.error("this is ERROR");
     }
