@@ -115,7 +115,7 @@ public class HelloController extends BaseController {
 
         // add DiagramNodeControls and Lines to the pane
         DiagramBuilder db = new DiagramBuilder();
-        designPane.getChildren().addAll(db.generateNodes(null, this));
+        designPane.getChildren().addAll(db.layout(null, this));
         
         logger.debug("this is DEBUG");
         logger.error("this is ERROR");
