@@ -11,6 +11,8 @@ import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
+import com.apextalos.cvitfusion.common.opflow.Style;
+import com.apextalos.cvitfusion.common.opflow.Type;
 
 public class DiagramBuilder {
 
@@ -94,7 +96,11 @@ public class DiagramBuilder {
 	    model.setName(String.valueOf(process.getTypeID()));
 	    model.setID(String.valueOf(process.getNodeID()));
 	    model.setEnabled(process.isEnabled());
-	    model.setColor(of.lookupStyleForType(process.getTypeID()).getFill());
+	    Style s = of.lookupStyleForType(process.getTypeID());
+	    model.setColor(s.getFill());
+	    Type t = of.lookupType(process.getTypeID());
+	    model.setHasInput(t.hasSupportedInputs());
+	    model.setHasOutput(t.hasSupportedOutputs());
 	    r.addActionListener(listener);
 	    dncs.add(r);
 				

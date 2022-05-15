@@ -10,12 +10,10 @@
 
 <AnchorPane onMouseClicked="#onMouseClicked" prefHeight="75.0" prefWidth="150.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Rectangle fx:id="connectOut" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="70.0" layoutY="80.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="80.0">
+      <Rectangle fx:id="connectOut" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="70.0" layoutY="80.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="20.0">
       </Rectangle>
       <Rectangle fx:id="connectIn" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="70.0" layoutY="5.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="20.0">
-         <effect>
-            <DropShadow />
-         </effect></Rectangle>
+	  </Rectangle>
       <Rectangle fx:id="body" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="75.0" layoutY="15.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="150.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="15.0">
       </Rectangle>
       <Rectangle fx:id="header" fill="#0b1825" height="22.0" layoutX="9.0" layoutY="19.0" opacity="0.65" stroke="BLACK" strokeMiterLimit="0.0" strokeWidth="0.0" width="142.0">

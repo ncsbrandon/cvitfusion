@@ -36,11 +36,17 @@ public class Type {
 	public void setProperties(Properties properties) {
 		this.properties = properties;
 	}
+	public boolean hasSupportedInputs() {
+		return supportedInputs != null && supportedInputs.size() > 0;
+	}
 	public List<Integer> getSupportedInputs() {
 		return supportedInputs;
 	}
 	public void setSupportedInputs(List<Integer> supportedInputs) {
 		this.supportedInputs = supportedInputs;
+	}
+	public boolean hasSupportedOutputs() {
+		return supportedOutputs != null && supportedOutputs.size() > 0;
 	}
 	public List<Integer> getSupportedOutputs() {
 		return supportedOutputs;

@@ -45,9 +45,10 @@ public class DiagramNodeController extends BaseController {
         id.textProperty().bind(model.getIDProperty());
         enabled.selectedProperty().bind(model.getEnabledProperty());
         body.fillProperty().bind(model.getFillPaintProperty());
-        
-        connectIn.visibleProperty().set(false);
-        
+        connectOut.fillProperty().bind(model.getFillPaintProperty());
+        connectIn.fillProperty().bind(model.getFillPaintProperty());
+        connectOut.visibleProperty().bind(model.getHasOutputProperty());
+        connectIn.visibleProperty().bind(model.getHasInputProperty());
     }
     
     public void select(boolean on) {
