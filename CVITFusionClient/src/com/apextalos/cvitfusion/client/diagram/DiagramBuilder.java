@@ -7,13 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.client.controllers.BaseController;
-import com.apextalos.cvitfusion.client.controllers.BaseController.EventType;
 import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
-
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Line;
+import com.apextalos.cvitfusion.common.opflow.Process;
 
 public class DiagramBuilder {
 
@@ -23,10 +19,10 @@ public class DiagramBuilder {
 	private static final int NODE_MARGIN = 40;
 	private static final int NODE_HEIGHT = 100;
 	
-	private List<javafx.scene.Node> dncs = new ArrayList<>();
+	private List<javafx.scene.Node> dncs;
 	private BaseController listener;
 	
-	public List<javafx.scene.Node> sample(BaseController listener) {
+	/*public List<Node> sample(BaseController listener) {
 		List<javafx.scene.Node> dncs = new ArrayList<>();
 		
 		DiagramNodeControl r = new DiagramNodeControl();
@@ -50,71 +46,91 @@ public class DiagramBuilder {
         dncs.add(l);
         
         return dncs;
-	}
+	}*/
 	
 	public List<javafx.scene.Node> layout(OperationalFlow of, BaseController listener) {
-		if(of == null)
-			return sample(listener);
-		
 		this.listener = listener;
-		PanelPosition pos = new PanelPosition(NODE_MARGIN, NODE_MARGIN);
+		dncs = new ArrayList<>();
+		
+		// sample data
+		//if(of == null)
+		//	return sample(listener);
+		
+		// start at the top left
+		PanelPosition pos = new PanelPosition(0, 0);
 		
 		// go through the top-level nodes
-		for(com.apextalos.cvitfusion.common.opflow.Node node : of.getNodes()) {
+		for(Process node : of.getProcesses()) {
 			
-			// restart at the top
-			pos.setY(NODE_MARGIN);
-			pos = layoutNode(node, pos);
+			// restart each at the top
+			pos.setY(0);
+			layoutNode(node, pos);
 		}
 		
 		return dncs;
 	}
 		
-	private PanelPosition layoutNode(com.apextalos.cvitfusion.common.opflow.Node node, PanelPosition pos) {	
+	private void layoutNode(Process process, PanelPosition startPos) {	
 		// calculate the total width of this branch
-		int width = calculateWidth(node.getChildren());
-		logger.info(String.format("width [%s]", width));
-			
-		// x of the node
-		int x = pos.getX() + (width / 2) - (NODE_WIDTH / 2);
+		int x = 0;
+		int y = startPos.getY();
+		int width = 0;
+		if(process.hasChildren()) {
+			width = calculateWidth(process.getChildren());
+			x = startPos.getX() - (NODE_WIDTH / 2) + (width / 2);
+		} else {
+			x = startPos.getX();
+		}
+		
+		PanelPosition thisPos = new PanelPosition(x, y);
 		
 		// draw the node
 		DiagramNodeControl r = new DiagramNodeControl();
 	    r.setLayoutX(x);
-	    r.setLayoutY(pos.getY());
-	    r.getController().getModel().setName(String.valueOf(node.getTypeID()));
-	    r.getController().getModel().setID(String.valueOf(node.getNodeID()));
+	    r.setLayoutY(thisPos.getY());
+	    r.getController().getModel().setName(String.valueOf(process.getTypeID()));
+	    r.getController().getModel().setID(String.valueOf(process.getNodeID()));
 	    r.addActionListener(listener);
 	    dncs.add(r);
 				
-	    // move down to the children
-	    pos.addY(NODE_MARGIN);
-	    
-		return pos;
+	    // go through the children
+	    if(process.hasChildren()) {
+	    	int childWidth = width / process.getChildren().size();
+	    	int i = 0;
+		 	for(Process child : process.getChildren()) {
+		 		int childX = startPos.getX() + (childWidth * i);
+		 		int childY = startPos.getY() + NODE_HEIGHT + NODE_MARGIN;
+		 		PanelPosition childPos = new PanelPosition(childX, childY);
+		 		layoutNode(child, childPos);
+		 		i++;
+		 	}
+	    }
 	}
 	
-	private int calculateWidth(List<com.apextalos.cvitfusion.common.opflow.Node> nodes) {
-		// width of children
+	private int calculateWidth(List<Process> processes) {
+		// no process is no width
+		if(processes == null || processes.size() == 0)
+			return 0;
+				
+		// width of each
 		int width = 0;
-		for(com.apextalos.cvitfusion.common.opflow.Node node : nodes) {
-			width += calculateWidth(node);
+		for(Process process : processes) {
+			width += calculateWidth(process);
 		}
 		
 		// plus margin
-		if(nodes.size() > 1)
-			width += (nodes.size() - 1) * NODE_MARGIN;
+		if(processes.size() > 1)
+			width += (processes.size() - 1) * NODE_MARGIN;
 		
 		return width;
 	}
 	
-	private int calculateWidth(com.apextalos.cvitfusion.common.opflow.Node node) {
-		List<com.apextalos.cvitfusion.common.opflow.Node> children = node.getChildren();
-		
+	private int calculateWidth(Process process) {
 		// if i don't have children, just return my width
-		if(children == null || children.size() == 0)
+		if(!process.hasChildren())
 			return NODE_WIDTH;
 		
 		// return the width of my children
-		return calculateWidth(children);
+		return calculateWidth(process.getChildren());
 	}
 }

@@ -1,6 +1,9 @@
 package com.apextalos.cvitfusion.client.controllers;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +15,11 @@ import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
 import com.apextalos.cvitfusion.client.models.HelloModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
+import com.apextalos.cvitfusion.common.opflow.Color;
+import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
+import com.apextalos.cvitfusion.common.opflow.Process;
+import com.apextalos.cvitfusion.common.opflow.Style;
+import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.fxml.FXML;
@@ -57,6 +65,7 @@ public class HelloController extends BaseController {
     @FXML private VBox vbox2;
     @FXML private TitledPane propertiesPanel;
     
+    private DiagramBuilder db = new DiagramBuilder();
     private Node activeSelection = null;
     
     @Override
@@ -86,6 +95,8 @@ public class HelloController extends BaseController {
         
         propertiesTable.prefHeightProperty().bind(vbox2.heightProperty());
         designPane.prefHeightProperty().bind(vbox.heightProperty());
+        
+        designPane.getChildren().addAll(db.layout(sample1(), this));
     }
     
     @Override
@@ -105,6 +116,53 @@ public class HelloController extends BaseController {
 		cf.setDouble("sp112_divider_position", sp112.getDividerPositions()[0]);
 	}
     
+    public OperationalFlow sample1() {
+		OperationalFlow of = new OperationalFlow(
+				new ArrayList<>(),
+				new ArrayList<>(),
+				new ArrayList<>(),
+				new HashMap<>());
+		
+		Process n111 = new Process(111, true, 1, null, "", 4317, new Properties());
+		Process n112 = new Process(112, true, 1, null, "", 4317, new Properties());
+		Process n121 = new Process(121, true, 1, null, "", 4317, new Properties());
+		Process n122 = new Process(122, true, 1, null, "", 4317, new Properties());
+		Process n12 = new Process(12, true, 1, new ArrayList<>() {{add(n121); add(n122);}}, "", 420, new Properties());
+		Process n11 = new Process(11, true, 1, new ArrayList<>() {{add(n111); add(n112);}}, "", 420, new Properties());
+		Process n1 = new Process(1, true, 1, new ArrayList<>() {{add(n11); add(n12);}}, "", 69,  new Properties());
+		
+		of.getProcesses().add(n1);
+		
+		of.getTypes().add(new Type(1, 1, "Input", new Properties(), null, new ArrayList<>() {
+			{
+			add(Integer.valueOf(2));
+			}
+		}));
+		of.getTypes().add(new Type(2, 1, "Logic", new Properties(), new ArrayList<>() {
+			{
+			add(Integer.valueOf(1));
+			}
+		}, new ArrayList<>() {
+			{
+			add(Integer.valueOf(3));
+			}
+		}));
+		of.getTypes().add(new Type(3, 1, "Output", new Properties(), new ArrayList<>() {
+			{
+			add(Integer.valueOf(2));
+			}
+		}, null));
+		
+		of.getStyles().add(new Style(1, 1, new Color(100, 100, 100, 20), new Color(100, 100, 100, 20)));
+		of.getStyles().add(new Style(2, 1, new Color(100, 100, 100, 20), new Color(100, 100, 100, 20)));
+		of.getStyles().add(new Style(3, 1, new Color(100, 100, 100, 20), new Color(100, 100, 100, 20)));
+		
+		of.getTypeStyle().put(1, 1);
+		of.getTypeStyle().put(2, 2);
+		
+		return of;
+	}
+    
 	@FXML
     protected void onHelloButtonClick() {
         model.deposit(100);
@@ -113,10 +171,6 @@ public class HelloController extends BaseController {
         model.getTableItems().add(new KeyValuePairModel("last", "deposit"));
         model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
 
-        // add DiagramNodeControls and Lines to the pane
-        DiagramBuilder db = new DiagramBuilder();
-        designPane.getChildren().addAll(db.layout(null, this));
-        
         logger.debug("this is DEBUG");
         logger.error("this is ERROR");
     }

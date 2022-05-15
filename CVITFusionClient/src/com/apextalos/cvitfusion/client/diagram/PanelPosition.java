@@ -33,4 +33,9 @@ public class PanelPosition {
 		this.x = x;
 		this.y = y;
 	}
+	
+	public PanelPosition(PanelPosition other) {
+		this.x = other.getX();
+		this.y = other.getY();
+	}
 }

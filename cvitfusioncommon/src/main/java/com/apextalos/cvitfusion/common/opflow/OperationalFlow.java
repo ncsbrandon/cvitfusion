@@ -11,16 +11,16 @@ public class OperationalFlow {
 
 	private static final ObjectMapper mapper = new ObjectMapper();
 	
-	private List<Node> nodes;
+	private List<Process> processes;
 	private List<Type> types;
 	private List<Style> styles;
 	private Map<Integer, Integer> typeStyle;
 	
-	public List<Node> getNodes() {
-		return nodes;
+	public List<Process> getProcesses() {
+		return processes;
 	}
-	public void setNodes(List<Node> nodes) {
-		this.nodes = nodes;
+	public void setProcesses(List<Process> processes) {
+		this.processes = processes;
 	}
 	public List<Type> getTypes() {
 		return types;
@@ -41,9 +41,9 @@ public class OperationalFlow {
 		this.typeStyle = typeStyle;
 	}
 	
-	public OperationalFlow(List<Node> nodes, List<Type> types, List<Style> styles, Map<Integer, Integer> typeStyle) {
+	public OperationalFlow(List<Process> processes, List<Type> types, List<Style> styles, Map<Integer, Integer> typeStyle) {
 		super();
-		this.nodes = nodes;
+		this.processes = processes;
 		this.types = types;
 		this.styles = styles;
 		this.typeStyle = typeStyle;

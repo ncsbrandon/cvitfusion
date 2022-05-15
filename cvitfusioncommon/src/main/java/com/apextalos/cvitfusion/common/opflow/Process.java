@@ -3,12 +3,12 @@ package com.apextalos.cvitfusion.common.opflow;
 import java.util.List;
 import java.util.Properties;
 
-public class Node {
+public class Process {
 
 	private int nodeID;
 	private boolean enabled;
 	private int typeID;
-	private List<Node> children;
+	private List<Process> children;
 	private String notes;
 	private int status;
 	private Properties properties;
@@ -31,10 +31,13 @@ public class Node {
 	public void setTypeID(int typeID) {
 		this.typeID = typeID;
 	}
-	public List<Node> getChildren() {
+	public boolean hasChildren() {
+		return children != null && children.size() > 0;
+	}
+	public List<Process> getChildren() {
 		return children;
 	}
-	public void setChildren(List<Node> children) {
+	public void setChildren(List<Process> children) {
 		this.children = children;
 	}
 	public String getNotes() {
@@ -56,7 +59,7 @@ public class Node {
 		this.properties = properties;
 	}
 	
-	public Node(int nodeID, boolean enabled, int typeID, List<Node> children, String notes, int status,
+	public Process(int nodeID, boolean enabled, int typeID, List<Process> children, String notes, int status,
 			Properties properties) {
 		super();
 		this.nodeID = nodeID;

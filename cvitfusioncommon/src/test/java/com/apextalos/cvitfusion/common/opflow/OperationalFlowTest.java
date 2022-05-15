@@ -29,15 +29,15 @@ public class OperationalFlowTest {
 				new ArrayList<>(),
 				new HashMap<>());
 		
-		Node n111 = new Node(111, true, 1, null, "", 4317, new Properties());
-		Node n112 = new Node(112, true, 1, null, "", 4317, new Properties());
-		Node n121 = new Node(121, true, 1, null, "", 4317, new Properties());
-		Node n122 = new Node(122, true, 1, null, "", 4317, new Properties());
-		Node n12 = new Node(12, true, 1, new ArrayList<>() {{add(n121); add(n122);}}, "", 420, new Properties());
-		Node n11 = new Node(11, true, 1, new ArrayList<>() {{add(n111); add(n112);}}, "", 420, new Properties());
-		Node n1 = new Node(1, true, 1, new ArrayList<>() {{add(n11); add(n12);}}, "", 69,  new Properties());
+		Process n111 = new Process(111, true, 1, null, "", 4317, new Properties());
+		Process n112 = new Process(112, true, 1, null, "", 4317, new Properties());
+		Process n121 = new Process(121, true, 1, null, "", 4317, new Properties());
+		Process n122 = new Process(122, true, 1, null, "", 4317, new Properties());
+		Process n12 = new Process(12, true, 1, new ArrayList<>() {{add(n121); add(n122);}}, "", 420, new Properties());
+		Process n11 = new Process(11, true, 1, new ArrayList<>() {{add(n111); add(n112);}}, "", 420, new Properties());
+		Process n1 = new Process(1, true, 1, new ArrayList<>() {{add(n11); add(n12);}}, "", 69,  new Properties());
 		
-		of.getNodes().add(n1);
+		of.getProcesses().add(n1);
 		
 		of.getTypes().add(new Type(1, 1, "Input", new Properties(), null, new ArrayList<>() {
 			{
