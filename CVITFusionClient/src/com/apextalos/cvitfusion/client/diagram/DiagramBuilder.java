@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.client.controllers.BaseController;
 import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
+import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
 
@@ -19,6 +20,7 @@ public class DiagramBuilder {
 	private static final int NODE_MARGIN = 40;
 	private static final int NODE_HEIGHT = 100;
 	
+	private OperationalFlow of;
 	private List<javafx.scene.Node> dncs;
 	private BaseController listener;
 	
@@ -51,6 +53,7 @@ public class DiagramBuilder {
 	public List<javafx.scene.Node> layout(OperationalFlow of, BaseController listener) {
 		this.listener = listener;
 		dncs = new ArrayList<>();
+		this.of = of;
 		
 		// sample data
 		//if(of == null)
@@ -71,7 +74,7 @@ public class DiagramBuilder {
 	}
 		
 	private void layoutNode(Process process, PanelPosition startPos) {	
-		// calculate the total width of this branch
+		// calculate the position of the control
 		int x = 0;
 		int y = startPos.getY();
 		int width = 0;
@@ -80,16 +83,18 @@ public class DiagramBuilder {
 			x = startPos.getX() - (NODE_WIDTH / 2) + (width / 2);
 		} else {
 			x = startPos.getX();
-		}
-		
+		}	
 		PanelPosition thisPos = new PanelPosition(x, y);
 		
-		// draw the node
+		// draw the control
 		DiagramNodeControl r = new DiagramNodeControl();
 	    r.setLayoutX(x);
 	    r.setLayoutY(thisPos.getY());
-	    r.getController().getModel().setName(String.valueOf(process.getTypeID()));
-	    r.getController().getModel().setID(String.valueOf(process.getNodeID()));
+	    DiagramNodeModel model = r.getController().getModel();
+	    model.setName(String.valueOf(process.getTypeID()));
+	    model.setID(String.valueOf(process.getNodeID()));
+	    model.setEnabled(process.isEnabled());
+	    model.setColor(of.lookupStyleForType(process.getTypeID()).getFill());
 	    r.addActionListener(listener);
 	    dncs.add(r);
 				

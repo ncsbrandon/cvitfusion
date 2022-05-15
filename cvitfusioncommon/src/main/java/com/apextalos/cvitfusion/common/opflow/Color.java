@@ -5,7 +5,7 @@ public class Color {
 	private int R;
 	private int G;
 	private int B;
-	private int A;
+	private double A;
 	public int getR() {
 		return R;
 	}
@@ -24,13 +24,16 @@ public class Color {
 	public void setB(int b) {
 		B = b;
 	}
-	public int getA() {
+	public double getA() {
 		return A;
 	}
-	public void setA(int a) {
+	public void setA(double a) {
 		A = a;
 	}
-	public Color(int r, int g, int b, int a) {
+	public String asColorString() {
+		return String.format("rgba(%d, %d, %d, %.02f)", R, G, B, A);
+	}
+	public Color(int r, int g, int b, double a) {
 		super();
 		R = r;
 		G = g;

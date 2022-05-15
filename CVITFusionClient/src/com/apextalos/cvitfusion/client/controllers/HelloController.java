@@ -123,12 +123,12 @@ public class HelloController extends BaseController {
 				new ArrayList<>(),
 				new HashMap<>());
 		
-		Process n111 = new Process(111, true, 1, null, "", 4317, new Properties());
-		Process n112 = new Process(112, true, 1, null, "", 4317, new Properties());
-		Process n121 = new Process(121, true, 1, null, "", 4317, new Properties());
-		Process n122 = new Process(122, true, 1, null, "", 4317, new Properties());
-		Process n12 = new Process(12, true, 1, new ArrayList<>() {{add(n121); add(n122);}}, "", 420, new Properties());
-		Process n11 = new Process(11, true, 1, new ArrayList<>() {{add(n111); add(n112);}}, "", 420, new Properties());
+		Process n111 = new Process(111, true, 3, null, "", 4317, new Properties());
+		Process n112 = new Process(112, true, 3, null, "", 4317, new Properties());
+		Process n121 = new Process(121, true, 3, null, "", 4317, new Properties());
+		Process n122 = new Process(122, true, 3, null, "", 4317, new Properties());
+		Process n12 = new Process(12, true, 2, new ArrayList<>() {{add(n121); add(n122);}}, "", 420, new Properties());
+		Process n11 = new Process(11, true, 2, new ArrayList<>() {{add(n111); add(n112);}}, "", 420, new Properties());
 		Process n1 = new Process(1, true, 1, new ArrayList<>() {{add(n11); add(n12);}}, "", 69,  new Properties());
 		
 		of.getProcesses().add(n1);
@@ -153,12 +153,13 @@ public class HelloController extends BaseController {
 			}
 		}, null));
 		
-		of.getStyles().add(new Style(1, 1, new Color(100, 100, 100, 20), new Color(100, 100, 100, 20)));
-		of.getStyles().add(new Style(2, 1, new Color(100, 100, 100, 20), new Color(100, 100, 100, 20)));
-		of.getStyles().add(new Style(3, 1, new Color(100, 100, 100, 20), new Color(100, 100, 100, 20)));
+		of.getStyles().add(new Style(1, 1, new Color(255, 0, 0, .20), new Color(128, 0, 0, .20)));
+		of.getStyles().add(new Style(2, 1, new Color(0, 255, 0, .20), new Color(0, 128, 0, .20)));
+		of.getStyles().add(new Style(3, 1, new Color(0, 0, 255, .20), new Color(0, 0, 128, .20)));
 		
 		of.getTypeStyle().put(1, 1);
 		of.getTypeStyle().put(2, 2);
+		of.getTypeStyle().put(3, 3);
 		
 		return of;
 	}

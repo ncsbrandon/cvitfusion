@@ -59,9 +59,9 @@ public class OperationalFlowTest {
 			}
 		}, null));
 		
-		of.getStyles().add(new Style(1, 1, new Color(100, 100, 100, 20), new Color(100, 100, 100, 20)));
-		of.getStyles().add(new Style(2, 1, new Color(100, 100, 100, 20), new Color(100, 100, 100, 20)));
-		of.getStyles().add(new Style(3, 1, new Color(100, 100, 100, 20), new Color(100, 100, 100, 20)));
+		of.getStyles().add(new Style(1, 1, new Color(100, 100, 100, .20), new Color(100, 100, 100, 20)));
+		of.getStyles().add(new Style(2, 1, new Color(100, 100, 100, .20), new Color(100, 100, 100, 20)));
+		of.getStyles().add(new Style(3, 1, new Color(100, 100, 100, .20), new Color(100, 100, 100, 20)));
 		
 		of.getTypeStyle().put(1, 1);
 		of.getTypeStyle().put(2, 2);

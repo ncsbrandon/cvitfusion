@@ -49,6 +49,29 @@ public class OperationalFlow {
 		this.typeStyle = typeStyle;
 	}
 	
+	public Type lookupType(int id) {
+		for(Type t : types) {
+			if(t.getTypeID() == id)
+				return t;
+		}
+		return null;
+	}
+	
+	public Style lookupStyle(int id) {
+		for(Style s : styles) {
+			if(s.getStyleID() == id)
+				return s;
+		}
+		return null;
+	}
+	
+	public Style lookupStyleForType(int typeID) {
+		if(!typeStyle.containsKey(typeID))
+			return null;
+		
+		return lookupStyle(typeStyle.get(typeID));
+	}
+	
 	@JsonIgnore
 	public static String toJSON(OperationalFlow instance) {
 		try {

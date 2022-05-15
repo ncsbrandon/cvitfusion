@@ -38,13 +38,16 @@ public class DiagramNodeController extends BaseController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // create model
-        model = new DiagramNodeModel("TBD", "1", true);
+        model = new DiagramNodeModel();
 
         // create bindings
         name.textProperty().bind(model.getNameProperty());
         id.textProperty().bind(model.getIDProperty());
-        enabled.selectedProperty().setValue(model.getEnabledProperty().getValue());
+        enabled.selectedProperty().bind(model.getEnabledProperty());
+        body.fillProperty().bind(model.getFillPaintProperty());
+        
         connectIn.visibleProperty().set(false);
+        
     }
     
     public void select(boolean on) {

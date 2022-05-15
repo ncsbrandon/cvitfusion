@@ -1,13 +1,16 @@
 package com.apextalos.cvitfusion.client.models;
 
+import com.apextalos.cvitfusion.common.opflow.Color;
+
 import javafx.beans.property.*;
+import javafx.scene.paint.Paint;
 
 public class DiagramNodeModel {
 
-    private final StringProperty name;
-    private final StringProperty id;
-    private final BooleanProperty enabled;
-    
+    private final StringProperty name = new SimpleStringProperty();
+    private final StringProperty id = new SimpleStringProperty();
+    private final BooleanProperty enabled = new SimpleBooleanProperty();
+    private final ObjectProperty<Paint> fillPaint = new SimpleObjectProperty<Paint>();
 
     public StringProperty getNameProperty() {
         return name;
@@ -27,10 +30,15 @@ public class DiagramNodeModel {
     public void setEnabled(boolean enabled) {
         this.enabled.set(enabled);
     }
+    public ObjectProperty<Paint> getFillPaintProperty() {
+    	return fillPaint;
+    }
+    public void setColor(Color color) {
+    	String s = color.asColorString();
+    	Paint p = Paint.valueOf(s);
+    	this.fillPaint.set(p);
+    }
     
-    public DiagramNodeModel(String name, String id, boolean enabled) {
-        this.name = new SimpleStringProperty(name);
-        this.id = new SimpleStringProperty(id);
-        this.enabled = new SimpleBooleanProperty(enabled);
+    public DiagramNodeModel() {
     }
 }
