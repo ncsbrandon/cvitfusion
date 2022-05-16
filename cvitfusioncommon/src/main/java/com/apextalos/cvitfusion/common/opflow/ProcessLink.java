@@ -1,6 +1,6 @@
 package com.apextalos.cvitfusion.common.opflow;
 
-public class ProcessComm {
+public class ProcessLink {
 
 	private Process parentProcess;
 	private Process childProcess;
@@ -21,7 +21,7 @@ public class ProcessComm {
 		this.childProcess = childProcess;
 	}
 
-	public ProcessComm(Process parentProcess, Process childProcess) {
+	public ProcessLink(Process parentProcess, Process childProcess) {
 		this.parentProcess = parentProcess;
 		this.childProcess = childProcess;
 	}

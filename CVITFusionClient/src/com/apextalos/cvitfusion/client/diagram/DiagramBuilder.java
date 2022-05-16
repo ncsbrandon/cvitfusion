@@ -12,7 +12,7 @@ import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
-import com.apextalos.cvitfusion.common.opflow.ProcessComm;
+import com.apextalos.cvitfusion.common.opflow.ProcessLink;
 import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
 
@@ -28,12 +28,12 @@ public class DiagramBuilder {
 	private static final int NODE_MARGIN = 40;
 	private static final int NODE_HEIGHT = 100;
 
-	private OperationalFlow of;
+	private OperationalFlow opflow;
 	private BaseController listener;
 	private List<javafx.scene.Node> dncs;
 
-	public List<javafx.scene.Node> layout(OperationalFlow of, BaseController listener) {
-		this.of = of;
+	public List<javafx.scene.Node> layout(OperationalFlow opflow, BaseController listener) {
+		this.opflow = opflow;
 		this.listener = listener;
 		dncs = new ArrayList<>();
 
@@ -42,14 +42,16 @@ public class DiagramBuilder {
 
 		// go through the top-level nodes
 		int nextX = 0;
-		for (Process node : of.getProcesses()) {
+		for (Process topProcess : opflow.getProcesses()) {
 
+			logger.info(String.format("layout top process ID [] Type []", topProcess.getNodeID(), topProcess.getTypeID()));
+			
 			// restart each at the top
 			pos.setY(0);
 			pos.setX(nextX);
-			layoutNode(node, pos, null, null);
+			layoutNode(topProcess, pos, null, null);
 
-			nextX += calculateWidth(node);
+			nextX += calculateWidth(topProcess);
 		}
 
 		return dncs;
@@ -73,7 +75,7 @@ public class DiagramBuilder {
 
 			Line l = new Line(parentOutputPos.getX(), parentOutputPos.getY(), inputPos.getX(), inputPos.getY());
 			l.setStrokeWidth(4);
-			l.setUserData(new ProcessComm(parentProcess, process));
+			l.setUserData(new ProcessLink(parentProcess, process));
 			l.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 				@Override
@@ -93,10 +95,10 @@ public class DiagramBuilder {
 
 		model.setID(String.valueOf(process.getNodeID()));
 		model.setEnabled(process.isEnabled());
-		Style s = of.lookupStyleForType(process.getTypeID());
+		Style s = opflow.lookupStyleForType(process.getTypeID());
 		model.setFillColor(s.getFill());
 		model.setFontColor(s.getFont());
-		Type t = of.lookupType(process.getTypeID());
+		Type t = opflow.lookupType(process.getTypeID());
 		model.setHasInput(t.hasSupportedInputs());
 		model.setHasOutput(t.hasSupportedOutputs());
 		model.setName(t.getName());
@@ -104,7 +106,6 @@ public class DiagramBuilder {
 		dncs.add(r);
 
 		// calculate the input and output connector coordinate
-		//
 		PanelPosition outputPos = new PanelPosition(x + (NODE_WIDTH / 2), y + NODE_HEIGHT - 5);
 
 		// go through the children

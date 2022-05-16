@@ -19,7 +19,7 @@ import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
-import com.apextalos.cvitfusion.common.opflow.ProcessComm;
+import com.apextalos.cvitfusion.common.opflow.ProcessLink;
 import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
@@ -310,7 +310,7 @@ public class HelloController extends BaseController {
 		line.setEffect(new DropShadow());
 		activeSelection = line;
 		
-		ProcessComm pc = (ProcessComm) line.getUserData();
+		ProcessLink pc = (ProcessLink) line.getUserData();
 		
 		model.getTableItems().clear();
 		model.getTableItems().add(new KeyValuePairModel("From", String.valueOf(pc.getParentProcess().getNodeID())));

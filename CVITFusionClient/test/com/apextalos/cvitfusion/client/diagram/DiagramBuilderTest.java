@@ -1,11 +1,10 @@
 package com.apextalos.cvitfusion.client.diagram;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.apextalos.cvitfusion.common.opflow.Color;
@@ -77,7 +76,8 @@ public class DiagramBuilderTest {
 	@Test
 	public void testGenerateNodes() {
 		DiagramBuilder db = new DiagramBuilder();
-
+		Assert.assertNotNull(db);
+		
 		// db.layout(sample1(), null);
 	}
 
