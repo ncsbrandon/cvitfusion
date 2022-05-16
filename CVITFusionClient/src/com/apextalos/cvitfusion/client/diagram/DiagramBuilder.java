@@ -89,7 +89,7 @@ public class DiagramBuilder {
 		r.setLayoutX(x);
 		r.setLayoutY(thisPos.getY());
 		DiagramNodeModel model = r.getController().getModel();
-		
+
 		model.setID(String.valueOf(process.getNodeID()));
 		model.setEnabled(process.isEnabled());
 		Style s = of.lookupStyleForType(process.getTypeID());

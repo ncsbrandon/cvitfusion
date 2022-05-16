@@ -98,8 +98,7 @@ public class HelloController extends BaseController {
 		propertiesColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
 		propertiesTable.setItems(model.getTableItems());
 
-		versionInfo
-				.setText(String.format("%s.%s", Version.getInstance().getVersion(), Version.getInstance().getBuild()));
+		versionInfo.setText(String.format("%s.%s", Version.getInstance().getVersion(), Version.getInstance().getBuild()));
 
 		// link Controller to View - ensure only numeric input (integers) in text field
 		welcomeTextField.setTextFormatter(new TextFormatter<>(change -> {
@@ -137,13 +136,12 @@ public class HelloController extends BaseController {
 	}
 
 	public OperationalFlow sample1() {
-		OperationalFlow of = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-				new HashMap<>());
+		OperationalFlow of = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
 
 		Process n111 = new Process(111, true, 3, null, "", 4317, new Properties());
 		Process n112 = new Process(112, true, 6, null, "", 4317, new Properties());
 		Process n121 = new Process(121, true, 8, null, "", 4317, new Properties());
-		Process n122 = new Process(122, true, 3, null, "", 4317, new Properties());	
+		Process n122 = new Process(122, true, 3, null, "", 4317, new Properties());
 		Process n12 = new Process(12, true, 2, new ArrayList<>() {
 			{
 				add(n121);
@@ -178,85 +176,64 @@ public class HelloController extends BaseController {
 		of.getProcesses().add(n2);
 
 		// INPUTS----------------------
-		of.getTypes().add(new Type(1, 1, "Lidar", new Properties(),
-			null,
-			new ArrayList<>() {
-				{
-					add(Integer.valueOf(2));
-				}
-			})
-		);
-		of.getTypes().add(new Type(4, 1, "Camera", new Properties(),
-			null,
-			new ArrayList<>() {
-				{
-					add(Integer.valueOf(2));
-				}
-			})
-		);
-		
+		of.getTypes().add(new Type(1, 1, "Lidar", new Properties(), null, new ArrayList<>() {
+			{
+				add(Integer.valueOf(2));
+			}
+		}));
+		of.getTypes().add(new Type(4, 1, "Camera", new Properties(), null, new ArrayList<>() {
+			{
+				add(Integer.valueOf(2));
+			}
+		}));
+
 		// LOGICS-------------------------
-		of.getTypes().add(new Type(2, 1, "WWVD", new Properties(),
-			new ArrayList<>() {
-				{
-					add(Integer.valueOf(1));
-				}
-			}, new ArrayList<>() {
-				{
-					add(Integer.valueOf(3));
-				}
-			})
-		);
-		of.getTypes().add(new Type(5, 1, "Curve Speed", new Properties(),
-				new ArrayList<>() {
-					{
-						add(Integer.valueOf(1));
-					}
-				}, new ArrayList<>() {
-					{
-						add(Integer.valueOf(3));
-					}
-				})
-			);
-		of.getTypes().add(new Type(7, 1, "Queue Detection", new Properties(),
-				new ArrayList<>() {
-					{
-						add(Integer.valueOf(1));
-					}
-				}, new ArrayList<>() {
-					{
-						add(Integer.valueOf(3));
-					}
-				})
-			);
-		
+		of.getTypes().add(new Type(2, 1, "WWVD", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(1));
+			}
+		}, new ArrayList<>() {
+			{
+				add(Integer.valueOf(3));
+			}
+		}));
+		of.getTypes().add(new Type(5, 1, "Curve Speed", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(1));
+			}
+		}, new ArrayList<>() {
+			{
+				add(Integer.valueOf(3));
+			}
+		}));
+		of.getTypes().add(new Type(7, 1, "Queue Detection", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(1));
+			}
+		}, new ArrayList<>() {
+			{
+				add(Integer.valueOf(3));
+			}
+		}));
+
 		// OUTPUTS -------------
-		of.getTypes().add(new Type(3, 1, "Email", new Properties(),
-			new ArrayList<>() {
-				{
-					add(Integer.valueOf(2));
-				}
-			},
-			null)
-		);
-		of.getTypes().add(new Type(6, 1, "Flashing Beacon", new Properties(),
-				new ArrayList<>() {
-					{
-						add(Integer.valueOf(2));
-					}
-				},
-				null)
-			);
-		of.getTypes().add(new Type(8, 1, "Digital Output", new Properties(),
-				new ArrayList<>() {
-					{
-						add(Integer.valueOf(2));
-					}
-				},
-				null)
-			);
-		
-		//https://coolors.co/233d4d-915e3d-fe7f2d-fda53a-fcca46-cfc664-a1c181-619b8a
+		of.getTypes().add(new Type(3, 1, "Email", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(2));
+			}
+		}, null));
+		of.getTypes().add(new Type(6, 1, "Flashing Beacon", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(2));
+			}
+		}, null));
+		of.getTypes().add(new Type(8, 1, "Digital Output", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(2));
+			}
+		}, null));
+
+		// https://coolors.co/233d4d-915e3d-fe7f2d-fda53a-fcca46-cfc664-a1c181-619b8a
 		of.getStyles().add(new Style(1, 1, new Color(0x23, 0x3D, 0x4D, 1), new Color(255, 255, 255, 1))); // Charcoal
 		of.getStyles().add(new Style(2, 1, new Color(0x91, 0x5E, 0x3D, 1), new Color(255, 255, 255, 1))); // Coyote Brown
 		of.getStyles().add(new Style(3, 1, new Color(0xFE, 0x7F, 0x2D, 1), new Color(255, 255, 255, 1))); // Pumpkin
@@ -265,7 +242,7 @@ public class HelloController extends BaseController {
 		of.getStyles().add(new Style(6, 1, new Color(0xCF, 0xC6, 0x64, 1), new Color(0, 0, 0, 1))); // Straw
 		of.getStyles().add(new Style(7, 1, new Color(0xA1, 0xC1, 0x81, 1), new Color(0, 0, 0, 1))); // Olivine
 		of.getStyles().add(new Style(8, 1, new Color(0x61, 0x9B, 0x8A, 1), new Color(0, 0, 0, 1))); // Polished Pine
-		
+
 		of.getTypeStyle().put(1, 1);
 		of.getTypeStyle().put(2, 2);
 		of.getTypeStyle().put(3, 3);
@@ -309,16 +286,16 @@ public class HelloController extends BaseController {
 	@Override
 	public void onActionPerformed(Object o, EventType et) {
 		if (et == EventType.SELECTED && o instanceof Line) {
-			onActionPerformed(null, EventType.DESELECTED);		
+			onActionPerformed(null, EventType.DESELECTED);
 			onLineSelection((Line) o);
 		} else if (et == EventType.SELECTED && o instanceof DiagramNodeControl) {
 			onActionPerformed(null, EventType.DESELECTED);
-			onProcessSelection((DiagramNodeControl) o);	
+			onProcessSelection((DiagramNodeControl) o);
 		} else if (et == EventType.DESELECTED) {
 			if (activeSelection != null && activeSelection instanceof Line) {
 				((Line) activeSelection).setEffect(null);
 				model.getListItems().add("deselected line");
-				activeSelection = null;	
+				activeSelection = null;
 			} else if (activeSelection != null && activeSelection instanceof DiagramNodeControl) {
 				((DiagramNodeControl) activeSelection).getController().select(false);
 				model.getListItems().add("deselected node");
@@ -326,13 +303,13 @@ public class HelloController extends BaseController {
 			}
 		}
 	}
-	
+
 	private void onLineSelection(Line line) {
 		line.setEffect(new DropShadow());
 		activeSelection = line;
 		model.getListItems().add("line selected " + line.getUserData());
 	}
-	
+
 	private void onProcessSelection(DiagramNodeControl dnc) {
 		dnc.getController().select(true);
 		activeSelection = dnc;
