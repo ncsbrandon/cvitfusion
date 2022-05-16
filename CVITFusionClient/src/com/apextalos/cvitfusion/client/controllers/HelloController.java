@@ -57,15 +57,15 @@ public class HelloController extends BaseController {
 	@FXML
 	private Label welcomeText;
 	@FXML
-	private ListView propertiesListView;
+	private ListView<String> propertiesListView;
 	@FXML
 	private TextField welcomeTextField;
 	@FXML
-	private TableView propertiesTable;
+	private TableView<KeyValuePairModel> propertiesTable;
 	@FXML
-	private TableColumn propertiesColumnKey;
+	private TableColumn<Object, Object> propertiesColumnKey;
 	@FXML
-	private TableColumn propertiesColumnValue;
+	private TableColumn<Object, Object> propertiesColumnValue;
 	@FXML
 	private AnchorPane designPane;
 	@FXML
