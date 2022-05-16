@@ -129,9 +129,14 @@ public class HelloController extends BaseController {
 		Process n122 = new Process(122, true, 3, null, "", 4317, new Properties());
 		Process n12 = new Process(12, true, 2, new ArrayList<>() {{add(n121); add(n122);}}, "", 420, new Properties());
 		Process n11 = new Process(11, true, 2, new ArrayList<>() {{add(n111); add(n112);}}, "", 420, new Properties());
-		Process n1 = new Process(1, true, 1, new ArrayList<>() {{add(n11); add(n12);}}, "", 69,  new Properties());
-		
+		Process n1 = new Process(1,   true, 1, new ArrayList<>() {{add(n11);  add(n12);}},  "", 69,  new Properties());
 		of.getProcesses().add(n1);
+		
+		Process n211 = new Process(211, true, 3, null, "", 4317, new Properties());
+		Process n21 = new Process(21, true, 2, new ArrayList<>() {{add(n211);}}, "", 420, new Properties());
+		Process n2 = new Process(2,   true, 1, new ArrayList<>() {{add(n21);}},  "", 69,  new Properties());
+		of.getProcesses().add(n2);
+		
 		
 		of.getTypes().add(new Type(1, 1, "Input", new Properties(), null, new ArrayList<>() {
 			{
@@ -153,9 +158,9 @@ public class HelloController extends BaseController {
 			}
 		}, null));
 		
-		of.getStyles().add(new Style(1, 1, new Color(255, 0, 0, .20), new Color(128, 0, 0, .20)));
-		of.getStyles().add(new Style(2, 1, new Color(0, 255, 0, .20), new Color(0, 128, 0, .20)));
-		of.getStyles().add(new Style(3, 1, new Color(0, 0, 255, .20), new Color(0, 0, 128, .20)));
+		of.getStyles().add(new Style(1, 1, new Color(255, 0, 0, 1), new Color(128, 0, 0, 1)));
+		of.getStyles().add(new Style(2, 1, new Color(0, 255, 0, 1), new Color(0, 128, 0, 1)));
+		of.getStyles().add(new Style(3, 1, new Color(0, 0, 255, 1), new Color(0, 0, 128, 1)));
 		
 		of.getTypeStyle().put(1, 1);
 		of.getTypeStyle().put(2, 2);

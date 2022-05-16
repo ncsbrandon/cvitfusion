@@ -7,12 +7,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.client.controllers.BaseController;
+import com.apextalos.cvitfusion.client.controllers.BaseController.EventType;
 import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
 import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
+
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Line;
 
 public class DiagramBuilder {
 
@@ -23,59 +28,33 @@ public class DiagramBuilder {
 	private static final int NODE_HEIGHT = 100;
 	
 	private OperationalFlow of;
-	private List<javafx.scene.Node> dncs;
 	private BaseController listener;
-	
-	/*public List<Node> sample(BaseController listener) {
-		List<javafx.scene.Node> dncs = new ArrayList<>();
-		
-		DiagramNodeControl r = new DiagramNodeControl();
-        r.setLayoutX(20);
-        r.setLayoutY(20);
-        r.getController().getModel().setName("Node 1");
-        r.addActionListener(listener);
-        dncs.add(r);
-        
-        Line l = new Line(200, 200, 300, 300);
-        l.setStrokeWidth(4);
-        l.setUserData("Some line object");
-        l.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent arg0) {
-				arg0.consume();
-				listener.onActionPerformed(l, EventType.SELECTED);
-			}
-		});      
-        dncs.add(l);
-        
-        return dncs;
-	}*/
+	private List<javafx.scene.Node> dncs;
 	
 	public List<javafx.scene.Node> layout(OperationalFlow of, BaseController listener) {
+		this.of = of;
 		this.listener = listener;
 		dncs = new ArrayList<>();
-		this.of = of;
-		
-		// sample data
-		//if(of == null)
-		//	return sample(listener);
 		
 		// start at the top left
 		PanelPosition pos = new PanelPosition(0, 0);
 		
 		// go through the top-level nodes
+		int nextX = 0;
 		for(Process node : of.getProcesses()) {
 			
 			// restart each at the top
 			pos.setY(0);
-			layoutNode(node, pos);
+			pos.setX(nextX);
+			layoutNode(node, pos, null);
+			
+			nextX += calculateWidth(node);
 		}
 		
 		return dncs;
 	}
 		
-	private void layoutNode(Process process, PanelPosition startPos) {	
+	private void layoutNode(Process process, PanelPosition startPos, PanelPosition parentOutputPos) {	
 		// calculate the position of the control
 		int x = 0;
 		int y = startPos.getY();
@@ -87,22 +66,46 @@ public class DiagramBuilder {
 			x = startPos.getX();
 		}	
 		PanelPosition thisPos = new PanelPosition(x, y);
-		
-		// draw the control
-		DiagramNodeControl r = new DiagramNodeControl();
-	    r.setLayoutX(x);
-	    r.setLayoutY(thisPos.getY());
-	    DiagramNodeModel model = r.getController().getModel();
-	    model.setName(String.valueOf(process.getTypeID()));
-	    model.setID(String.valueOf(process.getNodeID()));
-	    model.setEnabled(process.isEnabled());
-	    Style s = of.lookupStyleForType(process.getTypeID());
-	    model.setColor(s.getFill());
-	    Type t = of.lookupType(process.getTypeID());
-	    model.setHasInput(t.hasSupportedInputs());
-	    model.setHasOutput(t.hasSupportedOutputs());
-	    r.addActionListener(listener);
-	    dncs.add(r);
+	
+	    if(parentOutputPos != null) {
+	    	PanelPosition inputPos = new PanelPosition(x + (NODE_WIDTH / 2), y + 8);
+	    	
+	    	 Line l = new Line(parentOutputPos.getX(),
+	    			 parentOutputPos.getY(),
+	    			 inputPos.getX(),
+	    			 inputPos.getY());
+	         l.setStrokeWidth(4);
+	         l.setUserData("Some line object");
+	         l.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+	 			@Override
+	 			public void handle(MouseEvent arg0) {
+	 				arg0.consume();
+	 				listener.onActionPerformed(l, EventType.SELECTED);
+	 			}
+	 		});      
+	         dncs.add(l);
+	    }
+	    
+	    // draw the control
+	 		DiagramNodeControl r = new DiagramNodeControl();
+	 	    r.setLayoutX(x);
+	 	    r.setLayoutY(thisPos.getY());
+	 	    DiagramNodeModel model = r.getController().getModel();
+	 	    model.setName(String.valueOf(process.getTypeID()));
+	 	    model.setID(String.valueOf(process.getNodeID()));
+	 	    model.setEnabled(process.isEnabled());
+	 	    Style s = of.lookupStyleForType(process.getTypeID());
+	 	    model.setColor(s.getFill());
+	 	    Type t = of.lookupType(process.getTypeID());
+	 	    model.setHasInput(t.hasSupportedInputs());
+	 	    model.setHasOutput(t.hasSupportedOutputs());
+	 	    r.addActionListener(listener);
+	 	    dncs.add(r);
+	    
+	    // calculate the input and output connector coordinate
+	    //
+	    PanelPosition outputPos = new PanelPosition(x + (NODE_WIDTH / 2), y + NODE_HEIGHT - 5);
 				
 	    // go through the children
 	    if(process.hasChildren()) {
@@ -112,7 +115,7 @@ public class DiagramBuilder {
 		 		int childX = startPos.getX() + (childWidth * i);
 		 		int childY = startPos.getY() + NODE_HEIGHT + NODE_MARGIN;
 		 		PanelPosition childPos = new PanelPosition(childX, childY);
-		 		layoutNode(child, childPos);
+		 		layoutNode(child, childPos, outputPos);
 		 		i++;
 		 	}
 	    }
