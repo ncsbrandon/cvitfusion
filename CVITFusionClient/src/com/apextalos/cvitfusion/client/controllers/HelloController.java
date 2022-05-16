@@ -26,6 +26,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -57,6 +58,7 @@ public class HelloController extends BaseController {
     @FXML private TableColumn propertiesColumnKey;
     @FXML private TableColumn propertiesColumnValue;
     @FXML private AnchorPane designPane;
+    @FXML private ScrollPane designScroll;
     @FXML private Label versionInfo;
     @FXML private SplitPane sp1;
     @FXML private SplitPane sp11;
@@ -94,7 +96,8 @@ public class HelloController extends BaseController {
         }));
         
         propertiesTable.prefHeightProperty().bind(vbox2.heightProperty());
-        designPane.prefHeightProperty().bind(vbox.heightProperty());
+        designScroll.prefHeightProperty().bind(vbox.heightProperty());
+        designPane.prefHeightProperty().bind(designScroll.heightProperty());
         
         designPane.getChildren().addAll(db.layout(sample1(), this));
     }
