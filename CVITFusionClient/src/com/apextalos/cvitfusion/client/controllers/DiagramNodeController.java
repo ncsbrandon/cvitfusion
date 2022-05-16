@@ -42,6 +42,7 @@ public class DiagramNodeController extends BaseController {
 
         // create bindings
         name.textProperty().bind(model.getNameProperty());
+        name.textFillProperty().bind(model.getFontPaintProperty());
         id.textProperty().bind(model.getIDProperty());
         enabled.selectedProperty().bind(model.getEnabledProperty());
         body.fillProperty().bind(model.getFillPaintProperty());

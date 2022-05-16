@@ -11,6 +11,7 @@ public class DiagramNodeModel {
     private final StringProperty id = new SimpleStringProperty();
     private final BooleanProperty enabled = new SimpleBooleanProperty();
     private final ObjectProperty<Paint> fillPaint = new SimpleObjectProperty<Paint>();
+    private final ObjectProperty<Paint> fontPaint = new SimpleObjectProperty<Paint>();
     private final BooleanProperty hasInput = new SimpleBooleanProperty();
     private final BooleanProperty hasOutput = new SimpleBooleanProperty();
     
@@ -35,12 +36,19 @@ public class DiagramNodeModel {
     public ObjectProperty<Paint> getFillPaintProperty() {
     	return fillPaint;
     }
-    public void setColor(Color color) {
-    	String s = color.asColorString();
+    public void setFillColor(Color fillColor) {
+    	String s = fillColor.asColorString();
     	Paint p = Paint.valueOf(s);
     	this.fillPaint.set(p);
     }
-    
+    public ObjectProperty<Paint> getFontPaintProperty() {
+    	return fontPaint;
+    }
+    public void setFontColor(Color fontColor) {
+    	String s = fontColor.asColorString();
+    	Paint p = Paint.valueOf(s);
+    	this.fontPaint.set(p);
+    }
     public BooleanProperty getHasInputProperty() {
         return hasInput;
     }

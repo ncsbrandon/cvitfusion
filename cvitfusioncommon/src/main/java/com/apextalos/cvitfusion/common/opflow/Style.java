@@ -5,7 +5,7 @@ public class Style {
 	private int styleID;
 	private int shape;
 	private Color fill;
-	private Color outline;
+	private Color font;
 	
 	public int getStyleID() {
 		return styleID;
@@ -25,18 +25,18 @@ public class Style {
 	public void setFill(Color fill) {
 		this.fill = fill;
 	}
-	public Color getOutline() {
-		return outline;
+	public Color getFont() {
+		return font;
 	}
-	public void setOutline(Color outline) {
-		this.outline = outline;
+	public void setFont(Color font) {
+		this.font = font;
 	}
 	
-	public Style(int styleID, int shape, Color color, Color color2) {
+	public Style(int styleID, int shape, Color fill, Color font) {
 		super();
 		this.styleID = styleID;
 		this.shape = shape;
-		this.fill = color;
-		this.outline = color2;
+		this.fill = fill;
+		this.font = font;
 	}
 }
