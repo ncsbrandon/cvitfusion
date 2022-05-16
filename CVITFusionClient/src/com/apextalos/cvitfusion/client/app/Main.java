@@ -27,7 +27,7 @@ public class Main extends Application {
 		ConfigFile cf = new ConfigFile("cvitfusion.properties");
 		if (!cf.load())
 			System.exit(0);
-		
+
 		URL url = getClass().getResource("hello-view.fxml");
 		FXMLLoader fxmlLoader = new FXMLLoader(url);
 		Scene scene = new Scene(fxmlLoader.load());
@@ -35,22 +35,22 @@ public class Main extends Application {
 		stage.getIcons().add(new Image(getClass().getResource("missile.png").toExternalForm()));
 		stage.setScene(scene);
 		stage.setResizable(true);
-		((HelloController)fxmlLoader.getController()).begin(cf);	
+		((HelloController) fxmlLoader.getController()).begin(cf);
 		stage.setX(cf.getDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, ConfigItems.WINDOW_POSITION_X_DEFAULT));
-        stage.setY(cf.getDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, ConfigItems.WINDOW_POSITION_Y_DEFAULT));
-        stage.setWidth(cf.getDouble(ConfigItems.WINDOW_WIDTH_CONFIG, ConfigItems.WINDOW_WIDTH_DEFAULT));
-        stage.setHeight(cf.getDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, ConfigItems.WINDOW_HEIGHT_DEFAULT));
-        stage.show();
-        
-        // save window size and position at close
-        stage.setOnCloseRequest((final WindowEvent event) -> {
-        	((HelloController)fxmlLoader.getController()).end();	
-            cf.setDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, stage.getX());
-            cf.setDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, stage.getY());
-            cf.setDouble(ConfigItems.WINDOW_WIDTH_CONFIG, stage.getWidth());
-            cf.setDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, stage.getHeight());
-            cf.save();
-        });
+		stage.setY(cf.getDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, ConfigItems.WINDOW_POSITION_Y_DEFAULT));
+		stage.setWidth(cf.getDouble(ConfigItems.WINDOW_WIDTH_CONFIG, ConfigItems.WINDOW_WIDTH_DEFAULT));
+		stage.setHeight(cf.getDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, ConfigItems.WINDOW_HEIGHT_DEFAULT));
+		stage.show();
+
+		// save window size and position at close
+		stage.setOnCloseRequest((final WindowEvent event) -> {
+			((HelloController) fxmlLoader.getController()).end();
+			cf.setDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, stage.getX());
+			cf.setDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, stage.getY());
+			cf.setDouble(ConfigItems.WINDOW_WIDTH_CONFIG, stage.getWidth());
+			cf.setDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, stage.getHeight());
+			cf.save();
+		});
 	}
 
 	@Override
