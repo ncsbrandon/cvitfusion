@@ -13,11 +13,13 @@ import org.joda.time.DateTime;
 import com.apextalos.cvitfusion.client.app.Version;
 import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
+import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.client.models.HelloModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
+import com.apextalos.cvitfusion.common.opflow.ProcessComm;
 import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
@@ -307,12 +309,24 @@ public class HelloController extends BaseController {
 	private void onLineSelection(Line line) {
 		line.setEffect(new DropShadow());
 		activeSelection = line;
-		model.getListItems().add("line selected " + line.getUserData());
+		
+		ProcessComm pc = (ProcessComm) line.getUserData();
+		
+		model.getTableItems().clear();
+		model.getTableItems().add(new KeyValuePairModel("From", String.valueOf(pc.getParentProcess().getNodeID())));
+		model.getTableItems().add(new KeyValuePairModel("To", String.valueOf(pc.getChildProcess().getNodeID())));
 	}
 
 	private void onProcessSelection(DiagramNodeControl dnc) {
 		dnc.getController().select(true);
 		activeSelection = dnc;
-		model.getListItems().add("process selected " + dnc.getController().getModel().getIDProperty().get());
+		
+		DiagramNodeController dncController = dnc.getController();
+		DiagramNodeModel dncModel = dncController.getModel();
+		
+		model.getTableItems().clear();
+		model.getTableItems().add(new KeyValuePairModel("Process", dncModel.getIDProperty().get()));
+		model.getTableItems().add(new KeyValuePairModel("Type", dncModel.getNameProperty().get()));
+		model.getTableItems().add(new KeyValuePairModel("Enabled", dncModel.getEnabledProperty().toString()));
 	}
 }

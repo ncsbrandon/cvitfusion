@@ -12,6 +12,7 @@ import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
+import com.apextalos.cvitfusion.common.opflow.ProcessComm;
 import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
 
@@ -46,7 +47,7 @@ public class DiagramBuilder {
 			// restart each at the top
 			pos.setY(0);
 			pos.setX(nextX);
-			layoutNode(node, pos, null);
+			layoutNode(node, pos, null, null);
 
 			nextX += calculateWidth(node);
 		}
@@ -54,7 +55,7 @@ public class DiagramBuilder {
 		return dncs;
 	}
 
-	private void layoutNode(Process process, PanelPosition startPos, PanelPosition parentOutputPos) {
+	private void layoutNode(Process process, PanelPosition startPos, Process parentProcess, PanelPosition parentOutputPos) {
 		// calculate the position of the control
 		int x = 0;
 		int y = startPos.getY();
@@ -67,12 +68,12 @@ public class DiagramBuilder {
 		}
 		PanelPosition thisPos = new PanelPosition(x, y);
 
-		if (parentOutputPos != null) {
+		if (parentProcess != null && parentOutputPos != null) {
 			PanelPosition inputPos = new PanelPosition(x + (NODE_WIDTH / 2), y + 8);
 
 			Line l = new Line(parentOutputPos.getX(), parentOutputPos.getY(), inputPos.getX(), inputPos.getY());
 			l.setStrokeWidth(4);
-			l.setUserData("Some line object");
+			l.setUserData(new ProcessComm(parentProcess, process));
 			l.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 				@Override
@@ -114,7 +115,7 @@ public class DiagramBuilder {
 				int childX = startPos.getX() + (childWidth * i);
 				int childY = startPos.getY() + NODE_HEIGHT + NODE_MARGIN;
 				PanelPosition childPos = new PanelPosition(childX, childY);
-				layoutNode(child, childPos, outputPos);
+				layoutNode(child, childPos, process, outputPos);
 				i++;
 			}
 		}
