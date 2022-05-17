@@ -56,6 +56,16 @@ public class OperationalFlow {
 		this.typeStyle = typeStyle;
 	}
 
+	@JsonIgnore
+	public Process lookupProcess(int id) {
+		for (Process p : processes) {
+			if (p.getNodeID() == id)
+				return p;
+		}
+		return null;
+	}
+	
+	@JsonIgnore
 	public Type lookupType(int id) {
 		for (Type t : types) {
 			if (t.getTypeID() == id)
@@ -64,6 +74,7 @@ public class OperationalFlow {
 		return null;
 	}
 
+	@JsonIgnore
 	public Style lookupStyle(int id) {
 		for (Style s : styles) {
 			if (s.getStyleID() == id)
@@ -72,6 +83,7 @@ public class OperationalFlow {
 		return null;
 	}
 
+	@JsonIgnore
 	public Style lookupStyleForType(int typeID) {
 		if (!typeStyle.containsKey(typeID))
 			return null;

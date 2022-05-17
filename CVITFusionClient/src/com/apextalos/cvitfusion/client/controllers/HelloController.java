@@ -87,7 +87,8 @@ public class HelloController extends BaseController {
 
 	private DiagramBuilder db = new DiagramBuilder();
 	private Node activeSelection = null;
-
+	private OperationalFlow activeFlow = null;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// create model
@@ -113,32 +114,40 @@ public class HelloController extends BaseController {
 			return change;
 		}));
 
+		// bind heights to create fill
 		propertiesTable.prefHeightProperty().bind(vbox2.heightProperty());
 		designScroll.prefHeightProperty().bind(vbox.heightProperty());
 		designPane.prefHeightProperty().bind(designScroll.heightProperty());
 
-		designPane.getChildren().addAll(db.layout(sample1(), this));
+		// load some sample data
+		sample1();
+		
+		// layout the design pane
+		designPane.getChildren().addAll(db.layout(activeFlow, this));
 	}
 
 	@Override
 	public void begin(ConfigFile cf) {
 		super.begin(cf);
+		
+		// load the last view size
 		sp1.setDividerPosition(0, cf.getDouble("sp1_divider_position", -1));
 		sp11.setDividerPosition(0, cf.getDouble("sp11_divider_position", -1));
 		sp112.setDividerPosition(0, cf.getDouble("sp112_divider_position", -1));
-		model.getListItems().add(String.format("begin [%s]", cf.getString("some_setting", "default_value")));
 	}
 
 	@Override
 	public void end() {
 		super.end();
+		
+		// save the last view size
 		cf.setDouble("sp1_divider_position", sp1.getDividerPositions()[0]);
 		cf.setDouble("sp11_divider_position", sp11.getDividerPositions()[0]);
 		cf.setDouble("sp112_divider_position", sp112.getDividerPositions()[0]);
 	}
 
-	public OperationalFlow sample1() {
-		OperationalFlow of = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
+	public void sample1() {
+		activeFlow = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
 
 		Process n111 = new Process(111, true, 3, null, "", 4317, new Properties());
 		Process n112 = new Process(112, true, 6, null, "", 4317, new Properties());
@@ -162,7 +171,7 @@ public class HelloController extends BaseController {
 				add(n12);
 			}
 		}, "", 69, new Properties());
-		of.getProcesses().add(n1);
+		activeFlow.getProcesses().add(n1);
 
 		Process n211 = new Process(211, true, 6, null, "", 4317, new Properties());
 		Process n21 = new Process(21, true, 7, new ArrayList<>() {
@@ -175,22 +184,22 @@ public class HelloController extends BaseController {
 				add(n21);
 			}
 		}, "", 69, new Properties());
-		of.getProcesses().add(n2);
+		activeFlow.getProcesses().add(n2);
 
 		// INPUTS----------------------
-		of.getTypes().add(new Type(1, 1, "Lidar", new Properties(), null, new ArrayList<>() {
+		activeFlow.getTypes().add(new Type(1, 1, "Lidar", new Properties(), null, new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
 			}
 		}));
-		of.getTypes().add(new Type(4, 1, "Camera", new Properties(), null, new ArrayList<>() {
+		activeFlow.getTypes().add(new Type(4, 1, "Camera", new Properties(), null, new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
 			}
 		}));
 
 		// LOGICS-------------------------
-		of.getTypes().add(new Type(2, 1, "WWVD", new Properties(), new ArrayList<>() {
+		activeFlow.getTypes().add(new Type(2, 1, "WWVD", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(1));
 			}
@@ -199,7 +208,7 @@ public class HelloController extends BaseController {
 				add(Integer.valueOf(3));
 			}
 		}));
-		of.getTypes().add(new Type(5, 1, "Curve Speed", new Properties(), new ArrayList<>() {
+		activeFlow.getTypes().add(new Type(5, 1, "Curve Speed", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(1));
 			}
@@ -208,7 +217,7 @@ public class HelloController extends BaseController {
 				add(Integer.valueOf(3));
 			}
 		}));
-		of.getTypes().add(new Type(7, 1, "Queue Detection", new Properties(), new ArrayList<>() {
+		activeFlow.getTypes().add(new Type(7, 1, "Queue Detection", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(1));
 			}
@@ -219,42 +228,40 @@ public class HelloController extends BaseController {
 		}));
 
 		// OUTPUTS -------------
-		of.getTypes().add(new Type(3, 1, "Email", new Properties(), new ArrayList<>() {
+		activeFlow.getTypes().add(new Type(3, 1, "Email", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
 			}
 		}, null));
-		of.getTypes().add(new Type(6, 1, "Flashing Beacon", new Properties(), new ArrayList<>() {
+		activeFlow.getTypes().add(new Type(6, 1, "Flashing Beacon", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
 			}
 		}, null));
-		of.getTypes().add(new Type(8, 1, "Digital Output", new Properties(), new ArrayList<>() {
+		activeFlow.getTypes().add(new Type(8, 1, "Digital Output", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
 			}
 		}, null));
 
 		// https://coolors.co/233d4d-915e3d-fe7f2d-fda53a-fcca46-cfc664-a1c181-619b8a
-		of.getStyles().add(new Style(1, 1, new Color(0x23, 0x3D, 0x4D, 1), new Color(255, 255, 255, 1))); // Charcoal
-		of.getStyles().add(new Style(2, 1, new Color(0x91, 0x5E, 0x3D, 1), new Color(255, 255, 255, 1))); // Coyote Brown
-		of.getStyles().add(new Style(3, 1, new Color(0xFE, 0x7F, 0x2D, 1), new Color(255, 255, 255, 1))); // Pumpkin
-		of.getStyles().add(new Style(4, 1, new Color(0xFD, 0xA5, 0x3A, 1), new Color(0, 0, 0, 1))); // Yellow Orange
-		of.getStyles().add(new Style(5, 1, new Color(0xFC, 0xCA, 0x46, 1), new Color(0, 0, 0, 1))); // Sunglow
-		of.getStyles().add(new Style(6, 1, new Color(0xCF, 0xC6, 0x64, 1), new Color(0, 0, 0, 1))); // Straw
-		of.getStyles().add(new Style(7, 1, new Color(0xA1, 0xC1, 0x81, 1), new Color(0, 0, 0, 1))); // Olivine
-		of.getStyles().add(new Style(8, 1, new Color(0x61, 0x9B, 0x8A, 1), new Color(0, 0, 0, 1))); // Polished Pine
+		activeFlow.getStyles().add(new Style(1, 1, new Color(0x23, 0x3D, 0x4D, 1), new Color(255, 255, 255, 1))); // Charcoal
+		activeFlow.getStyles().add(new Style(2, 1, new Color(0x91, 0x5E, 0x3D, 1), new Color(255, 255, 255, 1))); // Coyote Brown
+		activeFlow.getStyles().add(new Style(3, 1, new Color(0xFE, 0x7F, 0x2D, 1), new Color(255, 255, 255, 1))); // Pumpkin
+		activeFlow.getStyles().add(new Style(4, 1, new Color(0xFD, 0xA5, 0x3A, 1), new Color(0, 0, 0, 1))); // Yellow Orange
+		activeFlow.getStyles().add(new Style(5, 1, new Color(0xFC, 0xCA, 0x46, 1), new Color(0, 0, 0, 1))); // Sunglow
+		activeFlow.getStyles().add(new Style(6, 1, new Color(0xCF, 0xC6, 0x64, 1), new Color(0, 0, 0, 1))); // Straw
+		activeFlow.getStyles().add(new Style(7, 1, new Color(0xA1, 0xC1, 0x81, 1), new Color(0, 0, 0, 1))); // Olivine
+		activeFlow.getStyles().add(new Style(8, 1, new Color(0x61, 0x9B, 0x8A, 1), new Color(0, 0, 0, 1))); // Polished Pine
 
-		of.getTypeStyle().put(1, 1);
-		of.getTypeStyle().put(2, 2);
-		of.getTypeStyle().put(3, 3);
-		of.getTypeStyle().put(4, 4);
-		of.getTypeStyle().put(5, 5);
-		of.getTypeStyle().put(6, 6);
-		of.getTypeStyle().put(7, 7);
-		of.getTypeStyle().put(8, 8);
-
-		return of;
+		activeFlow.getTypeStyle().put(1, 1);
+		activeFlow.getTypeStyle().put(2, 2);
+		activeFlow.getTypeStyle().put(3, 3);
+		activeFlow.getTypeStyle().put(4, 4);
+		activeFlow.getTypeStyle().put(5, 5);
+		activeFlow.getTypeStyle().put(6, 6);
+		activeFlow.getTypeStyle().put(7, 7);
+		activeFlow.getTypeStyle().put(8, 8);
 	}
 
 	@FXML
@@ -270,19 +277,10 @@ public class HelloController extends BaseController {
 	}
 
 	@FXML
-	protected void onHelloMouseEntered() {
-		model.withdraw(50);
-		model.getListItems().add("withdraw");
-		model.getTableItems().clear();
-		model.getTableItems().add(new KeyValuePairModel("last", "withdraw"));
-		model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
-	}
-
-	@FXML
 	protected void onMouseClicked(MouseEvent mouseEvent) {
 		logger.debug("onMouseClicked " + mouseEvent.toString());
 		mouseEvent.consume();
-		onActionPerformed(model, EventType.DESELECTED);
+		onActionPerformed(null, EventType.DESELECTED);
 	}
 
 	@Override
@@ -295,13 +293,9 @@ public class HelloController extends BaseController {
 			onProcessSelection((DiagramNodeControl) o);
 		} else if (et == EventType.DESELECTED) {
 			if (activeSelection != null && activeSelection instanceof Line) {
-				((Line) activeSelection).setEffect(null);
-				model.getListItems().add("deselected line");
-				activeSelection = null;
+				onLineDeselection((Line) activeSelection);
 			} else if (activeSelection != null && activeSelection instanceof DiagramNodeControl) {
-				((DiagramNodeControl) activeSelection).getController().select(false);
-				model.getListItems().add("deselected node");
-				activeSelection = null;
+				onProcessDeselection((DiagramNodeControl) activeSelection);
 			}
 		}
 	}
@@ -311,10 +305,16 @@ public class HelloController extends BaseController {
 		activeSelection = line;
 		
 		ProcessLink pc = (ProcessLink) line.getUserData();
+		//activeFlow.look
 		
 		model.getTableItems().clear();
 		model.getTableItems().add(new KeyValuePairModel("From", String.valueOf(pc.getParentProcess().getNodeID())));
 		model.getTableItems().add(new KeyValuePairModel("To", String.valueOf(pc.getChildProcess().getNodeID())));
+	}
+	
+	private void onLineDeselection(Line line) {
+		line.setEffect(null);
+		activeSelection = null;
 	}
 
 	private void onProcessSelection(DiagramNodeControl dnc) {
@@ -328,5 +328,10 @@ public class HelloController extends BaseController {
 		model.getTableItems().add(new KeyValuePairModel("Process", dncModel.getIDProperty().get()));
 		model.getTableItems().add(new KeyValuePairModel("Type", dncModel.getNameProperty().get()));
 		model.getTableItems().add(new KeyValuePairModel("Enabled", dncModel.getEnabledProperty().toString()));
+	}
+	
+	private void onProcessDeselection(DiagramNodeControl dnc) {
+		dnc.getController().select(false);
+		activeSelection = null;
 	}
 }

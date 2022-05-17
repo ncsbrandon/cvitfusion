@@ -57,7 +57,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <Button layoutX="38.0" layoutY="37.0" mnemonicParsing="false" onAction="#onHelloButtonClick" onMouseEntered="#onHelloMouseEntered" text="Button" />
+                                    <Button layoutX="38.0" layoutY="37.0" mnemonicParsing="false" onAction="#onHelloButtonClick" text="Button" />
                                     <Label fx:id="welcomeText" layoutX="64.0" layoutY="134.0" text="Label" />
                                     <TextField fx:id="welcomeTextField" layoutX="15.0" layoutY="194.0" />
                                  </children>
