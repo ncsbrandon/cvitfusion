@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class Process {
 
-	private int nodeID;
+	private int processID;
 	private boolean enabled;
 	private int typeID;
 	private List<Process> children;
@@ -13,12 +13,12 @@ public class Process {
 	private int status;
 	private Properties properties;
 
-	public int getNodeID() {
-		return nodeID;
+	public int getProcessID() {
+		return processID;
 	}
 
-	public void setNodeID(int nodeID) {
-		this.nodeID = nodeID;
+	public void setProcessID(int processID) {
+		this.processID = processID;
 	}
 
 	public boolean isEnabled() {
@@ -73,9 +73,9 @@ public class Process {
 		this.properties = properties;
 	}
 
-	public Process(int nodeID, boolean enabled, int typeID, List<Process> children, String notes, int status, Properties properties) {
+	public Process(int processID, boolean enabled, int typeID, List<Process> children, String notes, int status, Properties properties) {
 		super();
-		this.nodeID = nodeID;
+		this.processID = processID;
 		this.enabled = enabled;
 		this.typeID = typeID;
 		this.children = children;

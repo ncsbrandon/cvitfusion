@@ -305,16 +305,20 @@ public class HelloController extends BaseController {
 		activeSelection = line;
 		
 		ProcessLink pc = (ProcessLink) line.getUserData();
-		//activeFlow.look
+		Process parentProcess = pc.getParentProcess();
+		Type parentType = activeFlow.lookupType(parentProcess.getTypeID());
+		Process childProcess = pc.getChildProcess();
+		Type childType = activeFlow.lookupType(childProcess.getTypeID());
 		
 		model.getTableItems().clear();
-		model.getTableItems().add(new KeyValuePairModel("From", String.valueOf(pc.getParentProcess().getNodeID())));
-		model.getTableItems().add(new KeyValuePairModel("To", String.valueOf(pc.getChildProcess().getNodeID())));
+		model.getTableItems().add(new KeyValuePairModel("From", String.format("%s %d", parentType.getName(), parentProcess.getProcessID())));
+		model.getTableItems().add(new KeyValuePairModel("To", String.format("%s %d", childType.getName(), childProcess.getProcessID())));
 	}
 	
 	private void onLineDeselection(Line line) {
 		line.setEffect(null);
 		activeSelection = null;
+		model.getTableItems().clear();
 	}
 
 	private void onProcessSelection(DiagramNodeControl dnc) {
@@ -324,14 +328,19 @@ public class HelloController extends BaseController {
 		DiagramNodeController dncController = dnc.getController();
 		DiagramNodeModel dncModel = dncController.getModel();
 		
+		Process process = activeFlow.lookupProcess(Integer.valueOf(dncModel.getIDProperty().get()));
+		Type type = activeFlow.lookupType(process.getTypeID());
+		
 		model.getTableItems().clear();
-		model.getTableItems().add(new KeyValuePairModel("Process", dncModel.getIDProperty().get()));
-		model.getTableItems().add(new KeyValuePairModel("Type", dncModel.getNameProperty().get()));
-		model.getTableItems().add(new KeyValuePairModel("Enabled", dncModel.getEnabledProperty().toString()));
+		model.getTableItems().add(new KeyValuePairModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
+		model.getTableItems().add(new KeyValuePairModel("Version", String.valueOf(type.getVersion())));
+		model.getTableItems().add(new KeyValuePairModel("Notes", process.getNotes()));
+		model.getTableItems().add(new KeyValuePairModel("Enabled", String.valueOf(process.isEnabled())));
 	}
 	
 	private void onProcessDeselection(DiagramNodeControl dnc) {
 		dnc.getController().select(false);
 		activeSelection = null;
+		model.getTableItems().clear();
 	}
 }

@@ -44,7 +44,7 @@ public class DiagramBuilder {
 		int nextX = 0;
 		for (Process topProcess : opflow.getProcesses()) {
 
-			logger.info(String.format("layout top process ID [] Type []", topProcess.getNodeID(), topProcess.getTypeID()));
+			logger.info(String.format("layout top process ID [] Type []", topProcess.getProcessID(), topProcess.getTypeID()));
 			
 			// restart each at the top
 			pos.setY(0);
@@ -93,7 +93,7 @@ public class DiagramBuilder {
 		r.setLayoutY(thisPos.getY());
 		DiagramNodeModel model = r.getController().getModel();
 
-		model.setID(String.valueOf(process.getNodeID()));
+		model.setID(String.valueOf(process.getProcessID()));
 		model.setEnabled(process.isEnabled());
 		Style s = opflow.lookupStyleForType(process.getTypeID());
 		model.setFillColor(s.getFill());

@@ -58,9 +58,28 @@ public class OperationalFlow {
 
 	@JsonIgnore
 	public Process lookupProcess(int id) {
+		// top level procs
 		for (Process p : processes) {
-			if (p.getNodeID() == id)
+			if (p.getProcessID() == id)
 				return p;
+			if (p.hasChildren()) {
+				Process child = lookupProcessRecur(id, p);
+				if(child != null)
+					return child;
+			}
+		}
+		return null;
+	}
+	
+	private Process lookupProcessRecur(int id, Process process) {
+		for (Process p : process.getChildren()) {
+			if (p.getProcessID() == id)
+				return p;
+			if (p.hasChildren()) {
+				Process child = lookupProcessRecur(id, p);
+				if(child != null)
+					return child;
+			}
 		}
 		return null;
 	}
