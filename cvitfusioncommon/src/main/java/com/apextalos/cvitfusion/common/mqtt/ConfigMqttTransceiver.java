@@ -1,17 +1,11 @@
 package com.apextalos.cvitfusion.common.mqtt;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.thread.SimpleThread;
 import com.apextalos.cvitfusion.common.utils.SleepUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -97,6 +91,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	public static final String CONFIG_MQTT_SFTPFOLDER_DEFAULT = "";
 	public static final String CONFIG_MQTT_SFTPFOLDER_DESC = "SFTP destination folder";
 
+	/*
 	private static final String PARAMETER_SCRIPT = "script";
 	private static final String PARAMETER_EVENT = "event";
 	private static final String PARAMETER_EVENT_START = "start";
@@ -107,6 +102,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	private static final String PARAMETER_EVENT_STOPALL = "stop-all";
 	private static final String PARAMETER_EVENT_ENABLESTART = "enable-start";
 	private static final String PARAMETER_EVENT_STOPDISABLE = "stop-disable";
+	*/
 	
 	protected ConfigFile cf;
 	protected ObjectMapper mapper = new ObjectMapper();
@@ -155,7 +151,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		
 		// status thread
 		statusTask = new SimpleThread() {
-			private ObjectMapper mapper = new ObjectMapper();
+			//private ObjectMapper mapper = new ObjectMapper();
 			private String statusTopic = topicBuilder(TOPIC_VERSION_1, TOPIC_STATUS);
 			
 			@Override
