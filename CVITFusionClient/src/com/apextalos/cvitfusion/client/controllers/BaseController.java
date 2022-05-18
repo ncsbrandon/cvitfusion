@@ -10,7 +10,7 @@ import javafx.fxml.Initializable;
 public abstract class BaseController implements Initializable, ActionListener {
 
 	public enum EventType {
-		SELECTED, DESELECTED
+		SELECTED, DESELECTED, ENABLED, DISABLED
 	}
 
 	protected ConfigFile cf = null;

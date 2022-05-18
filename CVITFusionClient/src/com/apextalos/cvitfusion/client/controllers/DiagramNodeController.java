@@ -52,7 +52,7 @@ public class DiagramNodeController extends BaseController {
 		name.textProperty().bind(model.getNameProperty());
 		name.textFillProperty().bind(model.getFontPaintProperty());
 		id.textProperty().bind(model.getIDProperty());
-		enabled.selectedProperty().bind(model.getEnabledProperty());
+		enabled.setSelected(model.getEnabledProperty().get());
 		body.fillProperty().bind(model.getFillPaintProperty());
 		connectOut.fillProperty().bind(model.getFillPaintProperty());
 		connectIn.fillProperty().bind(model.getFillPaintProperty());
@@ -70,6 +70,12 @@ public class DiagramNodeController extends BaseController {
 	@FXML
 	protected void onEnabledCheckboxAction(ActionEvent actionEvent) {
 		logger.debug("onEnabledCheckboxAction " + actionEvent.toString());
+		actionEvent.consume();
+		model.setEnabled(((CheckBox)actionEvent.getTarget()).isSelected());
+		if(((CheckBox)actionEvent.getTarget()).isSelected())
+			actionPerformed(this, EventType.ENABLED);
+		else
+			actionPerformed(this, EventType.DISABLED);
 	}
 
 	@FXML
