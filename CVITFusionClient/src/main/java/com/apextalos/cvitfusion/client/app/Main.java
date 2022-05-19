@@ -24,10 +24,12 @@ public class Main extends Application {
 	public void start(Stage stage) throws IOException {
 		logger.info("app starting");
 
+		// load the config
 		ConfigFile cf = new ConfigFile("cvitfusion.properties");
 		if (!cf.load())
 			System.exit(0);
 
+		// show the main stage
 		URL url = getClass().getResource("hello-view.fxml");
 		FXMLLoader fxmlLoader = new FXMLLoader(url);
 		Scene scene = new Scene(fxmlLoader.load());

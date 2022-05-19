@@ -8,7 +8,6 @@ import com.apextalos.cvitfusion.common.thread.SimpleThread;
 import com.apextalos.cvitfusion.common.utils.SleepUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 
 	private static Logger logger = LogManager.getLogger(ConfigMqttTransceiver.class.getSimpleName());
@@ -108,7 +107,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	protected ObjectMapper mapper = new ObjectMapper();
 	private SimpleThread statusTask;
 
-	protected ConfigMqttTransceiver(ConfigFile cf) {
+	public ConfigMqttTransceiver(ConfigFile cf) {
 		super(cf.getString(CONFIG_MQTT_BROKER, CONFIG_MQTT_BROKER_DEFAULT),
 				cf.getString(CONFIG_MQTT_CLIENTID, CONFIG_MQTT_CLIENTID_DEFAULT));
 		this.cf = cf;
@@ -203,56 +202,6 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		statusTask.start();
 	}
 
-	@Override
-	protected void incomingMessage(String topic, String payload) {
-		if(topic.endsWith("/" + TOPIC_CONFIG)) {
-			incomingConfigMessage(payload);
-			return;
-		}
-		
-		logger.info("Unknown topic " + topic);
-	}
-	
-	protected void incomingConfigMessage(String payload) {
-		// deserialize the payload from JSON into ConfigOption
-		/*
-		ConfigOption co = null;
-		try {
-			co = mapper.readValue(payload, ConfigOption.class);
-		} catch (IOException e) {
-			logger.error("JSON parsing of ConfigOption failed: " + e.getMessage());
-			return;
-		}
-
-		// update the configuration file values
-		for (Entry<Object, Object> kvp : co.kvps.entrySet()) {
-			if (cf.hasKey((String) kvp.getKey())) {
-				cf.setString((String) kvp.getKey(), (String) kvp.getValue(), isConnected());
-			}
-		}
-
-		// write it to disk
-		if (co.saveToDisk) {
-			logger.info("saving");
-			cf.save();
-		}
-
-		// restart the application
-		if (co.restartApp) {
-			Thread threatDelayedSystemExit = new Thread() {
-				@Override
-				public void run() {
-					// Wait a little allowing HTTP response to get delivered to the client
-					SleepUtils.safeSleep(3 * (long) 1000);
-					// Then terminate
-					System.exit(0);
-				}
-			};
-			threatDelayedSystemExit.start();
-		}
-		*/
-	}
-		
 	public void stop() {
 		statusTask.setStop();
 		disconnect();

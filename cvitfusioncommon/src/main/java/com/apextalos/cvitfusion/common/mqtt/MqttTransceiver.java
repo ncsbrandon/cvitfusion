@@ -56,7 +56,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 	private int receivedCount = 0;
 	public int getReceivedCount() { return receivedCount; }
 	
-	protected MqttTransceiver(String broker, String clientId) {	
+	public MqttTransceiver(String broker, String clientId) {	
 		this.broker = broker;
 		this.clientId = clientId;
 	}
