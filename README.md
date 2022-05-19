@@ -16,3 +16,7 @@ https://controlsfx.github.io/
 https://openjfx.io/openjfx-docs/
 
 https://www.oracle.com/java/technologies/downloads/
+
+## running the client app
+Include these in the "VM Arguments"
+> --module-path "/usr/lib/jvm/javafx-sdk-18.0.1/lib" --add-modules javafx.controls,javafx.fxml
