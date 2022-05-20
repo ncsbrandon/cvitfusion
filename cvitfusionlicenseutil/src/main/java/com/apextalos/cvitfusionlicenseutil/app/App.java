@@ -39,6 +39,7 @@ public class App
     	
     	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     	
+    	// request the license ID
     	System.out.print("Enter License ID: ");
     	String licenseID;
 		try {
@@ -48,6 +49,7 @@ public class App
     		return;
 		}
     	
+		// load into a license
     	License license = null;
     	try {
 			license = lm.loadLicense(licenseID);
@@ -109,6 +111,7 @@ public class App
     		}
     	}
     	
+    	// generate the key
     	String licenseKey = "";
     	try {
 			licenseKey = lm.generateLicenseKey(license);
@@ -117,6 +120,7 @@ public class App
 			return;
 		}
     	
+    	// print to the user
     	logger.info("Key: " + licenseKey);
     }
 }

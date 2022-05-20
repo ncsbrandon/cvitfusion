@@ -8,6 +8,7 @@ Connected Vehicle and Intelligent Transportation Fusion.  Consisting of 3 compon
 - SceneBuilder
 - JavaFX
 - JDK 18
+- remarkable
 
 ## references
 

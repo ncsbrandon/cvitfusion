@@ -1,6 +1,7 @@
 package com.apextalos.cvitfusionengine.app;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
@@ -90,11 +91,17 @@ public class App {
 			return false;
 		}
 		
+		String iface;
+		try {
+			iface = lm.getFirstInterface();
+		} catch (SocketException e1) {
+			logger.error("Unable to find license interface");
+			return false;
+		}
+		
 		// if we don't have a license ID, create one
-		if(!cf.hasKey(ConfigItems.DEVICE_LICENSEID_CONFIG)) {
-			String iface = "";
-			try {
-				iface = lm.getFirstInterface();
+		if(!cf.hasKey(ConfigItems.DEVICE_LICENSEID_CONFIG)) {	
+			try {		
 				String licenseID = lm.generateLicenseID(iface, Version.getInstance().getVersion());
 				cf.setString(ConfigItems.DEVICE_LICENSEID_CONFIG, licenseID, false);
 				cf.save();
@@ -132,9 +139,19 @@ public class App {
 			return false;
 		}
 		
+		try {
+			if(!lm.verifyAddress(iface, licenseKey)) {
+				logger.error("Invalid license key");
+				return false;
+			}
+		} catch (SocketException e) {
+			logger.error("Unable to verify license key");
+			return false;
+		}
+		
 		// report the visible features of this key
 		for(Entry<Feature, String> featureValue : licenseKey.getVisibleFeatures().entrySet()) {
-    		logger.info(featureValue.getKey().toString() + "= " + featureValue.getKey());
+    		logger.info(featureValue.getKey().toString() + ": " + featureValue.getValue());
     	}
 			
 		// main transceiver
