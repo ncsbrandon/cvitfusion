@@ -58,4 +58,9 @@ public class Feature {
 	public void setMode(int mode) {
 		this.mode = mode;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("Feature [id=%s, description=%s, type=%s, defaultValue=%s]", id, description, type, defaultValue);
+	}
 }

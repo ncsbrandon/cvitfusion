@@ -1,5 +1,7 @@
 package com.apextalos.cvitfusion.common.license;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +23,18 @@ public class License {
 
 	public Properties getProperties() {
 		return props;
+	}
+	
+	public List<Feature> getVisibleFeatures() {
+		FeatureManager fm = FeatureManager.getInstance();
+		
+		List<Feature> features = new ArrayList<>();
+		for(Object propString : props.keySet()) {
+			Feature feature = fm.getFeature(String.valueOf(propString));
+			if(feature != null && feature.getMode() == Feature.MODE_FEATURE)
+				features.add(feature);
+		}
+		return features;
 	}
 
 	public String getStringFeature(Feature feature) {

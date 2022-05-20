@@ -27,7 +27,16 @@ public class FeatureManager {
 	
 	private List<Feature> features = new ArrayList<>();
 	
-	public FeatureManager() {
+	private static FeatureManager singleInstance = null;
+
+	public static FeatureManager getInstance() {
+		if (singleInstance == null)
+			singleInstance = new FeatureManager();
+
+		return singleInstance;
+	}
+	
+	private FeatureManager() {
 		features.add(FEATURE_ADDRESS);
 		features.add(FEATURE_IDDATETIME);
 		features.add(FEATURE_INTERFACE);
