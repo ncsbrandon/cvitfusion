@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -94,7 +95,7 @@ public class App {
 			String iface = "";
 			try {
 				iface = lm.getFirstInterface();
-				String licenseID = lm.generateLicenseID(iface);
+				String licenseID = lm.generateLicenseID(iface, Version.getInstance().getVersion());
 				cf.setString(ConfigItems.DEVICE_LICENSEID_CONFIG, licenseID, false);
 				cf.save();
 				logger.error("license id created: " + licenseID);
@@ -124,7 +125,7 @@ public class App {
 		// load the license key
 		License licenseKey = null;
 		try {
-			licenseKey = lm.loadLicenseKey(cf.getString(ConfigItems.DEVICE_LICENSEKEY_CONFIG, ConfigItems.DEVICE_LICENSEKEY_DEFAULT));
+			licenseKey = lm.loadLicense(cf.getString(ConfigItems.DEVICE_LICENSEKEY_CONFIG, ConfigItems.DEVICE_LICENSEKEY_DEFAULT));
 			logger.error("license key loaded property count: " + licenseKey.getProperties().size());
 		} catch (ClassNotFoundException | IllegalBlockSizeException | BadPaddingException | IOException e) {
 			logger.error("Unable to load license key");
@@ -132,10 +133,10 @@ public class App {
 		}
 		
 		// report the visible features of this key
-		for(Feature feature : licenseKey.getVisibleFeatures()) {
-			logger.info(feature.toString());
-		}
-		
+		for(Entry<Feature, String> featureValue : licenseKey.getVisibleFeatures().entrySet()) {
+    		logger.info(featureValue.getKey().toString() + "= " + featureValue.getKey());
+    	}
+			
 		// main transceiver
 		cmt = new EngineConfigMqttTransceiver(cf);
 		cmt.start();

@@ -82,7 +82,7 @@ public class LicenseManager {
 		return networks.nextElement().getName();
 	}
 
-	public String generateLicenseID(String ifname) throws IllegalBlockSizeException, IOException {
+	public String generateLicenseID(String ifname, String version) throws IllegalBlockSizeException, IOException {
 		// get the network interface
 		NetworkInterface network = NetworkInterface.getByName(ifname);
 		if (network == null) {
@@ -101,10 +101,10 @@ public class LicenseManager {
 
 		// object to encrypt
 		License license = new License();
-		license.setStringFeature(FeatureManager.FEATURE_IDDATETIME,
-				DateTime.now().withZone(DateTimeZone.UTC).toString());
+		license.setStringFeature(FeatureManager.FEATURE_IDDATETIME,	DateTime.now().withZone(DateTimeZone.UTC).toString());
 		license.setStringFeature(FeatureManager.FEATURE_ADDRESS, ByteUtils.bytesToHex(hardwareAddress));
 		license.setStringFeature(FeatureManager.FEATURE_INTERFACE, ifname);
+		license.setStringFeature(FeatureManager.FEATURE_ENGINEVERSION, version);
 
 		return generate(license);
 	}
@@ -138,7 +138,7 @@ public class LicenseManager {
 		return idstring;
 	}
 
-	public License loadLicenseKey(String keystring)
+	public License loadLicense(String keystring)
 			throws IOException, ClassNotFoundException, IllegalBlockSizeException, BadPaddingException {
 		// sanity
 		if (keystring == null)

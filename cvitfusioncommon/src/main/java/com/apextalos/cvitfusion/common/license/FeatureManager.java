@@ -5,15 +5,15 @@ import java.util.List;
 
 public class FeatureManager {
 
-	public static final Feature FEATURE_ADDRESS = new Feature("ADDRESS", "MAC address", String.class, "", Feature.MODE_HIDDEN);
-	public static final Feature FEATURE_IDDATETIME = new Feature("IDDATETIME", "ID date", String.class, "", Feature.MODE_HIDDEN);
-	public static final Feature FEATURE_INTERFACE = new Feature("INTERFACE", "Interface", String.class, "", Feature.MODE_HIDDEN);
-	public static final Feature FEATURE_SUBTYPE = new Feature("SUBTYPE", "Subtype", String.class, "", Feature.MODE_HIDDEN);
-	public static final Feature FEATURE_LOCATION = new Feature("LOCATION", "Location", String.class, "", Feature.MODE_HIDDEN);
-	public static final Feature FEATURE_SERIALNUM = new Feature("SERIAL", "Serial number", String.class, "", Feature.MODE_HIDDEN);
-	public static final Feature FEATURE_LICDATETIME = new Feature("LICDATETIME", "License date", String.class, "", Feature.MODE_FEATURE);
-	public static final Feature FEATURE_ORG = new Feature("ORG", "Organization", String.class, "", Feature.MODE_FEATURE);
-	public static final Feature FEATURE_MHCSO = new Feature("MHCSO", "MHC Sales Order", String.class, "", Feature.MODE_HIDDEN);
+	public static final Feature FEATURE_ADDRESS = new Feature("ADDRESS", "MAC address", String.class, "", Feature.MODE_CLIENTGEN);
+	public static final Feature FEATURE_IDDATETIME = new Feature("IDDATETIME", "ID date", String.class, "", Feature.MODE_CLIENTGEN);
+	public static final Feature FEATURE_INTERFACE = new Feature("INTERFACE", "Interface", String.class, "", Feature.MODE_CLIENTGEN);
+	public static final Feature FEATURE_ENGINEVERSION = new Feature("ENGINEVERSION", "Engine version", String.class, "", Feature.MODE_CLIENTGEN);
+	
+	public static final Feature FEATURE_LICDATETIME = new Feature("KEY_DATETIME", "Key date", String.class, "", Feature.MODE_KEYDETAIL);
+	public static final Feature FEATURE_ORG = new Feature("ORG", "Organization", String.class, "", Feature.MODE_KEYDETAIL);
+	public static final Feature FEATURE_SALESORDER = new Feature("SALESORDER", "Sales Order", String.class, "", Feature.MODE_KEYDETAIL);
+	
 	public static final Feature FEATURE_SCRIPTS = new Feature("SCRIPTS", "Number of scripts", Integer.class, "0", Feature.MODE_FEATURE);
 	public static final Feature FEATURE_SENSORS = new Feature("SENSORS", "Number of ITS sensors", Integer.class, "0", Feature.MODE_FEATURE);
 	public static final Feature FEATURE_V2IRSU = new Feature("V2IRSU", "Enable V2I Roadside Unit features", Boolean.class, "false", Feature.MODE_FEATURE);
@@ -40,12 +40,12 @@ public class FeatureManager {
 		features.add(FEATURE_ADDRESS);
 		features.add(FEATURE_IDDATETIME);
 		features.add(FEATURE_INTERFACE);
-		features.add(FEATURE_SUBTYPE);
-		features.add(FEATURE_LOCATION);
-		features.add(FEATURE_SERIALNUM);
+		features.add(FEATURE_ENGINEVERSION);
+		
 		features.add(FEATURE_LICDATETIME);
 		features.add(FEATURE_ORG);
-		features.add(FEATURE_MHCSO);
+		features.add(FEATURE_SALESORDER);
+		
 		features.add(FEATURE_SCRIPTS);
 		features.add(FEATURE_SENSORS);
 		features.add(FEATURE_V2IRSU);
@@ -56,6 +56,10 @@ public class FeatureManager {
 		features.add(FEATURE_METIRI);
 		features.add(FEATURE_STOPBAR);
 		features.add(FEATURE_REVERSABLELANE);
+	}
+	
+	public List<Feature> getFeatures() {
+		return features;
 	}
 	
 	public Feature getFeature(String id) {

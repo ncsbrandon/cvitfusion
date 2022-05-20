@@ -2,8 +2,10 @@ package com.apextalos.cvitfusion.common.license;
 
 public class Feature {
 
-	public static final int MODE_HIDDEN = 0; // these should not be shown to users and are only for internal use
-	public static final int MODE_FEATURE = 1; // these are optional features which should be presented to users
+	public static final int MODE_CLIENTGEN = 0; // these should not be shown to users and are only for internal use
+	public static final int MODE_KEYDETAIL = 1; // these should not be shown to users and are only for internal use
+	
+	public static final int MODE_FEATURE = 2; // these are optional features which should be presented to users
 
 	private String id;
 	private String description;
@@ -61,6 +63,6 @@ public class Feature {
 
 	@Override
 	public String toString() {
-		return String.format("Feature [id=%s, description=%s, type=%s, defaultValue=%s]", id, description, type, defaultValue);
+		return String.format("Feature [id=%s, description=\"%s\", type=%s]", id, description, type);
 	}
 }

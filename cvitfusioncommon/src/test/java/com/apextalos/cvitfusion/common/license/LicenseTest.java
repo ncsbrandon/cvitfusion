@@ -33,11 +33,11 @@ private final Logger logger = LogManager.getLogger(LicenseTest.class.getSimpleNa
 		logger.info("Interface: " + ifname);
 		
 		// create an ID
-		String licenseID = licenseManager.generateLicenseID(ifname);
+		String licenseID = licenseManager.generateLicenseID(ifname, "unittest");
 		logger.info("License ID: " + licenseID);
 		
 		// turn it into an empty license
-		License license1 = licenseManager.loadLicenseKey(licenseID);
+		License license1 = licenseManager.loadLicense(licenseID);
 		for(Entry<Object, Object> prop : license1.getProperties().entrySet()) {
 			logger.debug(prop.getKey() + ": " + prop.getValue());
 		}
@@ -53,7 +53,7 @@ private final Logger logger = LogManager.getLogger(LicenseTest.class.getSimpleNa
 		String licenseKey = licenseManager.generateLicenseKey(license1);
 		assertTrue(licenseKey.length() > 0);
 		
-		License license2 = licenseManager.loadLicenseKey(licenseKey);
+		License license2 = licenseManager.loadLicense(licenseKey);
 		
 		// verify the license and features
 		assertTrue(licenseManager.verifyAddress(ifname, license2));

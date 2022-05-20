@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusion.client.app;
+package com.apextalos.cvitfusionengine.app;
 
 import com.apextalos.cvitfusion.common.IVersion;
 
@@ -13,7 +13,7 @@ public class Version implements IVersion {
 
 		return instance;
 	}
-
+		
 	@Override
 	public String getCopyrightYear() {
 		return "2022";
@@ -41,7 +41,7 @@ public class Version implements IVersion {
 
 	@Override
 	public String getProduct() {
-		return "CVITFusion Client";
+		return "CVITFusion Engine";
 	}
 
 	@Override
@@ -72,4 +72,5 @@ public class Version implements IVersion {
 	public String getReleaseNotesFile() {
 		return "releasenotes.txt";
 	}
+
 }

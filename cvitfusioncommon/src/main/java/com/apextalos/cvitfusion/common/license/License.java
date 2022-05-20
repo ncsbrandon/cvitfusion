@@ -1,7 +1,7 @@
 package com.apextalos.cvitfusion.common.license;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -25,14 +25,34 @@ public class License {
 		return props;
 	}
 	
-	public List<Feature> getVisibleFeatures() {
+	public boolean hasStringFeature(Feature feature) {
+		if (props == null || !props.containsKey(feature.getId())) {
+			return false;
+		}
+
+		return true;
+	}
+	
+	public Map<Feature, String> getAllFeatures() {
 		FeatureManager fm = FeatureManager.getInstance();
 		
-		List<Feature> features = new ArrayList<>();
-		for(Object propString : props.keySet()) {
-			Feature feature = fm.getFeature(String.valueOf(propString));
+		Map<Feature, String> features = new HashMap<>();
+		for(Object propKey : props.keySet()) {
+			Feature feature = fm.getFeature(String.valueOf(propKey));
+			if(feature != null)
+				features.put(feature, props.getProperty((String) propKey));
+		}
+		return features;
+	}
+	
+	public Map<Feature, String> getVisibleFeatures() {
+		FeatureManager fm = FeatureManager.getInstance();
+		
+		Map<Feature, String> features = new HashMap<>();
+		for(Object propKey : props.keySet()) {
+			Feature feature = fm.getFeature(String.valueOf(propKey));
 			if(feature != null && feature.getMode() == Feature.MODE_FEATURE)
-				features.add(feature);
+				features.put(feature, props.getProperty((String) propKey));
 		}
 		return features;
 	}
