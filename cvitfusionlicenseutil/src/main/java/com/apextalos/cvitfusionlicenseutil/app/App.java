@@ -78,7 +78,7 @@ public class App
     		} else if(feature.getType() == Integer.class) {
     			System.out.print(" (number): ");		
     		} else if(feature.getType() == Boolean.class) {
-    			System.out.print(" (y|n): ");	
+    			System.out.print(" (y|N): ");	
     		} else {
     			logger.error("Unknown feature type " + feature.getType().toString());
     			continue;
@@ -97,7 +97,10 @@ public class App
     		if(feature.getType() == String.class) {
     			license.setStringFeature(feature, response);
     		} else if(feature.getType() == Integer.class) {
-    			license.setIntFeature(feature, Integer.valueOf(response));
+    			int number = 0;
+    			if(!response.isBlank())
+    				Integer.valueOf(response);
+    			license.setIntFeature(feature, number);
     		} else if(feature.getType() == Boolean.class) {
     			license.setBooleanFeature(feature, response.equalsIgnoreCase("y"));
     		} else {
