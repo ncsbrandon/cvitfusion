@@ -34,4 +34,8 @@ message
  -map<string, string> parameters
  -object data
 
+## mosquitto docker
+sudo apt install docker.io
+sudo docker pull eclipse-mosquitto
+sudo docker run -it -p 1883:1883 -p 9001:9001 eclipse-mosquitto
 
