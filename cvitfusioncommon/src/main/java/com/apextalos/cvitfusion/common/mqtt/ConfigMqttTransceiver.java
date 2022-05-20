@@ -71,7 +71,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	// periodic messages
 	public static final String CONFIG_MQTT_PERIODIC_FREQ_SEC_DESC = "Summary report interval (sec)";
 	public static final String CONFIG_MQTT_PERIODIC_FREQ_SEC = "MQTT_PERIODIC_FREQ_SEC";
-	public static final int CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT = 300;
+	public static final int CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT = 60;
 	public static final String CONFIG_MQTT_ZONES_DESC = "Status report zones (JSON)";
 	public static final String CONFIG_MQTT_ZONES = "MQTT_ZONES";
 	public static final String CONFIG_MQTT_ZONES_DEFAULT = "";
@@ -112,6 +112,10 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 				cf.getString(CONFIG_MQTT_CLIENTID, CONFIG_MQTT_CLIENTID_DEFAULT));
 		this.cf = cf;
 	}
+	
+	public abstract String[] subscriptionTopics();
+	public abstract String statusTopic();
+	public abstract String buildStatusPayload();
 
 	public void start() {
 		// check for TLS certs
@@ -126,9 +130,6 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 				cf.getString(CONFIG_MQTT_USERNAME, CONFIG_MQTT_USERNAME_DEFAULT),
 				cf.getString(CONFIG_MQTT_PASSWORD, CONFIG_MQTT_PASSWORD_DEFAULT).toCharArray()
 				);
-
-		// validation of required settings
-		// TBD
 		
 		// connect
 		if (!connect()) {
@@ -137,12 +138,12 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		}
 
 		// subscribe to the config topic
-		String configTopic = topicBuilder(TOPIC_VERSION_1, TOPIC_CONFIG);
-		String[] topics = new String[] { configTopic };
-		subscribe(topics);
+		//String configTopic = topicBuilder(TOPIC_VERSION_1, TOPIC_CONFIG);
+		//String[] topics = new String[] { configTopic };
+		subscribe(subscriptionTopics());
 		
 		// create the thread for periodic summary reports
-		int freqsec = cf.getInt(CONFIG_MQTT_PERIODIC_FREQ_SEC, 300);
+		int freqsec = cf.getInt(CONFIG_MQTT_PERIODIC_FREQ_SEC, CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT);
 		if(freqsec == 0) {
 			logger.info("MQTT status reporting disabled");
 			return;
@@ -150,9 +151,6 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		
 		// status thread
 		statusTask = new SimpleThread() {
-			//private ObjectMapper mapper = new ObjectMapper();
-			private String statusTopic = topicBuilder(TOPIC_VERSION_1, TOPIC_STATUS);
-			
 			@Override
 			protected void running() {
 				while (!getStop()) {
@@ -182,19 +180,9 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 					// used disk
 					// used ram
 					// uptime
-					
-					// serialize to json
-					String statusContent = "status";
-					//try {
-					//	statusContent = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(summaryConfig);
-					//	//logger.debug("status message: " + statusContent);
-					//} catch (JsonProcessingException e) {
-					//	logger.error("Failure to json encode the status report: " + e.getMessage());
-					//	return;
-					//}
 
 					// publish periodic status message (with aggregated BSM data)
-					publish(statusTopic, statusContent, true);
+					publish(statusTopic(), buildStatusPayload(), true);
 				}
 			}
 		};
@@ -203,7 +191,11 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	}
 
 	public void stop() {
-		statusTask.setStop();
+		if(statusTask != null) {
+			statusTask.setStop();
+			statusTask = null;
+		}
+		
 		disconnect();
 	}
 }

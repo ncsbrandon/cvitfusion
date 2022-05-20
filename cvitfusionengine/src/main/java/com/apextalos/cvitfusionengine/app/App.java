@@ -1,9 +1,12 @@
 package com.apextalos.cvitfusionengine.app;
 
+import java.util.UUID;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
+import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusionengine.mqtt.EngineConfigMqttTransceiver;
 
 public class App {
@@ -25,6 +28,7 @@ public class App {
 		    }
 		});
 		
+		// start the app
 		App app = new App();
 		app.start();
 		
@@ -37,6 +41,7 @@ public class App {
 			}
 		}
 		
+		// stop the app
 		app.stop();
 	}
 	
@@ -51,8 +56,13 @@ public class App {
 		cf = new ConfigFile("cvitfusion.properties");
 		if (!cf.load())
 			System.exit(0);
-				
-		EngineConfigMqttTransceiver cmt = new EngineConfigMqttTransceiver(cf);
+		
+		// if we don't have a device UUID at startup, create one
+		if(!cf.hasKey(ConfigItems.DEVICE_UUID_CONFIG))
+			cf.setString(ConfigItems.DEVICE_UUID_CONFIG, UUID.randomUUID().toString(), false); 
+		
+		// main transceiver
+		cmt = new EngineConfigMqttTransceiver(cf);
 		cmt.start();
 		
 		logger.info("app started");
@@ -61,8 +71,8 @@ public class App {
 	public void stop() {
 		logger.info("app stopping");
 		
-		cf.save();
 		cmt.stop();
+		cf.save();
 		
 		logger.info("app stopped");
 	}

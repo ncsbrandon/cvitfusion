@@ -15,4 +15,21 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 
 	}
 
+	@Override
+	public String[] subscriptionTopics() {
+		// TODO Auto-generated method stub
+		return new String[0];
+	}
+
+	@Override
+	public String statusTopic() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String buildStatusPayload() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

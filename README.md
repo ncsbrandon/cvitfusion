@@ -20,3 +20,18 @@ https://www.oracle.com/java/technologies/downloads/
 ## running the client app
 Include these in the "VM Arguments"
 > --module-path "/usr/lib/jvm/javafx-sdk-18.0.1/lib" --add-modules javafx.controls,javafx.fxml
+
+## topic schema
+apextalos/cvitfusion/{message}/{engine guid}
+
+Example:
+ -> apextalos/cvitfusion/requestconfig/32143245325
+ <- apextalos/cvitfusion/responseconfig/32143245325
+  
+## message schema
+message
+ -version
+ -map<string, string> parameters
+ -object data
+
+
