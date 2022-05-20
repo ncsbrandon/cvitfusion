@@ -65,6 +65,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="resource"/>
-	<classpathentry kind="lib" path="/cvitfusioncommon/target/cvitfusioncommon-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cvitfusioncommon"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
