@@ -10,7 +10,7 @@ Connected Vehicle and Intelligent Transportation Fusion.  Consisting of 4 compon
 - Github Desktop
 - SceneBuilder
 - JavaFX
-- JDK 18
+- JDK 11 or greater (sudo apt install default-jdk)
 - remarkable
 
 ## Development references
