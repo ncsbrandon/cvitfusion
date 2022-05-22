@@ -1,6 +1,7 @@
 package com.apextalos.cvitfusion.client.app;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +21,8 @@ public class Main extends Application {
 
 	private static final Logger logger = LogManager.getLogger(Main.class.getSimpleName());
 
+	FXMLLoader fxmlLoader = null;
+
 	@Override
 	public void start(Stage stage) throws IOException {
 		logger.info("app starting");
@@ -29,12 +32,33 @@ public class Main extends Application {
 		if (!cf.load())
 			System.exit(0);
 
-		// show the main stage
-		URL url = getClass().getResource("hello-view.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader(url);
-		Scene scene = new Scene(fxmlLoader.load());
+		Scene scene = null;
+		Image icon = null;
+		
+		// try loading as the jar
+		InputStream in = getClass().getResourceAsStream("/hello-view.fxml");
+		logger.info(String.format("getResourceAsStream is null: %b", in==null));
+		if(in != null) {
+			fxmlLoader = new FXMLLoader();
+			scene = new Scene(fxmlLoader.load(in));
+			icon = new Image(getClass().getResourceAsStream("/missile.png"));
+		} else {	
+			// try loading as the debugger
+			URL url = getClass().getResource("../../../../../hello-view.fxml");
+			logger.info(String.format("getResource is null: %b", url==null));
+			if(url != null) {
+				fxmlLoader = new FXMLLoader(url);
+				scene = new Scene(fxmlLoader.load());
+				URL url2 = getClass().getResource("../../../../../missile.png");
+				icon = new Image(url2.toExternalForm());
+			} else {
+				logger.error("unable to load the main scene fxml");
+				System.exit(0);
+			}
+		}
+		
 		stage.setTitle("Apex Talos CVITFusion Client");
-		stage.getIcons().add(new Image(getClass().getResource("missile.png").toExternalForm()));
+		stage.getIcons().add(icon);
 		stage.setScene(scene);
 		stage.setResizable(true);
 		((HelloController) fxmlLoader.getController()).begin(cf);

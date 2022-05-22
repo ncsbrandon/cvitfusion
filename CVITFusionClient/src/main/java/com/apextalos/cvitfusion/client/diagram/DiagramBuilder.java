@@ -1,5 +1,6 @@
 package com.apextalos.cvitfusion.client.diagram;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +89,13 @@ public class DiagramBuilder {
 		}
 
 		// draw the control
-		DiagramNodeControl r = new DiagramNodeControl();
+		DiagramNodeControl r = null;
+		try {
+			r = new DiagramNodeControl();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		r.setLayoutX(x);
 		r.setLayoutY(thisPos.getY());
 		DiagramNodeModel model = r.getController().getModel();
