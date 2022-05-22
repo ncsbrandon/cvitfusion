@@ -1,1 +1,0 @@
-C:\Users\ncsbr\Downloads\jdk-18.0.1.1\bin\java.exe --module-path C:\Users\ncsbr\Downloads\javafx-sdk-18.0.1\lib\ --add-modules javafx.controls,javafx.fxml -cp D:\cvitfusion-client\out\artifacts\CVITFusion_Client_jar\CVITFusion-Client.jar com.apextalos.cvitfusionclient.HelloApplication
