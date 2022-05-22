@@ -5,6 +5,19 @@ Connected Vehicle and Intelligent Transportation Fusion.  Consisting of 4 compon
 - LicenseUtil: Turns the license ID of the engine into license keys with enabled features
 - Common: library of common code
 
+## Building the jars with dependencies
+For each project:
+> mvn clean compile assembly:single
+
+## Running the client app
+> java -cp target/CVITFusionClient-0.0.1-SNAPSHOT-jar-with-dependencies.jar --module-path "/usr/lib/jvm/javafx-sdk-18.0.1/lib" --add-modules javafx.controls,javafx.fxml com.apextalos.cvitfusion.client.app.Main
+
+## Running the engine app
+> java -cp target/cvitfusionengine-0.0.1-SNAPSHOT-jar-with-dependencies.jar com.apextalos.cvitfusionengine.app.App
+
+## Running the licensing app
+java -cp target/cvitfusionlicenseutil-0.0.1-SNAPSHOT-jar-with-dependencies.jar com.apextalos.cvitfusionlicenseutil.app.App
+
 ## Development tools
 - Eclipse IDE and plugins (https://download.eclipse.org/efxclipse/updates-released/3.8.0/site/)
 - Github Desktop
@@ -18,9 +31,6 @@ Connected Vehicle and Intelligent Transportation Fusion.  Consisting of 4 compon
 - https://openjfx.io/openjfx-docs/
 - https://www.oracle.com/java/technologies/downloads/
 
-## Running the client app
-Include these into the "VM Arguments"
-> --module-path "/usr/lib/jvm/javafx-sdk-18.0.1/lib" --add-modules javafx.controls,javafx.fxml
 
 ## topic schema
 > apextalos/cvitfusion/{message}/{engine guid}
