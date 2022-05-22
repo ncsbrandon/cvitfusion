@@ -60,4 +60,8 @@ Engine response
 > docker pull eclipse-mosquitto
 > 
 > docker run -it -p 1883:1883 -p 9001:9001 -v /root/mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf eclipse-mosquitto
+> 
+> mosquitto_pub -h localhost -p 1883 -t /test -m 'hello'
+> 
+> mosquitto_sub -h localhost -p 1883 -t /#
 
