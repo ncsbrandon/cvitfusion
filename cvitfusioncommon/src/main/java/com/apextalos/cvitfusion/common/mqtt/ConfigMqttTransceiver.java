@@ -7,78 +7,13 @@ import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusion.common.thread.SimpleThread;
 import com.apextalos.cvitfusion.common.utils.SleepUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 
 	private static Logger logger = LogManager.getLogger(ConfigMqttTransceiver.class.getSimpleName());
 
-	// topics
-	/*
-	public static final String TOPIC_VERSION_1 = "v1";
-	public static final String TOPIC_CONFIG = "CONFIG";
-	public static final String TOPIC_STATUS = "STATUS";
-	public static final String TOPIC_GPIO = "GPIO";
-	public static final String TOPIC_SUMMARY = "SUMMARY";
-	public static final String TOPIC_BSM = "BSM";
-	public static final String TOPIC_WRONGWAY = "WRONGWAY";
-	public static final String TOPIC_PED = "PED";
-	public static final String TOPIC_COLLISION = "COLLISION";
-	public static final String TOPIC_LOWVIS = "LOWVIS";
-	public static final String TOPIC_HIGHWIND = "HIGHWIND";
-	public static final String TOPIC_QUEUE = "QUEUE";
-	public static final String TOPIC_AVGSPEED = "AVGSPEED";
-	public static final String TOPIC_TRAIN = "TRAIN";
-	public static final String TOPIC_WORKZONE = "WORKZONE";
-	public static final String TOPIC_SECURITY = "SECURITY";
-	public static final String TOPIC_SURFACE = "SURFACE";
-	public static final String TOPIC_OCCUPANCY = "OCCUPANCY";
-	public static final String TOPIC_DEACTIVATE = "DEACTIVATE";
-	public static final String TOPIC_TEST = "TEST";
-	*/
-	
-	/*
-	// BSM forward
-	public static final String CONFIG_MQTT_ENABLEBSMFORWARD = "MQTT_ENABLEBSMFORWARD";
-	public static final boolean CONFIG_MQTT_ENABLEBSMFORWARD_DEFAULT = true;
-	public static final String CONFIG_MQTT_ENABLEBSMFORWARD_DESC = "Enable BSM forwarding";
-	
-	// periodic messages
-	public static final String CONFIG_MQTT_PERIODIC_FREQ_SEC_DESC = "Summary report interval (sec)";
-	public static final String CONFIG_MQTT_PERIODIC_FREQ_SEC = "MQTT_PERIODIC_FREQ_SEC";
-	public static final int CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT = 60;
-	public static final String CONFIG_MQTT_ZONES_DESC = "Status report zones (JSON)";
-	public static final String CONFIG_MQTT_ZONES = "MQTT_ZONES";
-	public static final String CONFIG_MQTT_ZONES_DEFAULT = "";
-	
-	// SFTP settings
-	public static final String CONFIG_MQTT_SFTPHOST = "mqtt_sftphost";
-	public static final String CONFIG_MQTT_SFTPHOST_DEFAULT = "sftphost";
-	public static final String CONFIG_MQTT_SFTPHOST_DESC = "SFTP Host";
-	public static final String CONFIG_MQTT_SFTPUSER = "mqtt_sftpuser";
-	public static final String CONFIG_MQTT_SFTPUSER_DEFAULT = "sftpuser";
-	public static final String CONFIG_MQTT_SFTPUSER_DESC = "SFTP Username";
-	public static final String CONFIG_MQTT_SFTPPASS = "mqtt_sftppass";
-	public static final String CONFIG_MQTT_SFTPPASS_DEFAULT = "";
-	public static final String CONFIG_MQTT_SFTPPASS_DESC = "SFTP Password";
-	public static final String CONFIG_MQTT_SFTPFOLDER = "mqtt_sftpfolder";
-	public static final String CONFIG_MQTT_SFTPFOLDER_DEFAULT = "";
-	public static final String CONFIG_MQTT_SFTPFOLDER_DESC = "SFTP destination folder";
-	*/
-	
-	/*
-	private static final String PARAMETER_SCRIPT = "script";
-	private static final String PARAMETER_EVENT = "event";
-	private static final String PARAMETER_EVENT_START = "start";
-	private static final String PARAMETER_EVENT_STOP = "stop";
-	private static final String PARAMETER_EVENT_ENABLE = "enable";
-	private static final String PARAMETER_EVENT_DISABLE = "disable";
-	private static final String PARAMETER_EVENT_STARTALL = "start-all";
-	private static final String PARAMETER_EVENT_STOPALL = "stop-all";
-	private static final String PARAMETER_EVENT_ENABLESTART = "enable-start";
-	private static final String PARAMETER_EVENT_STOPDISABLE = "stop-disable";
-	*/
-	
 	protected ConfigFile cf;
 	protected ObjectMapper mapper = new ObjectMapper();
 	private SimpleThread statusTask;
@@ -91,7 +26,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	
 	public abstract String[] subscriptionTopics();
 	public abstract String statusTopic();
-	public abstract String buildStatusPayload();
+	public abstract String buildStatusPayload() throws JsonProcessingException;
 
 	public void start() {
 		// check for TLS certs
@@ -113,9 +48,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 			return;
 		}
 
-		// subscribe to the config topic
-		//String configTopic = topicBuilder(TOPIC_VERSION_1, TOPIC_CONFIG);
-		//String[] topics = new String[] { configTopic };
+		// subscriptions
 		subscribe(subscriptionTopics());
 		
 		// create the thread for periodic summary reports
@@ -133,32 +66,12 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 					// wait until the next run
 					SleepUtils.safeSleep((long) 1000 * freqsec);
 					
-					// update status
-					//summaryConfig.updateTimestamp();
-					//summaryConfig.setSubtype(cf.getString(ConfigFile.SUBTYPE, ConfigFile.SUBTYPE_DEFAULT));
-					//summaryConfig.setLocation(cf.getString(ConfigFile.LOCATIONNAME, ConfigFile.LOCATIONNAME_DEFAULT));
-					//summaryConfig.setLatitude(cf.getString(ConfigFile.LATITUDE, ConfigFile.LATITUDE_DEFAULT));
-					//summaryConfig.setLongitude(cf.getString(ConfigFile.LONGITUDE, ConfigFile.LONGITUDE_DEFAULT));
-					//summaryConfig.setAltitude(cf.getString(ConfigFile.ALTITUDE, ConfigFile.ALTITUDE_DEFAULT));
-					// system status
-					// sensor status
-					// script status
-					// -num scripts
-					// -running scripts
-					// GPIOs
-					// versions
-					// -java
-					// -mainboard
-					// logging level
-					// cpu temp
-					// cpu load
-					// num procs
-					// used disk
-					// used ram
-					// uptime
-
 					// publish periodic status message (with aggregated BSM data)
-					publish(statusTopic(), buildStatusPayload(), true);
+					try {
+						publish(statusTopic(), buildStatusPayload(), true);
+					} catch (JsonProcessingException e) {
+						logger.error("Unable to build status payload: " + e.getMessage());
+					}
 				}
 			}
 		};

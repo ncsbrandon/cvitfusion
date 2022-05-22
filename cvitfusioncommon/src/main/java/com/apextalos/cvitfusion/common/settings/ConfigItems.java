@@ -11,6 +11,15 @@ public class ConfigItems {
 	public static final String DEVICE_LICENSEID_DEFAULT = "UNKNOWN";
 	public static final String DEVICE_LICENSEKEY_CONFIG = "DEVICE_LICENSEKEY";
 	public static final String DEVICE_LICENSEKEY_DEFAULT = "UNKNOWN";
+	public static final String DEVICE_LOCATION_CONFIG = "DEVICE_LOCATION";
+	public static final String DEVICE_LOCATION_DEFAULT = "UNKNOWN";
+	
+	public static final String DEVICE_LATITUDE_CONFIG = "DEVICE_LATITUDE";
+	public static final double DEVICE_LATITUDE_DEFAULT = -9999;
+	public static final String DEVICE_LONGITUDE_CONFIG = "DEVICE_LONGITUDE";
+	public static final double DEVICE_LONGITUDE_DEFAULT = -9999;
+	public static final String DEVICE_ELEVATION_CONFIG = "DEVICE_ELEVATION";
+	public static final double DEVICE_ELEVATION_DEFAULT = -9999;
 	
 	public static final String CONFIG_MQTT_CACERT_DESC = "";
 	public static final String CONFIG_MQTT_CACERT = "MQTT_CACERT";
