@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
+import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusion.common.thread.SimpleThread;
 import com.apextalos.cvitfusion.common.utils.SleepUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +14,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	private static Logger logger = LogManager.getLogger(ConfigMqttTransceiver.class.getSimpleName());
 
 	// topics
+	/*
 	public static final String TOPIC_VERSION_1 = "v1";
 	public static final String TOPIC_CONFIG = "CONFIG";
 	public static final String TOPIC_STATUS = "STATUS";
@@ -33,36 +35,9 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	public static final String TOPIC_OCCUPANCY = "OCCUPANCY";
 	public static final String TOPIC_DEACTIVATE = "DEACTIVATE";
 	public static final String TOPIC_TEST = "TEST";
+	*/
 	
-	// broker settings
-	public static final String CONFIG_MQTT_CACERT_DESC = "";
-	public static final String CONFIG_MQTT_CACERT = "MQTT_CACERT";
-	public static final String CONFIG_MQTT_CACERT_DEFAULT = "ca-cert.pem";
-	public static final String CONFIG_MQTT_CLIENTCERT_DESC = "";
-	public static final String CONFIG_MQTT_CLIENTCERT = "MQTT_CLIENTCERT";
-	public static final String CONFIG_MQTT_CLIENTCERT_DEFAULT = "server-cert.pem";
-	public static final String CONFIG_MQTT_CLIENTKEY_DESC = "";
-	public static final String CONFIG_MQTT_CLIENTKEY = "MQTT_CLIENTKEY";
-	public static final String CONFIG_MQTT_CLIENTKEY_DEFAULT = "server-key.pem";
-	public static final String CONFIG_MQTT_CLIENTID_DESC = "Connection client ID";
-	public static final String CONFIG_MQTT_CLIENTID = "MQTT_CLIENTID";
-	public static final String CONFIG_MQTT_CLIENTID_DEFAULT = "";
-	public static final String CONFIG_MQTT_BROKER_DESC = "Broker url";
-	public static final String CONFIG_MQTT_BROKER = "MQTT_BROKER";
-	public static final String CONFIG_MQTT_BROKER_DEFAULT = "";
-	public static final String CONFIG_MQTT_USERNAME_DESC = "Broker Username";
-	public static final String CONFIG_MQTT_USERNAME = "MQTT_USERNAME";
-	public static final String CONFIG_MQTT_USERNAME_DEFAULT = "";
-	public static final String CONFIG_MQTT_PASSWORD_DESC = "Broker Password";
-	public static final String CONFIG_MQTT_PASSWORD = "MQTT_PASSWORD";
-	public static final String CONFIG_MQTT_PASSWORD_DEFAULT = "";
-	public static final String CONFIG_MQTT_CUSTOMER_DESC = "Topic customer";
-	public static final String CONFIG_MQTT_CUSTOMER = "MQTT_CUSTOMER";
-	public static final String CONFIG_MQTT_CUSTOMER_DEFAULT = "";
-	public static final String CONFIG_MQTT_REGION_DESC = "Topic region";
-	public static final String CONFIG_MQTT_REGION = "MQTT_REGION";
-	public static final String CONFIG_MQTT_REGION_DEFAULT = "";
-	
+	/*
 	// BSM forward
 	public static final String CONFIG_MQTT_ENABLEBSMFORWARD = "MQTT_ENABLEBSMFORWARD";
 	public static final boolean CONFIG_MQTT_ENABLEBSMFORWARD_DEFAULT = true;
@@ -89,7 +64,8 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	public static final String CONFIG_MQTT_SFTPFOLDER = "mqtt_sftpfolder";
 	public static final String CONFIG_MQTT_SFTPFOLDER_DEFAULT = "";
 	public static final String CONFIG_MQTT_SFTPFOLDER_DESC = "SFTP destination folder";
-
+	*/
+	
 	/*
 	private static final String PARAMETER_SCRIPT = "script";
 	private static final String PARAMETER_EVENT = "event";
@@ -108,8 +84,8 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	private SimpleThread statusTask;
 
 	public ConfigMqttTransceiver(ConfigFile cf) {
-		super(cf.getString(CONFIG_MQTT_BROKER, CONFIG_MQTT_BROKER_DEFAULT),
-				cf.getString(CONFIG_MQTT_CLIENTID, CONFIG_MQTT_CLIENTID_DEFAULT));
+		super(cf.getString(ConfigItems.CONFIG_MQTT_BROKER, ConfigItems.CONFIG_MQTT_BROKER_DEFAULT),
+				cf.getString(ConfigItems.CONFIG_MQTT_CLIENTID, ConfigItems.CONFIG_MQTT_CLIENTID_DEFAULT));
 		this.cf = cf;
 	}
 	
@@ -120,15 +96,15 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	public void start() {
 		// check for TLS certs
 		setCerts(
-				cf.getString(CONFIG_MQTT_CACERT, CONFIG_MQTT_CACERT_DEFAULT),
-				cf.getString(CONFIG_MQTT_CLIENTCERT, CONFIG_MQTT_CLIENTCERT_DEFAULT),
-				cf.getString(CONFIG_MQTT_CLIENTKEY, CONFIG_MQTT_USERNAME_DEFAULT)
+				cf.getString(ConfigItems.CONFIG_MQTT_CACERT, ConfigItems.CONFIG_MQTT_CACERT_DEFAULT),
+				cf.getString(ConfigItems.CONFIG_MQTT_CLIENTCERT, ConfigItems.CONFIG_MQTT_CLIENTCERT_DEFAULT),
+				cf.getString(ConfigItems.CONFIG_MQTT_CLIENTKEY, ConfigItems.CONFIG_MQTT_USERNAME_DEFAULT)
 				);
 		
 		// set user auth
 		setUserAuth(
-				cf.getString(CONFIG_MQTT_USERNAME, CONFIG_MQTT_USERNAME_DEFAULT),
-				cf.getString(CONFIG_MQTT_PASSWORD, CONFIG_MQTT_PASSWORD_DEFAULT).toCharArray()
+				cf.getString(ConfigItems.CONFIG_MQTT_USERNAME, ConfigItems.CONFIG_MQTT_USERNAME_DEFAULT),
+				cf.getString(ConfigItems.CONFIG_MQTT_PASSWORD, ConfigItems.CONFIG_MQTT_PASSWORD_DEFAULT).toCharArray()
 				);
 		
 		// connect
@@ -143,7 +119,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		subscribe(subscriptionTopics());
 		
 		// create the thread for periodic summary reports
-		int freqsec = cf.getInt(CONFIG_MQTT_PERIODIC_FREQ_SEC, CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT);
+		int freqsec = cf.getInt(ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC, ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT);
 		if(freqsec == 0) {
 			logger.info("MQTT status reporting disabled");
 			return;

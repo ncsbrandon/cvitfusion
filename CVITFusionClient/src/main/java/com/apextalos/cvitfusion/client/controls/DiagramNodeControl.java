@@ -15,7 +15,6 @@ import com.apextalos.cvitfusion.client.controllers.DiagramNodeController;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 
 public class DiagramNodeControl extends AnchorPane implements ActionListener {

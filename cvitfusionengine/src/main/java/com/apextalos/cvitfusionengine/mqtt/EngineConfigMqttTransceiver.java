@@ -18,7 +18,7 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 	@Override
 	public String[] subscriptionTopics() {
 		// TODO Auto-generated method stub
-		return new String[0];
+		return new String[] { "/test" };
 	}
 
 	@Override

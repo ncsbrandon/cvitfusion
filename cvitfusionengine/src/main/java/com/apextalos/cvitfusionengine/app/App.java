@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.common.license.Feature;
+import com.apextalos.cvitfusion.common.license.FeatureManager;
 import com.apextalos.cvitfusion.common.license.License;
 import com.apextalos.cvitfusion.common.license.LicenseManager;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
@@ -91,16 +92,16 @@ public class App {
 			return false;
 		}
 		
-		String iface;
-		try {
-			iface = lm.getFirstInterface();
-		} catch (SocketException e1) {
-			logger.error("Unable to find license interface");
-			return false;
-		}
-		
 		// if we don't have a license ID, create one
 		if(!cf.hasKey(ConfigItems.DEVICE_LICENSEID_CONFIG)) {	
+			String iface;
+			try {
+				iface = lm.getFirstInterface();
+			} catch (SocketException e1) {
+				logger.error("Unable to find license interface");
+				return false;
+			}
+			
 			try {		
 				String licenseID = lm.generateLicenseID(iface, Version.getInstance().getVersion());
 				cf.setString(ConfigItems.DEVICE_LICENSEID_CONFIG, licenseID, false);
@@ -133,11 +134,15 @@ public class App {
 		License licenseKey = null;
 		try {
 			licenseKey = lm.loadLicense(cf.getString(ConfigItems.DEVICE_LICENSEKEY_CONFIG, ConfigItems.DEVICE_LICENSEKEY_DEFAULT));
-			logger.error("license key loaded property count: " + licenseKey.getProperties().size());
+			logger.info("license key property count: " + licenseKey.getProperties().size());
 		} catch (ClassNotFoundException | IllegalBlockSizeException | BadPaddingException | IOException e) {
 			logger.error("Unable to load license key");
 			return false;
 		}
+		
+		// what interface is being requested
+		String iface = licenseKey.getStringFeature(FeatureManager.FEATURE_INTERFACE);
+		logger.info("using interface: " + iface);
 		
 		try {
 			if(!lm.verifyAddress(iface, licenseKey)) {

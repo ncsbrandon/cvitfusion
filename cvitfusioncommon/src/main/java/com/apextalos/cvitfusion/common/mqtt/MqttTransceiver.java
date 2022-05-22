@@ -209,6 +209,11 @@ public abstract class MqttTransceiver implements MqttCallback {
 			if(!connect() || !resubscribe())
 				return false; // failure to reconnect or resubscribe
 		}
+		
+		if(content == null || content.isBlank()) {
+			logger.debug("nothing to publish");
+			return false;
+		}
 
 		logger.debug("Publishing message [" + content.length() + "]: " + topic);
 		MqttMessage message = new MqttMessage(content.getBytes());
