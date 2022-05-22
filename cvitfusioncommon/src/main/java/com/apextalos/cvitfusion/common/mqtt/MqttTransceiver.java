@@ -210,7 +210,8 @@ public abstract class MqttTransceiver implements MqttCallback {
 				return false; // failure to reconnect or resubscribe
 		}
 		
-		if(content == null || content.isBlank()) {
+		if(topic == null || topic.isBlank() ||
+		   content == null || content.isBlank()) {
 			logger.debug("nothing to publish");
 			return false;
 		}
@@ -237,7 +238,25 @@ public abstract class MqttTransceiver implements MqttCallback {
 		return true; // success
 	}
 	
+	public void subscribe(String topicFilter) {
+		if(topicFilter == null || topicFilter.isBlank())
+			return;
+		
+		try {
+			logger.debug("subscribing: " + topicFilter);
+			activeSubscriptions.add(topicFilter);
+			client.subscribe(topicFilter);
+		} catch (MqttException e) {
+			logger.error("subscription failure reason " + e.getReasonCode());
+			logger.error("msg " + e.getMessage());
+			logger.error("cause " + e.getCause());
+		}
+	}
+	
 	public void subscribe(String[] topicFilters) {
+		if(topicFilters == null || topicFilters.length == 0)
+			return;
+		
 		try {
 			logger.debug("subscribing: " + Arrays.toString(topicFilters));
 			activeSubscriptions.addAll(Arrays.asList(topicFilters));

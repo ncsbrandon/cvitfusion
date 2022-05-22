@@ -3,6 +3,7 @@ package com.apextalos.cvitfusionengine.mqtt;
 import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.common.mqtt.ConfigMqttTransceiver;
+import com.apextalos.cvitfusion.common.mqtt.ISubscriptionHander;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusionengine.app.Version;
@@ -20,16 +21,14 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 
 	@Override
 	public String[] subscriptionTopics() {
-		String[] subscriptions = new String[1];
-		subscriptions[0] = String.format("/apextalos/cvitfusion/requestconfig/%s",
-				cf.getString(ConfigItems.DEVICE_UUID_CONFIG, ConfigItems.DEVICE_UUID_DEFAULT));
-		return subscriptions;
+		return null;
 	}
 
 	@Override
-	protected void incomingMessage(String topic, String payload) {
-		// TODO Auto-generated method stub
-
+	public ISubscriptionHander[] subscriptionHandlers() {
+		ISubscriptionHander[] subscriptionHandlers = new ISubscriptionHander[1];
+		subscriptionHandlers[0] = new ConfigRequestSubscriptionHandler(cf);
+		return subscriptionHandlers;
 	}
 
 	@Override

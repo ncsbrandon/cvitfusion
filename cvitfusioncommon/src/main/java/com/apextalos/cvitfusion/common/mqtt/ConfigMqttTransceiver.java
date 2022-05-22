@@ -17,7 +17,8 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	protected ConfigFile cf;
 	protected ObjectMapper mapper = new ObjectMapper();
 	private SimpleThread statusTask;
-
+	private ISubscriptionHander[] handlers;
+	
 	public ConfigMqttTransceiver(ConfigFile cf) {
 		super(cf.getString(ConfigItems.CONFIG_MQTT_BROKER, ConfigItems.CONFIG_MQTT_BROKER_DEFAULT),
 				cf.getString(ConfigItems.CONFIG_MQTT_CLIENTID, ConfigItems.CONFIG_MQTT_CLIENTID_DEFAULT));
@@ -25,6 +26,8 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	}
 	
 	public abstract String[] subscriptionTopics();
+	public abstract ISubscriptionHander[] subscriptionHandlers();
+	
 	public abstract String statusTopic();
 	public abstract String buildStatusPayload() throws JsonProcessingException;
 
@@ -50,6 +53,10 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 
 		// subscriptions
 		subscribe(subscriptionTopics());
+		handlers = subscriptionHandlers();
+		for(ISubscriptionHander handler : handlers) {
+			subscribe(handler.topic());
+		}
 		
 		// create the thread for periodic summary reports
 		int freqsec = cf.getInt(ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC, ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT);
@@ -86,5 +93,15 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		}
 		
 		disconnect();
+	}
+	
+	@Override
+	protected void incomingMessage(String topic, String payload) {
+		for(ISubscriptionHander handler : handlers) {
+			if(0 == handler.topic().compareToIgnoreCase(topic)) {
+				handler.onMessage(payload);
+				return;
+			}
+		}
 	}
 }
