@@ -10,3 +10,4 @@ rm -rf cvitfusionengine/logs/
 rm -rf cvitfusionlicenseutil/target/
 rm -rf cvitfusionlicenseutil/.settings/
 rm -rf cvitfusionlicenseutil/logs/
+rm -rf ~/.m2/repository/
