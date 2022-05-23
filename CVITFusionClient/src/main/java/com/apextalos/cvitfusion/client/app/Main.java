@@ -7,22 +7,18 @@ import java.net.URL;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.apextalos.cvitfusion.client.controllers.BaseController;
-import com.apextalos.cvitfusion.client.controllers.MainSceneController;
+import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 
 	private static final Logger logger = LogManager.getLogger(Main.class.getSimpleName());
 
-	FXMLLoader fxmlLoader = null;
+	
 
 	@Override
 	public void start(Stage stage) throws IOException {
@@ -37,49 +33,8 @@ public class Main extends Application {
 		stage.setTitle("Apex Talos CVITFusion Client");
 		stage.getIcons().add(loadIcon("missile.png"));
 				
-		//Scene connections = loadScene("connections.fxml");
-		
-		stage.setScene(loadScene("mainScene.fxml"));
-		stage.setResizable(true);
-		((BaseController) fxmlLoader.getController()).begin(cf);
-		stage.setX(cf.getDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, ConfigItems.WINDOW_POSITION_X_DEFAULT));
-		stage.setY(cf.getDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, ConfigItems.WINDOW_POSITION_Y_DEFAULT));
-		stage.setWidth(cf.getDouble(ConfigItems.WINDOW_WIDTH_CONFIG, ConfigItems.WINDOW_WIDTH_DEFAULT));
-		stage.setHeight(cf.getDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, ConfigItems.WINDOW_HEIGHT_DEFAULT));
-		stage.show();
-
-		// save window size and position at close
-		stage.setOnCloseRequest((final WindowEvent event) -> {
-			((BaseController) fxmlLoader.getController()).end();
-			cf.setDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, stage.getX());
-			cf.setDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, stage.getY());
-			cf.setDouble(ConfigItems.WINDOW_WIDTH_CONFIG, stage.getWidth());
-			cf.setDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, stage.getHeight());
-			cf.save();
-		});
-	}
-	
-	private Scene loadScene(String name) throws IOException {
-		Scene scene = null;
-		
-		InputStream in = getClass().getResourceAsStream("/" + name);
-		logger.info(String.format("getResourceAsStream is null: %b", in==null));
-		if(in != null) {
-			fxmlLoader = new FXMLLoader();
-			scene = new Scene(fxmlLoader.load(in));
-		} else {	
-			// try loading as the debugger
-			URL url = getClass().getResource("../../../../../" + name);
-			logger.info(String.format("getResource is null: %b", url==null));
-			if(url != null) {
-				fxmlLoader = new FXMLLoader(url);
-				scene = new Scene(fxmlLoader.load());
-			} else {
-				logger.error("unable to load the scene fxml " + name);
-			}
-		}
-		
-		return scene;
+		// first show the connections dialog
+		SceneManager.getInstance(stage, cf).showConnections();		
 	}
 	
 	private Image loadIcon(String name) throws IOException {

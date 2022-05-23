@@ -6,6 +6,7 @@ import java.util.List;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.fxml.Initializable;
+import javafx.stage.Stage;
 
 public abstract class BaseController implements Initializable, ActionListener {
 
@@ -33,6 +34,9 @@ public abstract class BaseController implements Initializable, ActionListener {
 			l.onActionPerformed(o, et);
 		}
 	}
+	
+	public abstract void loadPosition(Stage stage);
+	public abstract void savePosition(Stage stage);
 
 	public abstract void onActionPerformed(Object o, EventType et);
 }

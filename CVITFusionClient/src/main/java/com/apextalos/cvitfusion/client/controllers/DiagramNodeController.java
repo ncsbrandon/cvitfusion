@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 public class DiagramNodeController extends BaseController {
 
@@ -88,5 +89,15 @@ public class DiagramNodeController extends BaseController {
 	@Override
 	public void onActionPerformed(Object o, EventType et) {
 
+	}
+
+	@Override
+	public void loadPosition(Stage stage) {
+		// N/A
+	}
+
+	@Override
+	public void savePosition(Stage stage) {
+		// N/A
 	}
 }

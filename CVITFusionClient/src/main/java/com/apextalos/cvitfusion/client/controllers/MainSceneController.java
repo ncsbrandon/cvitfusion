@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
+import com.apextalos.cvitfusion.client.app.ConfigItems;
 import com.apextalos.cvitfusion.client.app.Version;
 import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
@@ -41,6 +42,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 
 public class MainSceneController extends BaseController {
 
@@ -327,5 +329,21 @@ public class MainSceneController extends BaseController {
 		dnc.getController().select(false);
 		activeSelection = null;
 		model.getTableItems().clear();
+	}
+
+	@Override
+	public void loadPosition(Stage stage) {
+		stage.setX(cf.getDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, ConfigItems.WINDOW_POSITION_X_DEFAULT));
+		stage.setY(cf.getDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, ConfigItems.WINDOW_POSITION_Y_DEFAULT));
+		stage.setWidth(cf.getDouble(ConfigItems.WINDOW_WIDTH_CONFIG, ConfigItems.WINDOW_WIDTH_DEFAULT));
+		stage.setHeight(cf.getDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, ConfigItems.WINDOW_HEIGHT_DEFAULT));
+	}
+
+	@Override
+	public void savePosition(Stage stage) {
+		cf.setDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, stage.getX());
+		cf.setDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, stage.getY());
+		cf.setDouble(ConfigItems.WINDOW_WIDTH_CONFIG, stage.getWidth());
+		cf.setDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, stage.getHeight());
 	}
 }

@@ -1,5 +1,6 @@
 package com.apextalos.cvitfusion.client.controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -7,13 +8,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.client.models.ConnectionsSceneModel;
-import com.apextalos.cvitfusion.client.models.MainSceneModel;
+import com.apextalos.cvitfusion.client.scene.SceneManager;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class ConnectionsSceneController extends BaseController {
 
@@ -61,12 +63,21 @@ public class ConnectionsSceneController extends BaseController {
 	
 	@FXML
 	private void OnActionConnectButton(ActionEvent action) {
+		//savePosition(null);
+		end();
 		
+		try {
+			SceneManager.getInstance(null, null).showMain();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
 	private void OnActionCancelButton(ActionEvent action) {
-		
+		action.consume();
+		System.exit(0);
 	}
 	
 	@FXML
@@ -81,6 +92,18 @@ public class ConnectionsSceneController extends BaseController {
 	
 	@FXML
 	private void OnActionClientKeyButton(ActionEvent action) {
+		
+	}
+
+	@Override
+	public void loadPosition(Stage stage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void savePosition(Stage stage) {
+		// TODO Auto-generated method stub
 		
 	}
 }
