@@ -43,13 +43,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="545.0" prefWidth="717.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="520.0" prefWidth="712.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="540.0" prefWidth="717.0" VBox.vgrow="ALWAYS">
       <children>
-            <ListView layoutX="14.0" layoutY="54.0" prefHeight="357.0" prefWidth="260.0" />
+            <ListView layoutX="8.0" layoutY="54.0" prefHeight="369.0" prefWidth="273.0" />
             <Label layoutX="21.0" layoutY="21.0" text="Saved sessions" />
-            <Button layoutX="106.0" layoutY="415.0" mnemonicParsing="false" text="Delete">
+            <Button layoutX="104.0" layoutY="430.0" mnemonicParsing="false" text="Delete">
                <graphic>
                   <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -58,7 +58,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="204.0" layoutY="416.0" mnemonicParsing="false" text="Save">
+            <Button layoutX="205.0" layoutY="430.0" mnemonicParsing="false" text="Save">
                <graphic>
                   <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -67,20 +67,20 @@
                   </ImageView>
                </graphic>
             </Button>
-            <TextField layoutX="422.0" layoutY="23.0" prefHeight="24.0" prefWidth="259.0" promptText="Broker identifier" />
-            <Label layoutX="320.0" layoutY="27.0" text="Session name" />
-            <TextField layoutX="422.0" layoutY="58.0" prefHeight="24.0" prefWidth="258.0" promptText="tcp://ip_address:1883" />
-            <Label layoutX="320.0" layoutY="62.0" text="URL" />
+            <TextField layoutX="422.0" layoutY="31.0" prefHeight="24.0" prefWidth="259.0" promptText="Broker identifier" />
+            <Label layoutX="320.0" layoutY="35.0" text="Session name" />
+            <TextField layoutX="422.0" layoutY="66.0" prefHeight="24.0" prefWidth="258.0" promptText="tcp://ip_address:1883" />
+            <Label layoutX="320.0" layoutY="70.0" text="URL" />
             <TitledPane animated="false" collapsible="false" layoutX="303.0" layoutY="142.0" text="TLS security">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="140.0" prefWidth="395.0">
                      <children>
                         <CheckBox layoutX="18.0" layoutY="17.0" mnemonicParsing="false" text="Enabled" />
-                        <TextField layoutX="96.0" layoutY="43.0" promptText="[path to file]" />
+                        <TextField layoutX="105.0" layoutY="43.0" promptText="[path to file]" />
                         <Label layoutX="21.0" layoutY="47.0" text="CA cert" />
-                        <TextField layoutX="96.0" layoutY="74.0" promptText="[path to file]" />
+                        <TextField layoutX="105.0" layoutY="74.0" promptText="[path to file]" />
                         <Label layoutX="21.0" layoutY="78.0" text="Client cert" />
-                        <TextField layoutX="96.0" layoutY="104.0" promptText="[path to file]" />
+                        <TextField layoutX="105.0" layoutY="104.0" promptText="[path to file]" />
                         <Label layoutX="21.0" layoutY="108.0" text="Client key" />
                         <Button layoutX="290.0" layoutY="43.0" mnemonicParsing="false" text="Browse..." />
                         <Button layoutX="290.0" layoutY="74.0" mnemonicParsing="false" text="Browse..." />
@@ -89,22 +89,22 @@
                   </AnchorPane>
               </content>
             </TitledPane>
-            <TitledPane animated="false" collapsible="false" layoutX="299.0" layoutY="324.0" text="Password authentication">
+            <TitledPane animated="false" collapsible="false" layoutX="303.0" layoutY="324.0" text="Password authentication">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="395.0">
                      <children>
                         <CheckBox layoutX="18.0" layoutY="17.0" mnemonicParsing="false" text="Enabled" />
-                        <TextField layoutX="96.0" layoutY="43.0" promptText="user" />
+                        <TextField layoutX="100.0" layoutY="43.0" promptText="user" />
                         <Label layoutX="21.0" layoutY="47.0" text="Username" />
-                        <TextField layoutX="96.0" layoutY="74.0" promptText="pass" />
+                        <TextField layoutX="100.0" layoutY="74.0" promptText="pass" />
                         <Label layoutX="21.0" layoutY="78.0" text="Password" />
                      </children>
                   </AnchorPane>
                </content>
             </TitledPane>
-            <TextField layoutX="422.0" layoutY="94.0" prefHeight="24.0" prefWidth="258.0" promptText="Access control" />
-            <Label layoutX="320.0" layoutY="98.0" text="Client ID" />
-            <Button defaultButton="true" layoutX="503.0" layoutY="490.0" mnemonicParsing="false" text="Connect">
+            <TextField layoutX="422.0" layoutY="102.0" prefHeight="24.0" prefWidth="258.0" promptText="Access control" />
+            <Label layoutX="320.0" layoutY="106.0" text="Client ID" />
+            <Button defaultButton="true" layoutX="530.0" layoutY="475.0" mnemonicParsing="false" text="Connect">
                <graphic>
                   <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -113,7 +113,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button cancelButton="true" layoutX="628.0" layoutY="490.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="63.0" text="Cancel" />
+            <Button cancelButton="true" layoutX="637.0" layoutY="475.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="63.0" text="Cancel" />
       </children>
     </AnchorPane>
   </children>
