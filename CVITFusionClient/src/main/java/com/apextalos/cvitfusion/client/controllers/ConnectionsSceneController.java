@@ -7,15 +7,19 @@ import java.util.ResourceBundle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.client.app.ConfigItems;
 import com.apextalos.cvitfusion.client.models.ConnectionsSceneModel;
 import com.apextalos.cvitfusion.client.scene.SceneManager;
+import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class ConnectionsSceneController extends BaseController {
 
@@ -28,6 +32,7 @@ public class ConnectionsSceneController extends BaseController {
 		return model;
 	}
 	
+	@FXML private VBox topVbox;
 	@FXML private ListView<String> sessionList;
 	@FXML private TextField nameTextField;
 	@FXML private TextField urlTextField;
@@ -44,6 +49,42 @@ public class ConnectionsSceneController extends BaseController {
 	public void initialize(URL location, ResourceBundle resources) {
 		model = new ConnectionsSceneModel();
 
+	}
+	
+	@Override
+	public void begin(ConfigFile cf) {
+		super.begin(cf);
+		
+		Stage stage = (Stage)topVbox.getScene().getWindow();
+		
+		// stage size
+		if(cf.hasKey(ConfigItems.CONNECTIONS_WIDTH_CONFIG))
+			stage.setWidth(cf.getDouble(ConfigItems.CONNECTIONS_WIDTH_CONFIG, -1));
+		if(cf.hasKey(ConfigItems.CONNECTIONS_HEIGHT_CONFIG))
+			stage.setHeight(cf.getDouble(ConfigItems.CONNECTIONS_HEIGHT_CONFIG, -1));		
+		
+		// stage position
+		stage.setX(cf.getDouble(ConfigItems.CONNECTIONS_POSITION_X_CONFIG, ConfigItems.CONNECTIONS_POSITION_X_DEFAULT));
+		stage.setY(cf.getDouble(ConfigItems.CONNECTIONS_POSITION_Y_CONFIG, ConfigItems.CONNECTIONS_POSITION_Y_DEFAULT));
+		
+		// divider positions
+	}
+
+	@Override
+	public void end() {
+		super.end();
+		
+		Stage stage = (Stage)topVbox.getScene().getWindow();
+		
+		// stage position
+		cf.setDouble(ConfigItems.CONNECTIONS_POSITION_X_CONFIG, stage.getX());
+		cf.setDouble(ConfigItems.CONNECTIONS_POSITION_Y_CONFIG, stage.getY());
+		
+		// stage size
+		cf.setDouble(ConfigItems.CONNECTIONS_WIDTH_CONFIG, stage.getWidth());
+		cf.setDouble(ConfigItems.CONNECTIONS_HEIGHT_CONFIG, stage.getHeight());
+		
+		// divider positions
 	}
 
 	@Override
@@ -63,23 +104,16 @@ public class ConnectionsSceneController extends BaseController {
 	
 	@FXML
 	private void OnActionConnectButton(ActionEvent action) {
-		//savePosition(null);
-		end();
-		
-		
-		
-		
+		// change to the main scene
 		try {
 			SceneManager.getInstance(null, null).showMain();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Unable to change to the main scene: " + e.getMessage());
 		}
 	}
 	
 	@FXML
 	private void OnActionCancelButton(ActionEvent action) {
-		action.consume();
 		System.exit(0);
 	}
 	
@@ -98,15 +132,5 @@ public class ConnectionsSceneController extends BaseController {
 		
 	}
 
-	@Override
-	public void loadPosition(Stage stage) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void savePosition(Stage stage) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

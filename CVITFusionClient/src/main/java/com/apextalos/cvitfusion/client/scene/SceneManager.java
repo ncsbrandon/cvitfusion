@@ -32,6 +32,7 @@ public class SceneManager {
 	private Stage stage;
 	private ConfigFile cf;
 	private FXMLLoader fxmlLoader = null;
+	private BaseController activeController = null;			
 	
 	private SceneManager(Stage stage, ConfigFile cf) {
 		this.stage = stage;
@@ -39,33 +40,40 @@ public class SceneManager {
 	}
 	
 	public void showConnections() throws IOException {
+		if(activeController != null) {
+			activeController.end();
+			activeController = null;
+		}
+		
 		stage.setScene(loadScene("connectionsScene.fxml"));
 		stage.setResizable(false);
-		((BaseController) fxmlLoader.getController()).begin(cf);
-		((BaseController) fxmlLoader.getController()).loadPosition(stage);
+		activeController = (BaseController) fxmlLoader.getController();
+		activeController.begin(cf);
 		stage.show();
 		
-		// save window size and position at close
+		// save window size and position at app close
 		stage.setOnCloseRequest((final WindowEvent event) -> {
-			((BaseController) fxmlLoader.getController()).savePosition(stage);
-			((BaseController) fxmlLoader.getController()).end();		
-			cf.save();
+			if(activeController != null)
+				activeController.end();
 		});
 	}
 	
 	public void showMain() throws IOException {
-		stage.setScene(loadScene("mainScene.fxml"));
-		stage.setResizable(true);
+		if(activeController != null) {
+			activeController.end();
+			activeController = null;
+		}
 		
-		((BaseController) fxmlLoader.getController()).begin(cf);
-		((BaseController) fxmlLoader.getController()).loadPosition(stage);
+		stage.setScene(loadScene("mainScene.fxml"));
+		stage.setResizable(true);		
+		activeController = (BaseController) fxmlLoader.getController();
+		activeController.begin(cf);
 		stage.show();
 		
-		// save window size and position at close
+		// save window size and position at app close
 		stage.setOnCloseRequest((final WindowEvent event) -> {
-			((BaseController) fxmlLoader.getController()).savePosition(stage);
-			((BaseController) fxmlLoader.getController()).end();		
-			cf.save();
+			if(activeController != null)
+				activeController.end();
 		});
 	}
 	

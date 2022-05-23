@@ -34,7 +34,11 @@ public class Main extends Application {
 		stage.getIcons().add(loadIcon("missile.png"));
 				
 		// first show the connections dialog
-		SceneManager.getInstance(stage, cf).showConnections();		
+		try {
+			SceneManager.getInstance(stage, cf).showConnections();
+		} catch (IOException e) {
+			logger.error("Unable to change to the connections scene: " + e.getMessage());
+		}		
 	}
 	
 	private Image loadIcon(String name) throws IOException {

@@ -1,5 +1,6 @@
 package com.apextalos.cvitfusion.client.controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,8 +16,9 @@ import com.apextalos.cvitfusion.client.app.Version;
 import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
-import com.apextalos.cvitfusion.client.models.MainSceneModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
+import com.apextalos.cvitfusion.client.models.MainSceneModel;
+import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
@@ -25,8 +27,10 @@ import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -40,9 +44,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class MainSceneController extends BaseController {
 
@@ -71,6 +77,7 @@ public class MainSceneController extends BaseController {
 	@FXML private VBox vbox;
 	@FXML private VBox vbox2;
 	@FXML private TitledPane propertiesPanel;
+	@FXML private BorderPane topBorderPane;
 
 	private DiagramBuilder db = new DiagramBuilder();
 	private Node activeSelection = null;
@@ -117,22 +124,59 @@ public class MainSceneController extends BaseController {
 	public void begin(ConfigFile cf) {
 		super.begin(cf);
 		
-		// load the last view size
+		Stage stage = (Stage)topBorderPane.getScene().getWindow();
+		
+		// stage size
+		if(cf.hasKey(ConfigItems.MAIN_WIDTH_CONFIG))
+			stage.setWidth(cf.getDouble(ConfigItems.MAIN_WIDTH_CONFIG, -1));
+		if(cf.hasKey(ConfigItems.MAIN_HEIGHT_CONFIG))
+			stage.setHeight(cf.getDouble(ConfigItems.MAIN_HEIGHT_CONFIG, -1));
+		
+		// stage position
+		stage.setX(cf.getDouble(ConfigItems.MAIN_POSITION_X_CONFIG, ConfigItems.MAIN_POSITION_X_DEFAULT));
+		stage.setY(cf.getDouble(ConfigItems.MAIN_POSITION_Y_CONFIG, ConfigItems.MAIN_POSITION_Y_DEFAULT));
+		
+		// divider positions
 		sp1.setDividerPosition(0, cf.getDouble("sp1_divider_position", -1));
 		sp11.setDividerPosition(0, cf.getDouble("sp11_divider_position", -1));
 		sp112.setDividerPosition(0, cf.getDouble("sp112_divider_position", -1));
 	}
-
+		
 	@Override
 	public void end() {
 		super.end();
 		
-		// save the last view size
+		Stage stage = (Stage)topBorderPane.getScene().getWindow();
+		
+		// stage position
+		cf.setDouble(ConfigItems.MAIN_POSITION_X_CONFIG, stage.getX());
+		cf.setDouble(ConfigItems.MAIN_POSITION_Y_CONFIG, stage.getY());
+		
+		// stage size
+		cf.setDouble(ConfigItems.MAIN_WIDTH_CONFIG, stage.getWidth());
+		cf.setDouble(ConfigItems.MAIN_HEIGHT_CONFIG, stage.getHeight());
+		
+		// divider positions
 		cf.setDouble("sp1_divider_position", sp1.getDividerPositions()[0]);
 		cf.setDouble("sp11_divider_position", sp11.getDividerPositions()[0]);
 		cf.setDouble("sp112_divider_position", sp112.getDividerPositions()[0]);
 	}
-
+	
+	@FXML
+	protected void OnActionDisconnectMenu(ActionEvent event) {
+		// go back to connections
+		try {
+			SceneManager.getInstance(null, null).showConnections();
+		} catch (IOException e) {
+			logger.error("Unable to change to the main scene: " + e.getMessage());
+		}
+	}
+	
+	@FXML
+	protected void OnActionCloseMenu(ActionEvent event) {
+		
+	}
+	
 	public void sample1() {
 		activeFlow = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
 
@@ -331,19 +375,7 @@ public class MainSceneController extends BaseController {
 		model.getTableItems().clear();
 	}
 
-	@Override
-	public void loadPosition(Stage stage) {
-		stage.setX(cf.getDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, ConfigItems.WINDOW_POSITION_X_DEFAULT));
-		stage.setY(cf.getDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, ConfigItems.WINDOW_POSITION_Y_DEFAULT));
-		stage.setWidth(cf.getDouble(ConfigItems.WINDOW_WIDTH_CONFIG, ConfigItems.WINDOW_WIDTH_DEFAULT));
-		stage.setHeight(cf.getDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, ConfigItems.WINDOW_HEIGHT_DEFAULT));
-	}
+	
 
-	@Override
-	public void savePosition(Stage stage) {
-		cf.setDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, stage.getX());
-		cf.setDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, stage.getY());
-		cf.setDouble(ConfigItems.WINDOW_WIDTH_CONFIG, stage.getWidth());
-		cf.setDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, stage.getHeight());
-	}
+	
 }
