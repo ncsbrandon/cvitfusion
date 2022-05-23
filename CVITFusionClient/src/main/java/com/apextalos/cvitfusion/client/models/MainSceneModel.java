@@ -4,13 +4,13 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class HelloModel {
+public class MainSceneModel {
 
 	private final DoubleProperty accountBalance;
 	private final ObservableList<String> listItems;
 	private final ObservableList<KeyValuePairModel> tableItems;
 
-	public HelloModel(Double accountBalance) {
+	public MainSceneModel(Double accountBalance) {
 		this.accountBalance = new SimpleDoubleProperty(accountBalance);
 		this.listItems = FXCollections.observableArrayList();
 		this.tableItems = FXCollections.observableArrayList();

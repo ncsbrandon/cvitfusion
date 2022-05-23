@@ -38,7 +38,7 @@ public class DiagramNodeControl extends AnchorPane implements ActionListener {
 		
 		// try loading as the jar
 		InputStream in = getClass().getResourceAsStream("/diagramNode.fxml");
-		logger.info(String.format("getResourceAsStream is null: %b", in==null));
+		//logger.info(String.format("getResourceAsStream is null: %b", in==null));
 		if(in != null) {
 			fxmlLoader = new FXMLLoader();
 			fxmlLoader.setController(controller);
@@ -46,7 +46,7 @@ public class DiagramNodeControl extends AnchorPane implements ActionListener {
 		} else {	
 			// try loading as the debugger
 			URL url = getClass().getResource("../../../../../diagramNode.fxml");
-			logger.info(String.format("getResource is null: %b", url==null));
+			//logger.info(String.format("getResource is null: %b", url==null));
 			if(url != null) {
 				fxmlLoader = new FXMLLoader(url);
 				fxmlLoader.setController(controller);

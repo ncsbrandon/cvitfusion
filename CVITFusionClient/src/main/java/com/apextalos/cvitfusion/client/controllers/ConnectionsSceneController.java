@@ -6,8 +6,8 @@ import java.util.ResourceBundle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.apextalos.cvitfusion.client.models.ConnectionsModel;
-import com.apextalos.cvitfusion.client.models.HelloModel;
+import com.apextalos.cvitfusion.client.models.ConnectionsSceneModel;
+import com.apextalos.cvitfusion.client.models.MainSceneModel;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,14 +15,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
-public class ConnectionsController extends BaseController {
+public class ConnectionsSceneController extends BaseController {
 
-	private static final Logger logger = LogManager.getLogger(ConnectionsController.class.getSimpleName());
+	private static final Logger logger = LogManager.getLogger(ConnectionsSceneController.class.getSimpleName());
 
 	// Model
-	private ConnectionsModel model;
+	private ConnectionsSceneModel model;
 
-	public ConnectionsModel getModel() {
+	public ConnectionsSceneModel getModel() {
 		return model;
 	}
 	
@@ -40,7 +40,7 @@ public class ConnectionsController extends BaseController {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		model = new ConnectionsModel();
+		model = new ConnectionsSceneModel();
 
 	}
 

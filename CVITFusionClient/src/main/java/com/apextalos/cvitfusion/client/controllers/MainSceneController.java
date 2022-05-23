@@ -14,7 +14,7 @@ import com.apextalos.cvitfusion.client.app.Version;
 import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
-import com.apextalos.cvitfusion.client.models.HelloModel;
+import com.apextalos.cvitfusion.client.models.MainSceneModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
@@ -42,14 +42,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
-public class HelloController extends BaseController {
+public class MainSceneController extends BaseController {
 
-	private static final Logger logger = LogManager.getLogger(HelloController.class.getSimpleName());
+	private static final Logger logger = LogManager.getLogger(MainSceneController.class.getSimpleName());
 
 	// Model
-	private HelloModel model;
+	private MainSceneModel model;
 
-	public HelloModel getModel() {
+	public MainSceneModel getModel() {
 		return model;
 	}
 
@@ -77,7 +77,7 @@ public class HelloController extends BaseController {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// create model
-		model = new HelloModel(1000d);
+		model = new MainSceneModel(1000d);
 
 		// create bindings
 		welcomeText.textProperty().bind(model.getAccountBalanceProperty().asString());

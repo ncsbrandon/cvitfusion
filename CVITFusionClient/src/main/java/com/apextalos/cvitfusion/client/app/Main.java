@@ -7,7 +7,8 @@ import java.net.URL;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.apextalos.cvitfusion.client.controllers.HelloController;
+import com.apextalos.cvitfusion.client.controllers.BaseController;
+import com.apextalos.cvitfusion.client.controllers.MainSceneController;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.application.Application;
@@ -32,15 +33,15 @@ public class Main extends Application {
 		if (!cf.load())
 			System.exit(0);
 
+		// setup the stage
+		stage.setTitle("Apex Talos CVITFusion Client");
+		stage.getIcons().add(loadIcon("missile.png"));
+				
 		//Scene connections = loadScene("connections.fxml");
 		
-		Scene scene = loadScene("hello-view.fxml");
-		Image icon = loadIcon("missile.png");		
-		stage.setTitle("Apex Talos CVITFusion Client");
-		stage.getIcons().add(icon);
-		stage.setScene(scene);
+		stage.setScene(loadScene("mainScene.fxml"));
 		stage.setResizable(true);
-		((HelloController) fxmlLoader.getController()).begin(cf);
+		((BaseController) fxmlLoader.getController()).begin(cf);
 		stage.setX(cf.getDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, ConfigItems.WINDOW_POSITION_X_DEFAULT));
 		stage.setY(cf.getDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, ConfigItems.WINDOW_POSITION_Y_DEFAULT));
 		stage.setWidth(cf.getDouble(ConfigItems.WINDOW_WIDTH_CONFIG, ConfigItems.WINDOW_WIDTH_DEFAULT));
@@ -49,7 +50,7 @@ public class Main extends Application {
 
 		// save window size and position at close
 		stage.setOnCloseRequest((final WindowEvent event) -> {
-			((HelloController) fxmlLoader.getController()).end();
+			((BaseController) fxmlLoader.getController()).end();
 			cf.setDouble(ConfigItems.WINDOW_POSITION_X_CONFIG, stage.getX());
 			cf.setDouble(ConfigItems.WINDOW_POSITION_Y_CONFIG, stage.getY());
 			cf.setDouble(ConfigItems.WINDOW_WIDTH_CONFIG, stage.getWidth());
