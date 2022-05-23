@@ -105,8 +105,10 @@ public class App {
 			try {		
 				String licenseID = lm.generateLicenseID(iface, Version.getInstance().getVersion());
 				cf.setString(ConfigItems.DEVICE_LICENSEID_CONFIG, licenseID, false);
-				cf.save();
 				logger.error("license id created: " + licenseID);
+				
+				// save and exit
+				cf.save();
 				return false;
 			} catch (IllegalBlockSizeException | IOException e) {
 				logger.error("Unable to create license id for: " + iface);
@@ -118,7 +120,9 @@ public class App {
 		if(!cf.hasKey(ConfigItems.DEVICE_LICENSEKEY_CONFIG)) {
 			logger.error("No license key provided");
 			// help the user by creating an empty entry
-			cf.setString(ConfigItems.DEVICE_LICENSEKEY_CONFIG, "", true);
+			cf.setString(ConfigItems.DEVICE_LICENSEKEY_CONFIG, "", true);	
+
+			// save and exit
 			cf.save();
 			return false;
 		}

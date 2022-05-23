@@ -19,7 +19,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 public class ConnectionsSceneController extends BaseController {
 
@@ -48,7 +47,6 @@ public class ConnectionsSceneController extends BaseController {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		model = new ConnectionsSceneModel();
-
 	}
 	
 	@Override
@@ -66,6 +64,9 @@ public class ConnectionsSceneController extends BaseController {
 		// stage position
 		stage.setX(cf.getDouble(ConfigItems.CONNECTIONS_POSITION_X_CONFIG, ConfigItems.CONNECTIONS_POSITION_X_DEFAULT));
 		stage.setY(cf.getDouble(ConfigItems.CONNECTIONS_POSITION_Y_CONFIG, ConfigItems.CONNECTIONS_POSITION_Y_DEFAULT));
+		
+		// stage other
+		stage.setMaximized(false);
 		
 		// divider positions
 	}
@@ -106,7 +107,8 @@ public class ConnectionsSceneController extends BaseController {
 	private void OnActionConnectButton(ActionEvent action) {
 		// change to the main scene
 		try {
-			SceneManager.getInstance(null, null).showMain();
+			Stage stage = (Stage)topVbox.getScene().getWindow();
+			SceneManager.getInstance(cf).showMain(stage);
 		} catch (IOException e) {
 			logger.error("Unable to change to the main scene: " + e.getMessage());
 		}
@@ -114,7 +116,8 @@ public class ConnectionsSceneController extends BaseController {
 	
 	@FXML
 	private void OnActionCancelButton(ActionEvent action) {
-		System.exit(0);
+		Stage stage = (Stage)topVbox.getScene().getWindow();
+		SceneManager.getInstance(cf).close(stage);
 	}
 	
 	@FXML
@@ -131,6 +134,4 @@ public class ConnectionsSceneController extends BaseController {
 	private void OnActionClientKeyButton(ActionEvent action) {
 		
 	}
-
-	
 }

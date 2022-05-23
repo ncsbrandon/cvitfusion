@@ -18,14 +18,14 @@ public class Main extends Application {
 
 	private static final Logger logger = LogManager.getLogger(Main.class.getSimpleName());
 
+	private ConfigFile cf;
 	
-
 	@Override
 	public void start(Stage stage) throws IOException {
 		logger.info("app starting");
 
 		// load the config
-		ConfigFile cf = new ConfigFile("cvitfusion.properties");
+		cf = new ConfigFile("cvitfusion.properties");
 		if (!cf.load())
 			System.exit(0);
 
@@ -35,7 +35,7 @@ public class Main extends Application {
 				
 		// first show the connections dialog
 		try {
-			SceneManager.getInstance(stage, cf).showConnections();
+			SceneManager.getInstance(cf).showConnections(stage);
 		} catch (IOException e) {
 			logger.error("Unable to change to the connections scene: " + e.getMessage());
 		}		
@@ -66,6 +66,9 @@ public class Main extends Application {
 	@Override
 	public void stop() throws Exception {
 		logger.info("app stopping");
+		
+		cf.save();
+		
 		super.stop();
 	}
 

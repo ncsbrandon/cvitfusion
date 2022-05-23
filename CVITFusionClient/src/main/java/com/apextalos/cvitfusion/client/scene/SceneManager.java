@@ -18,35 +18,34 @@ import javafx.stage.WindowEvent;
 public class SceneManager {
 
 	private static final Logger logger = LogManager.getLogger(SceneManager.class.getSimpleName());
-
 	
 	private static SceneManager singleInstance = null;
 
-	public static SceneManager getInstance(Stage stage, ConfigFile cf) {
+	public static SceneManager getInstance(ConfigFile cf) {
 		if (singleInstance == null)
-			singleInstance = new SceneManager(stage, cf);
+			singleInstance = new SceneManager(cf);
 
 		return singleInstance;
 	}
 	
-	private Stage stage;
 	private ConfigFile cf;
 	private FXMLLoader fxmlLoader = null;
 	private BaseController activeController = null;			
 	
-	private SceneManager(Stage stage, ConfigFile cf) {
-		this.stage = stage;
+	private SceneManager(ConfigFile cf) {
 		this.cf = cf;
 	}
 	
-	public void showConnections() throws IOException {
+	public void showConnections(Stage stage) throws IOException {
 		if(activeController != null) {
 			activeController.end();
 			activeController = null;
+			stage.close();
 		}
 		
 		stage.setScene(loadScene("connectionsScene.fxml"));
 		stage.setResizable(false);
+		stage.setMaximized(false);
 		activeController = (BaseController) fxmlLoader.getController();
 		activeController.begin(cf);
 		stage.show();
@@ -58,10 +57,11 @@ public class SceneManager {
 		});
 	}
 	
-	public void showMain() throws IOException {
+	public void showMain(Stage stage) throws IOException {
 		if(activeController != null) {
 			activeController.end();
 			activeController = null;
+			stage.close();
 		}
 		
 		stage.setScene(loadScene("mainScene.fxml"));
@@ -100,5 +100,12 @@ public class SceneManager {
 		return scene;
 	}
 	
-	
+	public void close(Stage stage) {
+		if(activeController != null) {
+			activeController.end();
+			activeController = null;
+		}
+		
+		stage.close();
+	}
 }

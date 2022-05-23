@@ -113,7 +113,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button cancelButton="true" layoutX="637.0" layoutY="475.0" mnemonicParsing="false" onAction="#OnActionCancelButton" prefHeight="30.0" prefWidth="63.0" text="Cancel" />
+            <Button cancelButton="true" layoutX="637.0" layoutY="475.0" mnemonicParsing="false" onAction="#OnActionCancelButton" prefHeight="30.0" prefWidth="63.0" text="Exit" />
       </children>
     </AnchorPane>
   </children>

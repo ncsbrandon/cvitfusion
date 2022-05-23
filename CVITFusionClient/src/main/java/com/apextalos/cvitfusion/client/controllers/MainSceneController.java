@@ -30,7 +30,6 @@ import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -48,7 +47,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 public class MainSceneController extends BaseController {
 
@@ -136,6 +134,9 @@ public class MainSceneController extends BaseController {
 		stage.setX(cf.getDouble(ConfigItems.MAIN_POSITION_X_CONFIG, ConfigItems.MAIN_POSITION_X_DEFAULT));
 		stage.setY(cf.getDouble(ConfigItems.MAIN_POSITION_Y_CONFIG, ConfigItems.MAIN_POSITION_Y_DEFAULT));
 		
+		// stage other
+		stage.setMaximized(cf.getBoolean(ConfigItems.MAIN_MAXIMIZED_CONFIG, ConfigItems.MAIN_MAXIMIZED_DEFAULT));
+		
 		// divider positions
 		sp1.setDividerPosition(0, cf.getDouble("sp1_divider_position", -1));
 		sp11.setDividerPosition(0, cf.getDouble("sp11_divider_position", -1));
@@ -156,6 +157,9 @@ public class MainSceneController extends BaseController {
 		cf.setDouble(ConfigItems.MAIN_WIDTH_CONFIG, stage.getWidth());
 		cf.setDouble(ConfigItems.MAIN_HEIGHT_CONFIG, stage.getHeight());
 		
+		// stage other
+		cf.setBoolean(ConfigItems.MAIN_MAXIMIZED_CONFIG, stage.isMaximized());
+		
 		// divider positions
 		cf.setDouble("sp1_divider_position", sp1.getDividerPositions()[0]);
 		cf.setDouble("sp11_divider_position", sp11.getDividerPositions()[0]);
@@ -166,7 +170,8 @@ public class MainSceneController extends BaseController {
 	protected void OnActionDisconnectMenu(ActionEvent event) {
 		// go back to connections
 		try {
-			SceneManager.getInstance(null, null).showConnections();
+			Stage stage = (Stage)topBorderPane.getScene().getWindow();
+			SceneManager.getInstance(cf).showConnections(stage);
 		} catch (IOException e) {
 			logger.error("Unable to change to the main scene: " + e.getMessage());
 		}
@@ -174,7 +179,8 @@ public class MainSceneController extends BaseController {
 	
 	@FXML
 	protected void OnActionCloseMenu(ActionEvent event) {
-		
+		Stage stage = (Stage)topBorderPane.getScene().getWindow();
+		SceneManager.getInstance(cf).close(stage);
 	}
 	
 	public void sample1() {
