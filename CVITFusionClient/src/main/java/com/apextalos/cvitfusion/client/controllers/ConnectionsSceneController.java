@@ -66,6 +66,9 @@ public class ConnectionsSceneController extends BaseController {
 		//savePosition(null);
 		end();
 		
+		
+		
+		
 		try {
 			SceneManager.getInstance(null, null).showMain();
 		} catch (IOException e) {
