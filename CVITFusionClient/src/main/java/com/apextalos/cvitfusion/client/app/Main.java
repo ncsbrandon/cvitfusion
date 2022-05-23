@@ -32,31 +32,10 @@ public class Main extends Application {
 		if (!cf.load())
 			System.exit(0);
 
-		Scene scene = null;
-		Image icon = null;
+		//Scene connections = loadScene("connections.fxml");
 		
-		// try loading as the jar
-		InputStream in = getClass().getResourceAsStream("/hello-view.fxml");
-		logger.info(String.format("getResourceAsStream is null: %b", in==null));
-		if(in != null) {
-			fxmlLoader = new FXMLLoader();
-			scene = new Scene(fxmlLoader.load(in));
-			icon = new Image(getClass().getResourceAsStream("/missile.png"));
-		} else {	
-			// try loading as the debugger
-			URL url = getClass().getResource("../../../../../hello-view.fxml");
-			logger.info(String.format("getResource is null: %b", url==null));
-			if(url != null) {
-				fxmlLoader = new FXMLLoader(url);
-				scene = new Scene(fxmlLoader.load());
-				URL url2 = getClass().getResource("../../../../../missile.png");
-				icon = new Image(url2.toExternalForm());
-			} else {
-				logger.error("unable to load the main scene fxml");
-				System.exit(0);
-			}
-		}
-		
+		Scene scene = loadScene("hello-view.fxml");
+		Image icon = loadIcon("missile.png");		
 		stage.setTitle("Apex Talos CVITFusion Client");
 		stage.getIcons().add(icon);
 		stage.setScene(scene);
@@ -77,6 +56,51 @@ public class Main extends Application {
 			cf.setDouble(ConfigItems.WINDOW_HEIGHT_CONFIG, stage.getHeight());
 			cf.save();
 		});
+	}
+	
+	private Scene loadScene(String name) throws IOException {
+		Scene scene = null;
+		
+		InputStream in = getClass().getResourceAsStream("/" + name);
+		logger.info(String.format("getResourceAsStream is null: %b", in==null));
+		if(in != null) {
+			fxmlLoader = new FXMLLoader();
+			scene = new Scene(fxmlLoader.load(in));
+		} else {	
+			// try loading as the debugger
+			URL url = getClass().getResource("../../../../../" + name);
+			logger.info(String.format("getResource is null: %b", url==null));
+			if(url != null) {
+				fxmlLoader = new FXMLLoader(url);
+				scene = new Scene(fxmlLoader.load());
+			} else {
+				logger.error("unable to load the scene fxml " + name);
+			}
+		}
+		
+		return scene;
+	}
+	
+	private Image loadIcon(String name) throws IOException {
+		Image icon = null;
+		
+		// try loading as the jar
+		InputStream in = getClass().getResourceAsStream("/" + name);
+		logger.info(String.format("getResourceAsStream is null: %b", in==null));
+		if(in != null) {
+			icon = new Image(in);
+		} else {	
+			// try loading as the debugger
+			URL url = getClass().getResource("../../../../../" + name);
+			logger.info(String.format("getResource is null: %b", url==null));
+			if(url != null) {
+				icon = new Image(url.toExternalForm());
+			} else {
+				logger.error("unable to load the icon fxml " + name);
+			}
+		}
+		
+		return icon;
 	}
 
 	@Override

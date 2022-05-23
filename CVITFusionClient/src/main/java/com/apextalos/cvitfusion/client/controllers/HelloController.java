@@ -54,36 +54,21 @@ public class HelloController extends BaseController {
 	}
 
 	// View
-	@FXML
-	private Label welcomeText;
-	@FXML
-	private ListView<String> propertiesListView;
-	@FXML
-	private TextField welcomeTextField;
-	@FXML
-	private TableView<KeyValuePairModel> propertiesTable;
-	@FXML
-	private TableColumn<Object, Object> propertiesColumnKey;
-	@FXML
-	private TableColumn<Object, Object> propertiesColumnValue;
-	@FXML
-	private AnchorPane designPane;
-	@FXML
-	private ScrollPane designScroll;
-	@FXML
-	private Label versionInfo;
-	@FXML
-	private SplitPane sp1;
-	@FXML
-	private SplitPane sp11;
-	@FXML
-	private SplitPane sp112;
-	@FXML
-	private VBox vbox;
-	@FXML
-	private VBox vbox2;
-	@FXML
-	private TitledPane propertiesPanel;
+	@FXML private Label welcomeText;
+	@FXML private ListView<String> propertiesListView;
+	@FXML private TextField welcomeTextField;
+	@FXML private TableView<KeyValuePairModel> propertiesTable;
+	@FXML private TableColumn<Object, Object> propertiesColumnKey;
+	@FXML private TableColumn<Object, Object> propertiesColumnValue;
+	@FXML private AnchorPane designPane;
+	@FXML private ScrollPane designScroll;
+	@FXML private Label versionInfo;
+	@FXML private SplitPane sp1;
+	@FXML private SplitPane sp11;
+	@FXML private SplitPane sp112;
+	@FXML private VBox vbox;
+	@FXML private VBox vbox2;
+	@FXML private TitledPane propertiesPanel;
 
 	private DiagramBuilder db = new DiagramBuilder();
 	private Node activeSelection = null;
