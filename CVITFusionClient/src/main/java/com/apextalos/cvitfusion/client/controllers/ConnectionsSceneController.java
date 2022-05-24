@@ -22,6 +22,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -51,6 +52,7 @@ public class ConnectionsSceneController extends BaseController {
 	@FXML private CheckBox pwdEnabledCheckBox;
 	@FXML private TextField usernameTextField;
 	@FXML private TextField passwordTextField;
+	@FXML private Label errorMessageLabel;
 		
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -100,11 +102,21 @@ public class ConnectionsSceneController extends BaseController {
 		// stage other
 		stage.setMaximized(false);
 		
+		// clear the error message
+		showError("");
+		
+		// load the json
 		String json = cf.getString(ConfigItems.CONNECTIONS_SESSIONLIST_CONFIG, ConfigItems.CONNECTIONS_SESSIONLIST_DEFAULT);
 		if(!json.isBlank())
 			model.sessionsFromJSON(json);
 				
+		// fill the list
 		fillSessionsList();
+		
+		// if we have items, select the first one
+		if(sessionList.getItems().size() > 0)
+			sessionList.getSelectionModel().select(sessionList.getItems().get(0));
+			
 	}
 
 	@Override
@@ -137,10 +149,16 @@ public class ConnectionsSceneController extends BaseController {
 				
 		// re-render the list
 		fillSessionsList();
+		
+		showError("");
 	}
 	
 	@FXML
 	private void OnActionSaveButton(ActionEvent action) {
+		// cannot save blank name
+		if(nameTextField.getText().isBlank())
+			return;
+		
 		// load from the fields
 		Connection current = new Connection();
 		current.setUrl(urlTextField.getText());
@@ -161,6 +179,8 @@ public class ConnectionsSceneController extends BaseController {
 		
 		// re-render the list
 		fillSessionsList();
+		
+		showError("");
 	}
 	
 	private void fillSessionsList() {
@@ -190,8 +210,14 @@ public class ConnectionsSceneController extends BaseController {
 	@FXML
 	private void OnActionConnectButton(ActionEvent action) {
 		// validate settings
-		if(urlTextField.getText().isBlank()) {
-			showError("url cannot be blank");
+		if(nameTextField.getText().isBlank()) {
+			showError("Name cannot be blank");
+			return;
+		} else if(urlTextField.getText().isBlank()) {
+			showError("URL cannot be blank");
+			return;
+		} else if(clientIdTextField.getText().isBlank()) {
+			showError("Client ID cannot be blank");
 			return;
 		}
 		
@@ -231,7 +257,7 @@ public class ConnectionsSceneController extends BaseController {
 	}
 	
 	private void showError(String message) {
-		
+		errorMessageLabel.setText(message);
 	}
 	
 	@FXML
