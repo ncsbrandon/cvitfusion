@@ -3,11 +3,15 @@ package com.apextalos.cvitfusion.client.models;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class ConnectionsSceneModel {
 
+	private static final ObjectMapper mapper = new ObjectMapper();
+	
 	private Map<String, Connection> sessionsMap = new HashMap<>();	
-	//private String currentName = "";
-	//private Connection currentSelection = new Connection();
 	
 	public Map<String, Connection> getSessionsMap() {
 		return sessionsMap;
@@ -15,38 +19,27 @@ public class ConnectionsSceneModel {
 	public void setSessionsMap(Map<String, Connection> connectionMap) {
 		this.sessionsMap = connectionMap;
 	}
-	/*
-	public String getCurrentName() {
-		return currentName;
-	}
-	public void setCurrentName(String currentName) {
-		this.currentName = currentName;
-	}
-	public Connection getCurrentSelection() {
-		return currentSelection;
-	}
-	public void setCurrentSelection(Connection currentSelection) {
-		this.currentSelection = currentSelection;
-	}
-	*/
 	
 	public ConnectionsSceneModel() {
 		
 	}
 	
-	public ConnectionsSceneModel(Map<String, Connection> sessionsMap, String currentName,
-			Connection currentSelection) {
-		super();
-		this.sessionsMap = sessionsMap;
-		//this.currentName = currentName;
-		//this.currentSelection = currentSelection;
-	}
-	
-	public void sessionsFromJSON(String json) {
-		
+	public boolean sessionsFromJSON(String json) {
+		try {
+			sessionsMap = mapper.readValue(json, new TypeReference<Map<String, Connection>>(){});
+			return true;
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public String sessionsToJSON() {
+		try {
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(sessionsMap);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		return "";
 	}
 }

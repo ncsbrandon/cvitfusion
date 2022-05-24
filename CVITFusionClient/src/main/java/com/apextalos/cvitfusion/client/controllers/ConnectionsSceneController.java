@@ -55,12 +55,16 @@ public class ConnectionsSceneController extends BaseController {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		model = new ConnectionsSceneModel();
-		
+				
 		sessionList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				// get the session from the map
 				Connection session = model.getSessionsMap().get(newValue);
+				if(session == null) {
+					logger.debug("null session selected");
+					return;
+				}
 				
 				// fill the fields
 				nameTextField.setText(newValue);
@@ -75,8 +79,6 @@ public class ConnectionsSceneController extends BaseController {
 				passwordTextField.setText(session.getPassword());
 			}
 		});
-		
-		fillSessionsList();
 	}
 	
 	@Override
@@ -97,6 +99,12 @@ public class ConnectionsSceneController extends BaseController {
 		
 		// stage other
 		stage.setMaximized(false);
+		
+		String json = cf.getString(ConfigItems.CONNECTIONS_SESSIONLIST_CONFIG, ConfigItems.CONNECTIONS_SESSIONLIST_DEFAULT);
+		if(!json.isBlank())
+			model.sessionsFromJSON(json);
+				
+		fillSessionsList();
 	}
 
 	@Override
@@ -125,7 +133,7 @@ public class ConnectionsSceneController extends BaseController {
 		model.getSessionsMap().remove(nameTextField.getText());
 		
 		// update settings
-		cf.setString(ConfigItems.CONNECTIONS_SESSIONLIST, model.sessionsToJSON(), false);
+		cf.setString(ConfigItems.CONNECTIONS_SESSIONLIST_CONFIG, model.sessionsToJSON(), false);
 				
 		// re-render the list
 		fillSessionsList();
@@ -149,37 +157,43 @@ public class ConnectionsSceneController extends BaseController {
 		model.getSessionsMap().put(nameTextField.getText(), current);
 		
 		// update settings
-		cf.setString(ConfigItems.CONNECTIONS_SESSIONLIST, model.sessionsToJSON(), false);
+		cf.setString(ConfigItems.CONNECTIONS_SESSIONLIST_CONFIG, model.sessionsToJSON(), false);
 		
 		// re-render the list
 		fillSessionsList();
 	}
 	
-	
 	private void fillSessionsList() {
+		// is there a current selection?
+		String currentSelection = sessionList.getSelectionModel().getSelectedItem();
+		
+		// clear the list
 		sessionList.getItems().clear();
 		
+		// sort the session list from the model
 		ArrayList<String> names = new ArrayList<>(model.getSessionsMap().keySet());	
 		Collections.sort(names, new Comparator<String>() {
-
 			@Override
 			public int compare(String o1, String o2) {
 				return o1.compareToIgnoreCase(o2);
 			}
 		});
 		
-		for(String name : names) {
-			sessionList.getItems().add(name);
-		}
-
+		// fill the list
+		sessionList.getItems().addAll(names);
+		
+		// return the selection
+		if(currentSelection != null && !currentSelection.isBlank() && names.contains(currentSelection))
+			sessionList.getSelectionModel().select(currentSelection);
 	}
-	
 	
 	@FXML
 	private void OnActionConnectButton(ActionEvent action) {
-		// unsaved changes?
+		// save any changes
+		OnActionSaveButton(action);
 		
-		// update the config with this current connection
+		// update the config to say this is the connection we are using
+		cf.setString(ConfigItems.CONNECTIONS_ACTIVESESSION_CONFIG, nameTextField.getText(), false);
 		
 		// change to the main scene
 		try {
@@ -190,7 +204,6 @@ public class ConnectionsSceneController extends BaseController {
 		}
 	}
 	
-	
 	@FXML
 	private void OnActionCancelButton(ActionEvent action) {
 		// close
@@ -198,14 +211,13 @@ public class ConnectionsSceneController extends BaseController {
 		SceneManager.getInstance(cf).close(stage);
 	}
 	
-	
 	@FXML
 	private void OnActionCaCertButton(ActionEvent action) {
 		Stage stage = (Stage)topVbox.getScene().getWindow();
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open CA Cert File");
 		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("Certificate", "*.ca")
+				new FileChooser.ExtensionFilter("Certificates and Keys", "*.ca", "*.pem", "*.key", "*.cer")
             );
 		File f = fileChooser.showOpenDialog(stage);
 		if(f != null)
@@ -218,7 +230,7 @@ public class ConnectionsSceneController extends BaseController {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open CA Cert File");
 		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("Certificate", "*.ca")
+				new FileChooser.ExtensionFilter("Certificates and Keys", "*.ca", "*.pem", "*.key", "*.cer")
             );
 		File f = fileChooser.showOpenDialog(stage);
 		if(f != null)
@@ -231,7 +243,7 @@ public class ConnectionsSceneController extends BaseController {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Client Key File");
 		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("Key", "*.key")
+				new FileChooser.ExtensionFilter("Certificates and Keys", "*.ca", "*.pem", "*.key", "*.cer")
             );
 		File f = fileChooser.showOpenDialog(stage);
 		if(f != null)
