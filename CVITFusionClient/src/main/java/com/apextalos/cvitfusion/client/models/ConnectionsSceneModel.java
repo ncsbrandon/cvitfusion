@@ -5,16 +5,17 @@ import java.util.Map;
 
 public class ConnectionsSceneModel {
 
-	private Map<String, Connection> connectionMap = new HashMap<>();	
-	private String currentName;
-	private Connection currentSelection;
+	private Map<String, Connection> sessionsMap = new HashMap<>();	
+	//private String currentName = "";
+	//private Connection currentSelection = new Connection();
 	
-	public Map<String, Connection> getConnectionMap() {
-		return connectionMap;
+	public Map<String, Connection> getSessionsMap() {
+		return sessionsMap;
 	}
-	public void setConnectionMap(Map<String, Connection> connectionMap) {
-		this.connectionMap = connectionMap;
+	public void setSessionsMap(Map<String, Connection> connectionMap) {
+		this.sessionsMap = connectionMap;
 	}
+	/*
 	public String getCurrentName() {
 		return currentName;
 	}
@@ -27,24 +28,25 @@ public class ConnectionsSceneModel {
 	public void setCurrentSelection(Connection currentSelection) {
 		this.currentSelection = currentSelection;
 	}
+	*/
 	
 	public ConnectionsSceneModel() {
 		
 	}
 	
-	public ConnectionsSceneModel(Map<String, Connection> connectionMap, String currentName,
+	public ConnectionsSceneModel(Map<String, Connection> sessionsMap, String currentName,
 			Connection currentSelection) {
 		super();
-		this.connectionMap = connectionMap;
-		this.currentName = currentName;
-		this.currentSelection = currentSelection;
+		this.sessionsMap = sessionsMap;
+		//this.currentName = currentName;
+		//this.currentSelection = currentSelection;
 	}
 	
-	public void fromJSON() {
+	public void sessionsFromJSON(String json) {
 		
 	}
 	
-	public void toJSON() {
-		
+	public String sessionsToJSON() {
+		return "";
 	}
 }

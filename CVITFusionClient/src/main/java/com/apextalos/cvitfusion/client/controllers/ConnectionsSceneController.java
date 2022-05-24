@@ -3,16 +3,22 @@ package com.apextalos.cvitfusion.client.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.client.app.ConfigItems;
+import com.apextalos.cvitfusion.client.models.Connection;
 import com.apextalos.cvitfusion.client.models.ConnectionsSceneModel;
 import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -49,6 +55,28 @@ public class ConnectionsSceneController extends BaseController {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		model = new ConnectionsSceneModel();
+		
+		sessionList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				// get the session from the map
+				Connection session = model.getSessionsMap().get(newValue);
+				
+				// fill the fields
+				nameTextField.setText(newValue);
+				urlTextField.setText(session.getUrl());
+				clientIdTextField.setText(session.getClientId());
+				tlsEnabledCheckBox.setSelected(session.isUseTls());
+				caCertTextField.setText(session.getCaCertFile());
+				clientCertTextField.setText(session.getClientCertFile());
+				clientKeyTextField.setText(session.getClientKeyFile());
+				pwdEnabledCheckBox.setSelected(session.isUsePassword());
+				usernameTextField.setText(session.getUsername());
+				passwordTextField.setText(session.getPassword());
+			}
+		});
+		
+		fillSessionsList();
 	}
 	
 	@Override
@@ -90,17 +118,62 @@ public class ConnectionsSceneController extends BaseController {
 	public void onActionPerformed(Object o, EventType et) {
 		// N/A
 	}
-	
 
 	@FXML
 	private void OnActionDeleteButton(ActionEvent action) {
+		// update the list
+		model.getSessionsMap().remove(nameTextField.getText());
 		
+		// update settings
+		cf.setString(ConfigItems.CONNECTIONS_SESSIONLIST, model.sessionsToJSON(), false);
+				
+		// re-render the list
+		fillSessionsList();
 	}
 	
 	@FXML
 	private void OnActionSaveButton(ActionEvent action) {
+		// load from the fields
+		Connection current = new Connection();
+		current.setUrl(urlTextField.getText());
+		current.setClientId(clientIdTextField.getText());
+		current.setUseTls(tlsEnabledCheckBox.isSelected());
+		current.setCaCertFile(caCertTextField.getText());
+		current.setClientCertFile(clientCertTextField.getText());
+		current.setClientKeyFile(clientKeyTextField.getText());
+		current.setUsePassword(pwdEnabledCheckBox.isSelected());
+		current.setUsername(usernameTextField.getText());
+		current.setPassword(passwordTextField.getText());
 		
+		// update the list
+		model.getSessionsMap().put(nameTextField.getText(), current);
+		
+		// update settings
+		cf.setString(ConfigItems.CONNECTIONS_SESSIONLIST, model.sessionsToJSON(), false);
+		
+		// re-render the list
+		fillSessionsList();
 	}
+	
+	
+	private void fillSessionsList() {
+		sessionList.getItems().clear();
+		
+		ArrayList<String> names = new ArrayList<>(model.getSessionsMap().keySet());	
+		Collections.sort(names, new Comparator<String>() {
+
+			@Override
+			public int compare(String o1, String o2) {
+				return o1.compareToIgnoreCase(o2);
+			}
+		});
+		
+		for(String name : names) {
+			sessionList.getItems().add(name);
+		}
+
+	}
+	
 	
 	@FXML
 	private void OnActionConnectButton(ActionEvent action) {
@@ -117,12 +190,14 @@ public class ConnectionsSceneController extends BaseController {
 		}
 	}
 	
+	
 	@FXML
 	private void OnActionCancelButton(ActionEvent action) {
 		// close
 		Stage stage = (Stage)topVbox.getScene().getWindow();
 		SceneManager.getInstance(cf).close(stage);
 	}
+	
 	
 	@FXML
 	private void OnActionCaCertButton(ActionEvent action) {
@@ -133,19 +208,21 @@ public class ConnectionsSceneController extends BaseController {
 				new FileChooser.ExtensionFilter("Certificate", "*.ca")
             );
 		File f = fileChooser.showOpenDialog(stage);
-		model.getCurrentSelection().setCaCertFile(f.getAbsolutePath());
+		if(f != null)
+			caCertTextField.setText(f.getAbsolutePath());
 	}
 	
 	@FXML
 	private void OnActionClientCertButton(ActionEvent action) {
 		Stage stage = (Stage)topVbox.getScene().getWindow();
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Client Cert File");
+		fileChooser.setTitle("Open CA Cert File");
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("Certificate", "*.ca")
             );
 		File f = fileChooser.showOpenDialog(stage);
-		model.getCurrentSelection().setClientCertFile(f.getAbsolutePath());
+		if(f != null)
+			clientCertTextField.setText(f.getAbsolutePath());
 	}
 	
 	@FXML
@@ -157,6 +234,7 @@ public class ConnectionsSceneController extends BaseController {
 				new FileChooser.ExtensionFilter("Key", "*.key")
             );
 		File f = fileChooser.showOpenDialog(stage);
-		model.getCurrentSelection().setClientKeyFile(f.getAbsolutePath());
+		if(f != null)
+			clientKeyTextField.setText(f.getAbsolutePath());
 	}
 }

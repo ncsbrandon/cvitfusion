@@ -65,6 +65,9 @@ public class Connection {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public Connection() {
+		
+	}
 	public Connection(String url, String clientId, boolean useTls, String caCertFile, String clientCertFile,
 			String clientKeyFile, boolean usePassword, String username, String password) {
 		super();

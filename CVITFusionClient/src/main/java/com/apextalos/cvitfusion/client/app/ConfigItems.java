@@ -18,4 +18,7 @@ public class ConfigItems {
 	public static final double CONNECTIONS_POSITION_Y_DEFAULT = -1;
 	public static final String CONNECTIONS_WIDTH_CONFIG = "connections_width";
 	public static final String CONNECTIONS_HEIGHT_CONFIG = "connections_height";
+	
+	public static final String CONNECTIONS_SESSIONLIST = "sessions";
+	public static final String CONNECTIONS_ACTIVESESSION = "active_session";
 }
