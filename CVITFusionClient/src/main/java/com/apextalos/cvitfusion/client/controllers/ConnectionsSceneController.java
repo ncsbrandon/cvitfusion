@@ -189,11 +189,37 @@ public class ConnectionsSceneController extends BaseController {
 	
 	@FXML
 	private void OnActionConnectButton(ActionEvent action) {
+		// validate settings
+		if(urlTextField.getText().isBlank()) {
+			showError("url cannot be blank");
+			return;
+		}
+		
 		// save any changes
 		OnActionSaveButton(action);
 		
 		// update the config to say this is the connection we are using
 		cf.setString(ConfigItems.CONNECTIONS_ACTIVESESSION_CONFIG, nameTextField.getText(), false);
+				
+		// once the main scene loads, it will create a MQTT client with these:
+		cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_BROKER, urlTextField.getText(), false);
+		cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_CLIENTID, clientIdTextField.getText(), false);
+		if(tlsEnabledCheckBox.isSelected()) {
+			cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_CACERT, caCertTextField.getText(), false);
+			cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_CLIENTCERT, clientCertTextField.getText(), false);
+			cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_CLIENTKEY, clientKeyTextField.getText(), false);
+		} else {
+			cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_CACERT, "", true);
+			cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_CLIENTCERT, "", true);
+			cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_CLIENTKEY, "", true);
+		}
+		if(pwdEnabledCheckBox.isSelected()) {
+			cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_USERNAME, usernameTextField.getText(), false);
+			cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_PASSWORD, passwordTextField.getText(), false);
+		} else {
+			cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_USERNAME, "", true);
+			cf.setString(com.apextalos.cvitfusion.common.settings.ConfigItems.CONFIG_MQTT_PASSWORD, "", true);
+		}
 		
 		// change to the main scene
 		try {
@@ -202,6 +228,10 @@ public class ConnectionsSceneController extends BaseController {
 		} catch (IOException e) {
 			logger.error("Unable to change to the main scene: " + e.getMessage());
 		}
+	}
+	
+	private void showError(String message) {
+		
 	}
 	
 	@FXML

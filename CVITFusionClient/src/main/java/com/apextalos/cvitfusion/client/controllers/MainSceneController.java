@@ -18,6 +18,7 @@ import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.client.models.MainSceneModel;
+import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
 import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
@@ -80,6 +81,7 @@ public class MainSceneController extends BaseController {
 	private DiagramBuilder db = new DiagramBuilder();
 	private Node activeSelection = null;
 	private OperationalFlow activeFlow = null;
+	private ClientConfigMqttTransceiver ccmt;
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -110,12 +112,6 @@ public class MainSceneController extends BaseController {
 		propertiesTable.prefHeightProperty().bind(vbox2.heightProperty());
 		designScroll.prefHeightProperty().bind(vbox.heightProperty());
 		designPane.prefHeightProperty().bind(designScroll.heightProperty());
-
-		// load some sample data
-		sample1();
-		
-		// layout the design pane
-		designPane.getChildren().addAll(db.layout(activeFlow, this));
 	}
 
 	@Override
@@ -141,6 +137,15 @@ public class MainSceneController extends BaseController {
 		sp1.setDividerPosition(0, cf.getDouble("sp1_divider_position", -1));
 		sp11.setDividerPosition(0, cf.getDouble("sp11_divider_position", -1));
 		sp112.setDividerPosition(0, cf.getDouble("sp112_divider_position", -1));
+		
+		ccmt = new ClientConfigMqttTransceiver(cf);
+		ccmt.start();
+		
+		// load some sample data
+		sample1();
+		
+		// layout the design pane
+		designPane.getChildren().addAll(db.layout(activeFlow, this));
 	}
 		
 	@Override
@@ -164,6 +169,8 @@ public class MainSceneController extends BaseController {
 		cf.setDouble("sp1_divider_position", sp1.getDividerPositions()[0]);
 		cf.setDouble("sp11_divider_position", sp11.getDividerPositions()[0]);
 		cf.setDouble("sp112_divider_position", sp112.getDividerPositions()[0]);
+		
+		ccmt.disconnect();
 	}
 	
 	@FXML
@@ -381,7 +388,4 @@ public class MainSceneController extends BaseController {
 		model.getTableItems().clear();
 	}
 
-	
-
-	
 }
