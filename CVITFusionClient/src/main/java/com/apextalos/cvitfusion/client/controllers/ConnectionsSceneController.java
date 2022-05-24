@@ -1,5 +1,6 @@
 package com.apextalos.cvitfusion.client.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,6 +19,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class ConnectionsSceneController extends BaseController {
@@ -35,15 +37,15 @@ public class ConnectionsSceneController extends BaseController {
 	@FXML private ListView<String> sessionList;
 	@FXML private TextField nameTextField;
 	@FXML private TextField urlTextField;
+	@FXML private TextField clientIdTextField;
+	@FXML private CheckBox tlsEnabledCheckBox;
 	@FXML private TextField caCertTextField;
 	@FXML private TextField clientCertTextField;
 	@FXML private TextField clientKeyTextField;
+	@FXML private CheckBox pwdEnabledCheckBox;
 	@FXML private TextField usernameTextField;
 	@FXML private TextField passwordTextField;
-	@FXML private TextField clientIdTextField;
-	@FXML private CheckBox tlsEnabledCheckBox;
-	@FXML private CheckBox pwdEnabledCheckBox;
-	
+		
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		model = new ConnectionsSceneModel();
@@ -67,8 +69,6 @@ public class ConnectionsSceneController extends BaseController {
 		
 		// stage other
 		stage.setMaximized(false);
-		
-		// divider positions
 	}
 
 	@Override
@@ -84,14 +84,13 @@ public class ConnectionsSceneController extends BaseController {
 		// stage size
 		cf.setDouble(ConfigItems.CONNECTIONS_WIDTH_CONFIG, stage.getWidth());
 		cf.setDouble(ConfigItems.CONNECTIONS_HEIGHT_CONFIG, stage.getHeight());
-		
-		// divider positions
 	}
 
 	@Override
 	public void onActionPerformed(Object o, EventType et) {
-		
+		// N/A
 	}
+	
 
 	@FXML
 	private void OnActionDeleteButton(ActionEvent action) {
@@ -105,6 +104,10 @@ public class ConnectionsSceneController extends BaseController {
 	
 	@FXML
 	private void OnActionConnectButton(ActionEvent action) {
+		// unsaved changes?
+		
+		// update the config with this current connection
+		
 		// change to the main scene
 		try {
 			Stage stage = (Stage)topVbox.getScene().getWindow();
@@ -116,22 +119,44 @@ public class ConnectionsSceneController extends BaseController {
 	
 	@FXML
 	private void OnActionCancelButton(ActionEvent action) {
+		// close
 		Stage stage = (Stage)topVbox.getScene().getWindow();
 		SceneManager.getInstance(cf).close(stage);
 	}
 	
 	@FXML
 	private void OnActionCaCertButton(ActionEvent action) {
-		
+		Stage stage = (Stage)topVbox.getScene().getWindow();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open CA Cert File");
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("Certificate", "*.ca")
+            );
+		File f = fileChooser.showOpenDialog(stage);
+		model.getCurrentSelection().setCaCertFile(f.getAbsolutePath());
 	}
 	
 	@FXML
 	private void OnActionClientCertButton(ActionEvent action) {
-		
+		Stage stage = (Stage)topVbox.getScene().getWindow();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Client Cert File");
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("Certificate", "*.ca")
+            );
+		File f = fileChooser.showOpenDialog(stage);
+		model.getCurrentSelection().setClientCertFile(f.getAbsolutePath());
 	}
 	
 	@FXML
 	private void OnActionClientKeyButton(ActionEvent action) {
-		
+		Stage stage = (Stage)topVbox.getScene().getWindow();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Client Key File");
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("Key", "*.key")
+            );
+		File f = fileChooser.showOpenDialog(stage);
+		model.getCurrentSelection().setClientKeyFile(f.getAbsolutePath());
 	}
 }
