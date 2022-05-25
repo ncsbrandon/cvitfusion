@@ -15,7 +15,7 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 
 	@Override
 	public String[] subscriptionTopics() {
-		// no loose subscription topics.  these must be in handlers
+		// no loose subscription topics.  these should be in proper handlers
 		return null;
 	}
 

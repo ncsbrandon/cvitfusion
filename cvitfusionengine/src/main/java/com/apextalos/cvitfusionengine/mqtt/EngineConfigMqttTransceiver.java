@@ -41,6 +41,7 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 	@Override
 	public String buildStatusPayload() throws JsonProcessingException {
 		EngineStatus es = new EngineStatus(
+			cf.getString(ConfigItems.DEVICE_UUID_CONFIG, ConfigItems.DEVICE_UUID_DEFAULT),
 			DateTime.now().toString(),
 			Mode.RUNNING,
 			cf.getString(ConfigItems.DEVICE_LOCATION_CONFIG, ConfigItems.DEVICE_LOCATION_DEFAULT),

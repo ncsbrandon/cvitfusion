@@ -5,7 +5,8 @@ public class EngineStatus {
 	public enum Mode {
 		UNKNOWN,
 		RUNNING,
-		STANDBY
+		STANDBY,
+		ERROR
 	}
 	
 	public enum LogLevel {
@@ -15,6 +16,7 @@ public class EngineStatus {
 		DEBUG
 	}
 	
+	private String id;
 	private String ts;
 	private Mode mode;
 	private String locationName;
@@ -22,6 +24,12 @@ public class EngineStatus {
 	private LogLevel logLevel;
 	private Coordinate coord;
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getTs() {
 		return ts;
 	}
@@ -62,8 +70,9 @@ public class EngineStatus {
 	public EngineStatus() {
 	}
 	
-	public EngineStatus(String ts, Mode mode, String locationName, String version, LogLevel logLevel, Coordinate coord) {
+	public EngineStatus(String id, String ts, Mode mode, String locationName, String version, LogLevel logLevel, Coordinate coord) {
 		super();
+		this.id = id;
 		this.ts = ts;
 		this.mode = mode;
 		this.locationName = locationName;

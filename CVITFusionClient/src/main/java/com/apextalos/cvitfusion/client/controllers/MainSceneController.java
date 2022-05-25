@@ -22,6 +22,7 @@ import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent.Change;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
+import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
 import com.apextalos.cvitfusion.common.opflow.Color;
@@ -33,6 +34,7 @@ import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,7 +67,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	}
 
 	// View
-	@FXML private ListView<String> propertiesListView;
+	@FXML private ListView<EngineStatus> engineStatusListView;
 	@FXML private TableView<KeyValuePairModel> propertiesTable;
 	@FXML private TableColumn<Object, Object> propertiesColumnKey;
 	@FXML private TableColumn<Object, Object> propertiesColumnValue;
@@ -81,6 +83,8 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	@FXML private BorderPane topBorderPane;
 	@FXML private Label mqttStatusLabel;
 
+	private ObservableList<EngineStatus> engineStatusList = FXCollections.observableArrayList();
+	
 	private DiagramBuilder db = new DiagramBuilder();
 	private Node activeSelection = null;
 	private OperationalFlow activeFlow = null;
@@ -96,13 +100,18 @@ public class MainSceneController extends BaseController implements SubscriptionL
 
 		// create bindings
 		//welcomeText.textProperty().bind(model.getAccountBalanceProperty().asString());
-		propertiesListView.setItems(model.getListItems());
+		//propertiesListView.setItems(model.getListItems());
 		propertiesColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
 		propertiesColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
 		propertiesTable.setItems(model.getTableItems());
 
 		versionInfo.setText(String.format("%s.%s", Version.getInstance().getVersion(), Version.getInstance().getBuild()));
 
+		
+		
+		engineStatusListView.setItems(engineStatusList);
+		//engineStatusListView.setCellFactory(studentListView -> new EngineStatusListViewCell());
+		
 		/*
 		// link Controller to View - ensure only numeric input (integers) in text field
 		welcomeTextField.setTextFormatter(new TextFormatter<>(change -> {
@@ -475,5 +484,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	@Override
 	public void onSubscriptionArrived(SubscriptionEvent subscriptionEvent) {
 		model.getListItems().add(subscriptionEvent.getObj().toString());
+		EngineStatus es = (EngineStatus)subscriptionEvent.getObj();
+		engineStatusList.add(es);
 	}
 }
