@@ -3,6 +3,8 @@ package com.apextalos.cvitfusion.common.mqtt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.common.mqtt.subscription.ISubscriptionHander;
+import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicParser;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
@@ -27,13 +29,13 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 
 	public abstract String[] subscriptionTopics();
 
-	public abstract ISubscriptionHander[] subscriptionHandlers();
+	public abstract ISubscriptionHander[] subscriptionHandlers(SubscriptionListener subscriptionListener);
 
 	public abstract String statusTopic();
 
 	public abstract String buildStatusPayload() throws JsonProcessingException;
 
-	public void start() {
+	public void start(SubscriptionListener subscriptionListener) {
 		// check for TLS certs
 		setCerts(
 				cf.getString(ConfigItems.CONFIG_MQTT_CACERT, ConfigItems.CONFIG_MQTT_CACERT_DEFAULT),
@@ -54,7 +56,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 
 		// subscriptions
 		subscribe(subscriptionTopics());
-		handlers = subscriptionHandlers();
+		handlers = subscriptionHandlers(subscriptionListener);
 		for (ISubscriptionHander handler : handlers) {
 			subscribe(handler.topic());
 		}

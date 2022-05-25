@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusionengine.mqtt.messages;
+package com.apextalos.cvitfusion.common.mqtt.message;
 
 public class EngineStatus {
 
@@ -59,8 +59,10 @@ public class EngineStatus {
 		this.coord = coord;
 	}
 	
-	public EngineStatus(String ts, Mode mode, String locationName, String version, LogLevel logLevel,
-			Coordinate coord) {
+	public EngineStatus() {
+	}
+	
+	public EngineStatus(String ts, Mode mode, String locationName, String version, LogLevel logLevel, Coordinate coord) {
 		super();
 		this.ts = ts;
 		this.mode = mode;

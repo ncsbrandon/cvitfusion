@@ -27,7 +27,9 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import com.apextalos.cvitfusion.common.mqtt.ConnectionEvent.Change;
+import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
+import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
+import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent.Change;
 
 public abstract class MqttTransceiver implements MqttCallback {
 

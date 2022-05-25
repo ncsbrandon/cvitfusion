@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusion.common.mqtt;
+package com.apextalos.cvitfusion.common.mqtt.connection;
 
 public class ConnectionEvent {
 
@@ -34,6 +34,4 @@ public class ConnectionEvent {
 		this.change = change;
 		this.message = message;
 	}
-
-
 }

@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusion.common.mqtt;
+package com.apextalos.cvitfusion.common.mqtt.subscription;
 
 public interface ISubscriptionHander {
 

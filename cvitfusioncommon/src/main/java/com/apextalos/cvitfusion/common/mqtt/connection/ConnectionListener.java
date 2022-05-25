@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusion.common.mqtt;
+package com.apextalos.cvitfusion.common.mqtt.connection;
 
 import java.util.EventListener;
 

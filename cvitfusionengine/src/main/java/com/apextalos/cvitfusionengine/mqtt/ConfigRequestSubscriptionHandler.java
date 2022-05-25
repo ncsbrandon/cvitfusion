@@ -1,6 +1,6 @@
 package com.apextalos.cvitfusionengine.mqtt;
 
-import com.apextalos.cvitfusion.common.mqtt.ISubscriptionHander;
+import com.apextalos.cvitfusion.common.mqtt.subscription.ISubscriptionHander;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 

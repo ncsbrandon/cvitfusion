@@ -1,4 +1,4 @@
-package com.apextalos.cvitfusionengine.mqtt.messages;
+package com.apextalos.cvitfusion.common.mqtt.message;
 
 public class Coordinate {
 
@@ -23,6 +23,9 @@ public class Coordinate {
 	}
 	public void setElevation(double elevation) {
 		this.elevation = elevation;
+	}
+	
+	public Coordinate() {
 	}
 	
 	public Coordinate(double latitude, double longitude, double elevation) {

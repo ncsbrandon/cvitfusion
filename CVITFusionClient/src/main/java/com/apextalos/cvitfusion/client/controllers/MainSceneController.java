@@ -19,9 +19,11 @@ import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.client.models.MainSceneModel;
 import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
 import com.apextalos.cvitfusion.client.scene.SceneManager;
-import com.apextalos.cvitfusion.common.mqtt.ConnectionEvent;
-import com.apextalos.cvitfusion.common.mqtt.ConnectionEvent.Change;
-import com.apextalos.cvitfusion.common.mqtt.ConnectionListener;
+import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
+import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent.Change;
+import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
+import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionEvent;
+import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
 import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
@@ -51,7 +53,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
-public class MainSceneController extends BaseController {
+public class MainSceneController extends BaseController implements SubscriptionListener {
 
 	private static final Logger logger = LogManager.getLogger(MainSceneController.class.getSimpleName());
 
@@ -152,7 +154,7 @@ public class MainSceneController extends BaseController {
 				onConnectionChanged(e);
 			}
 		});
-		ccmt.start();	
+		ccmt.start(this);	
 	}
 		
 	@Override
@@ -341,8 +343,7 @@ public class MainSceneController extends BaseController {
 			mqttStatusLabel.setText(e.getMessage());
 		}
 	}
-	
-	
+		
 	
 	
 	
@@ -468,5 +469,11 @@ public class MainSceneController extends BaseController {
 		activeFlow.getTypeStyle().put(6, 6);
 		activeFlow.getTypeStyle().put(7, 7);
 		activeFlow.getTypeStyle().put(8, 8);
+	}
+
+
+	@Override
+	public void onSubscriptionArrived(SubscriptionEvent subscriptionEvent) {
+		model.getListItems().add(subscriptionEvent.getObj().toString());
 	}
 }

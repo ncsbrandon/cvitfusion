@@ -3,14 +3,15 @@ package com.apextalos.cvitfusionengine.mqtt;
 import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.common.mqtt.ConfigMqttTransceiver;
-import com.apextalos.cvitfusion.common.mqtt.ISubscriptionHander;
+import com.apextalos.cvitfusion.common.mqtt.message.Coordinate;
+import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
+import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus.LogLevel;
+import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus.Mode;
+import com.apextalos.cvitfusion.common.mqtt.subscription.ISubscriptionHander;
+import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusionengine.app.Version;
-import com.apextalos.cvitfusionengine.mqtt.messages.Coordinate;
-import com.apextalos.cvitfusionengine.mqtt.messages.EngineStatus;
-import com.apextalos.cvitfusionengine.mqtt.messages.EngineStatus.LogLevel;
-import com.apextalos.cvitfusionengine.mqtt.messages.EngineStatus.Mode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
@@ -25,7 +26,7 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 	}
 
 	@Override
-	public ISubscriptionHander[] subscriptionHandlers() {
+	public ISubscriptionHander[] subscriptionHandlers(SubscriptionListener subscriptionListener) {
 		ISubscriptionHander[] subscriptionHandlers = new ISubscriptionHander[1];
 		subscriptionHandlers[0] = new ConfigRequestSubscriptionHandler(cf);
 		return subscriptionHandlers;
