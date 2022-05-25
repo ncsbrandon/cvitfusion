@@ -3,6 +3,7 @@ package com.apextalos.cvitfusion.common.mqtt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.common.mqtt.topics.TopicParser;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusion.common.thread.SimpleThread;
@@ -99,7 +100,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	@Override
 	protected void incomingMessage(String topic, String payload) {
 		for(ISubscriptionHander handler : handlers) {
-			if(0 == handler.topic().compareToIgnoreCase(topic)) {
+			if(TopicParser.match(handler.topic(), topic)) {
 				handler.onMessage(payload);
 				return;
 			}

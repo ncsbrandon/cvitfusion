@@ -36,7 +36,7 @@ public class App {
 		        try {
 					mainThread.join();
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					logger.error("Shutdown hook interrupted: " + e.getMessage());
 				}
 		    }
 		});
@@ -51,7 +51,7 @@ public class App {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				logger.error("App main loop interrupted: " + e.getMessage());
 			}
 		}
 		
