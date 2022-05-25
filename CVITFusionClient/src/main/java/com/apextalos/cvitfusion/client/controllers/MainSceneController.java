@@ -20,6 +20,9 @@ import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.client.models.MainSceneModel;
 import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
 import com.apextalos.cvitfusion.client.scene.SceneManager;
+import com.apextalos.cvitfusion.common.mqtt.ConnectionEvent;
+import com.apextalos.cvitfusion.common.mqtt.ConnectionEvent.Change;
+import com.apextalos.cvitfusion.common.mqtt.ConnectionListener;
 import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
@@ -83,6 +86,9 @@ public class MainSceneController extends BaseController {
 	private OperationalFlow activeFlow = null;
 	private ClientConfigMqttTransceiver ccmt;
 	
+	//*********************
+	// SCENE EVENTS
+	//*********************
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// create model
@@ -138,14 +144,15 @@ public class MainSceneController extends BaseController {
 		sp11.setDividerPosition(0, cf.getDouble("sp11_divider_position", -1));
 		sp112.setDividerPosition(0, cf.getDouble("sp112_divider_position", -1));
 		
+		// start MQTT
 		ccmt = new ClientConfigMqttTransceiver(cf);
-		ccmt.start();
-		
-		// load some sample data
-		sample1();
-		
-		// layout the design pane
-		designPane.getChildren().addAll(db.layout(activeFlow, this));
+		ccmt.addConnectionListener(new ConnectionListener() {	
+			@Override
+			public void connectionChange(ConnectionEvent e) {
+				onConnectionChanged(e);
+			}
+		});
+		ccmt.start();	
 	}
 		
 	@Override
@@ -173,8 +180,12 @@ public class MainSceneController extends BaseController {
 		ccmt.disconnect();
 	}
 	
+	
+	//*********************
+	// MENU EVENTS
+	//*********************
 	@FXML
-	protected void OnActionDisconnectMenu(ActionEvent event) {
+	protected void onActionDisconnectMenu(ActionEvent event) {
 		// go back to connections
 		try {
 			Stage stage = (Stage)topBorderPane.getScene().getWindow();
@@ -185,10 +196,123 @@ public class MainSceneController extends BaseController {
 	}
 	
 	@FXML
-	protected void OnActionCloseMenu(ActionEvent event) {
+	protected void onActionCloseMenu(ActionEvent event) {
 		Stage stage = (Stage)topBorderPane.getScene().getWindow();
 		SceneManager.getInstance(cf).close(stage);
 	}
+	
+	
+
+	@FXML
+	protected void onHelloButtonClick() {
+		model.deposit(100);
+		model.getListItems().add("deposit");
+		model.getTableItems().clear();
+		model.getTableItems().add(new KeyValuePairModel("last", "deposit"));
+		model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
+
+		logger.debug("this is DEBUG");
+		logger.error("this is ERROR");
+	}
+	
+	//*********************
+	// DESIGN PANE EVENTS
+	//*********************
+	@FXML
+	protected void onDesignPaneMouseClicked(MouseEvent mouseEvent) {
+		logger.debug("onMouseClicked " + mouseEvent.toString());
+		mouseEvent.consume();
+		onActionPerformed(null, EventType.DESELECTED);
+	}
+
+	@Override
+	public void onActionPerformed(Object o, EventType et) {
+		if (et == EventType.SELECTED && o instanceof Line) {
+			onActionPerformed(null, EventType.DESELECTED);
+			onLineSelection((Line) o);
+		} else if (et == EventType.SELECTED && o instanceof DiagramNodeControl) {
+			onActionPerformed(null, EventType.DESELECTED);
+			onProcessSelection((DiagramNodeControl) o);
+		} else if (et == EventType.DESELECTED) {
+			if (activeSelection != null && activeSelection instanceof Line) {
+				onLineDeselection((Line) activeSelection);
+			} else if (activeSelection != null && activeSelection instanceof DiagramNodeControl) {
+				onProcessDeselection((DiagramNodeControl) activeSelection);
+			}
+		}
+	}
+
+	private void onLineSelection(Line line) {
+		line.setEffect(new DropShadow());
+		activeSelection = line;
+		
+		ProcessLink pc = (ProcessLink) line.getUserData();
+		Process parentProcess = pc.getParentProcess();
+		Type parentType = activeFlow.lookupType(parentProcess.getTypeID());
+		Process childProcess = pc.getChildProcess();
+		Type childType = activeFlow.lookupType(childProcess.getTypeID());
+		
+		model.getTableItems().clear();
+		model.getTableItems().add(new KeyValuePairModel("From", String.format("%s %d", parentType.getName(), parentProcess.getProcessID())));
+		model.getTableItems().add(new KeyValuePairModel("To", String.format("%s %d", childType.getName(), childProcess.getProcessID())));
+	}
+	
+	private void onLineDeselection(Line line) {
+		line.setEffect(null);
+		activeSelection = null;
+		model.getTableItems().clear();
+	}
+
+	private void onProcessSelection(DiagramNodeControl dnc) {
+		dnc.getController().select(true);
+		activeSelection = dnc;
+		
+		DiagramNodeController dncController = dnc.getController();
+		DiagramNodeModel dncModel = dncController.getModel();
+		
+		Process process = activeFlow.lookupProcess(Integer.valueOf(dncModel.getIDProperty().get()));
+		Type type = activeFlow.lookupType(process.getTypeID());
+		
+		model.getTableItems().clear();
+		model.getTableItems().add(new KeyValuePairModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
+		model.getTableItems().add(new KeyValuePairModel("Version", String.valueOf(type.getVersion())));
+		model.getTableItems().add(new KeyValuePairModel("Notes", process.getNotes()));
+		model.getTableItems().add(new KeyValuePairModel("Enabled", String.valueOf(process.isEnabled())));
+	}
+	
+	private void onProcessDeselection(DiagramNodeControl dnc) {
+		dnc.getController().select(false);
+		activeSelection = null;
+		model.getTableItems().clear();
+	}
+
+	
+	
+	//*********************
+	// MQTT EVENTS
+	//*********************
+	private void onConnectionChanged(ConnectionEvent e) {
+		if(e.getChange() == Change.CONNECTSUCCESS) {
+			sample1();
+			designPane.getChildren().addAll(db.layout(activeFlow, this));
+		} else if (e.getChange() == Change.CONNECTFAILURE) {
+			activeFlow = null;		
+			designPane.getChildren().clear();
+		} else if (e.getChange() == Change.DISCONNECT) {
+			activeFlow = null;		
+			designPane.getChildren().clear();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public void sample1() {
 		activeFlow = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
@@ -307,85 +431,4 @@ public class MainSceneController extends BaseController {
 		activeFlow.getTypeStyle().put(7, 7);
 		activeFlow.getTypeStyle().put(8, 8);
 	}
-
-	@FXML
-	protected void onHelloButtonClick() {
-		model.deposit(100);
-		model.getListItems().add("deposit");
-		model.getTableItems().clear();
-		model.getTableItems().add(new KeyValuePairModel("last", "deposit"));
-		model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
-
-		logger.debug("this is DEBUG");
-		logger.error("this is ERROR");
-	}
-
-	@FXML
-	protected void onMouseClicked(MouseEvent mouseEvent) {
-		logger.debug("onMouseClicked " + mouseEvent.toString());
-		mouseEvent.consume();
-		onActionPerformed(null, EventType.DESELECTED);
-	}
-
-	@Override
-	public void onActionPerformed(Object o, EventType et) {
-		if (et == EventType.SELECTED && o instanceof Line) {
-			onActionPerformed(null, EventType.DESELECTED);
-			onLineSelection((Line) o);
-		} else if (et == EventType.SELECTED && o instanceof DiagramNodeControl) {
-			onActionPerformed(null, EventType.DESELECTED);
-			onProcessSelection((DiagramNodeControl) o);
-		} else if (et == EventType.DESELECTED) {
-			if (activeSelection != null && activeSelection instanceof Line) {
-				onLineDeselection((Line) activeSelection);
-			} else if (activeSelection != null && activeSelection instanceof DiagramNodeControl) {
-				onProcessDeselection((DiagramNodeControl) activeSelection);
-			}
-		}
-	}
-
-	private void onLineSelection(Line line) {
-		line.setEffect(new DropShadow());
-		activeSelection = line;
-		
-		ProcessLink pc = (ProcessLink) line.getUserData();
-		Process parentProcess = pc.getParentProcess();
-		Type parentType = activeFlow.lookupType(parentProcess.getTypeID());
-		Process childProcess = pc.getChildProcess();
-		Type childType = activeFlow.lookupType(childProcess.getTypeID());
-		
-		model.getTableItems().clear();
-		model.getTableItems().add(new KeyValuePairModel("From", String.format("%s %d", parentType.getName(), parentProcess.getProcessID())));
-		model.getTableItems().add(new KeyValuePairModel("To", String.format("%s %d", childType.getName(), childProcess.getProcessID())));
-	}
-	
-	private void onLineDeselection(Line line) {
-		line.setEffect(null);
-		activeSelection = null;
-		model.getTableItems().clear();
-	}
-
-	private void onProcessSelection(DiagramNodeControl dnc) {
-		dnc.getController().select(true);
-		activeSelection = dnc;
-		
-		DiagramNodeController dncController = dnc.getController();
-		DiagramNodeModel dncModel = dncController.getModel();
-		
-		Process process = activeFlow.lookupProcess(Integer.valueOf(dncModel.getIDProperty().get()));
-		Type type = activeFlow.lookupType(process.getTypeID());
-		
-		model.getTableItems().clear();
-		model.getTableItems().add(new KeyValuePairModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
-		model.getTableItems().add(new KeyValuePairModel("Version", String.valueOf(type.getVersion())));
-		model.getTableItems().add(new KeyValuePairModel("Notes", process.getNotes()));
-		model.getTableItems().add(new KeyValuePairModel("Enabled", String.valueOf(process.isEnabled())));
-	}
-	
-	private void onProcessDeselection(DiagramNodeControl dnc) {
-		dnc.getController().select(false);
-		activeSelection = null;
-		model.getTableItems().clear();
-	}
-
 }

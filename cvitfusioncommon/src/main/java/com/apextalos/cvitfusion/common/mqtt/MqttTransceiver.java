@@ -27,6 +27,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import com.apextalos.cvitfusion.common.mqtt.ConnectionEvent.Change;
+
 public abstract class MqttTransceiver implements MqttCallback {
 
 	private static Logger logger = LogManager.getLogger(MqttTransceiver.class.getSimpleName());
@@ -55,6 +57,17 @@ public abstract class MqttTransceiver implements MqttCallback {
 	public int getSentCount() { return sentCount; }
 	private int receivedCount = 0;
 	public int getReceivedCount() { return receivedCount; }
+	
+	// connection event
+	private final List<ConnectionListener> connectionlisteners = new ArrayList<>();
+	public void addConnectionListener(ConnectionListener l) {
+		connectionlisteners.add(l);
+	}
+	public void connectionChanged(ConnectionEvent ce) {
+		for (ConnectionListener l : connectionlisteners) {
+			l.connectionChange(ce);
+		}
+	}
 	
 	public MqttTransceiver(String broker, String clientId) {	
 		this.broker = broker;
@@ -173,14 +186,17 @@ public abstract class MqttTransceiver implements MqttCallback {
 			logger.debug("Connecting to broker: " + broker);
 			client.connect(connOpts);
 			logger.debug("Connected");
+			connectionChanged(new ConnectionEvent(Change.CONNECTSUCCESS, ""));
 			client.setCallback(this);
 			return true;
 		} catch (MqttException e) {
 			client = null;
 			logger.error("connection failure [" + e.getReasonCode() + "] " + e.getMessage() + ": " + e.getCause());
+			connectionChanged(new ConnectionEvent(Change.CONNECTFAILURE, e.getMessage() + ": " + e.getCause()));
 		} catch (UnrecoverableKeyException | KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException | IOException e) {
 			client = null;
 			logger.error("TLS socket creation failure: " + e.getMessage());
+			connectionChanged(new ConnectionEvent(Change.CONNECTFAILURE, String.format("TLS failure: %s", e.getMessage())));
 		}
 		return false;
 	}
@@ -196,6 +212,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 			client = null;
 			activeSubscriptions.clear();
 			activePublications.clear();
+			connectionChanged(new ConnectionEvent(Change.DISCONNECT, ""));
 		} catch (MqttException e) {
 			logger.error("disonnection failure reason " + e.getReasonCode());
 			logger.error("msg " + e.getMessage());
@@ -288,6 +305,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 	public void connectionLost(Throwable arg0) {
 		logger.debug("Connection lost: " + arg0.getMessage());
 		client = null;
+		connectionChanged(new ConnectionEvent(Change.DISCONNECT, ""));
 		if(connect())
 			resubscribe();
 	}
