@@ -184,9 +184,10 @@ public abstract class MqttTransceiver implements MqttCallback {
 			}
 
 			logger.debug("Connecting to broker: " + broker);
+			connectionChanged(new ConnectionEvent(Change.CONNECTING, "Connecting to " + broker + "..."));
 			client.connect(connOpts);
 			logger.debug("Connected");
-			connectionChanged(new ConnectionEvent(Change.CONNECTSUCCESS, broker));
+			connectionChanged(new ConnectionEvent(Change.CONNECTSUCCESS, "Connected to " + broker));
 			client.setCallback(this);
 			return true;
 		} catch (MqttException e) {
@@ -207,7 +208,9 @@ public abstract class MqttTransceiver implements MqttCallback {
 
 		try {
 			logger.debug("Disconnecting from broker: " + broker);
+			client.setCallback(null);
 			client.disconnect();
+			client.close();
 			logger.debug("Disconnected");
 			client = null;
 			activeSubscriptions.clear();
@@ -305,7 +308,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 	public void connectionLost(Throwable arg0) {
 		logger.debug("Connection lost: " + arg0.getMessage());
 		client = null;
-		connectionChanged(new ConnectionEvent(Change.DISCONNECT, ""));
+		connectionChanged(new ConnectionEvent(Change.DISCONNECT, "Connection lost"));
 		if(connect())
 			resubscribe();
 	}

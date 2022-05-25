@@ -31,6 +31,8 @@ import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -178,7 +180,7 @@ public class MainSceneController extends BaseController {
 		cf.setDouble("sp11_divider_position", sp11.getDividerPositions()[0]);
 		cf.setDouble("sp112_divider_position", sp112.getDividerPositions()[0]);
 		
-		ccmt.disconnect();
+		ccmt.stop();
 	}
 	
 	
@@ -287,24 +289,53 @@ public class MainSceneController extends BaseController {
 		model.getTableItems().clear();
 	}
 
+	private void fillDesignPane() {
+		designPane.getChildren().addAll(db.layout(activeFlow, this));
+	}
+	
+	private void clearDesignPane() {
+		activeFlow = null;
+		
+		ObservableList<Node> children = designPane.getChildren();
+        if(children != null && children.size() > 0)
+        	designPane.getChildren().clear();
+	}
 	
 	
 	//*********************
 	// MQTT EVENTS
 	//*********************
 	private void onConnectionChanged(ConnectionEvent e) {
+		
+		// if this event is coming from another thread (MQTT)
+		// run it later on the GUI thread
+		if(!Platform.isFxApplicationThread()) {
+			Platform.runLater(new Runnable() {
+                @Override public void run() {
+                	onConnectionChanged(e);
+                }
+			});
+			return;
+		}
+		
+		
 		if(e.getChange() == Change.CONNECTSUCCESS) {
+			clearDesignPane();
+			mqttStatus.setTextFill(javafx.scene.paint.Color.ORANGE);
+			mqttStatus.setText(e.getMessage());
+		} if(e.getChange() == Change.CONNECTSUCCESS) {
 			sample1();
-			designPane.getChildren().addAll(db.layout(activeFlow, this));
+			fillDesignPane();
+			mqttStatus.setTextFill(javafx.scene.paint.Color.BLACK);
 			mqttStatus.setText(e.getMessage());
-		} else if (e.getChange() == Change.CONNECTFAILURE) {
-			activeFlow = null;		
-			designPane.getChildren().clear();
+		} else if (e.getChange() == Change.CONNECTFAILURE) {	
+			clearDesignPane();
+			mqttStatus.setTextFill(javafx.scene.paint.Color.RED);
 			mqttStatus.setText(e.getMessage());
-		} else if (e.getChange() == Change.DISCONNECT) {
-			activeFlow = null;		
-			designPane.getChildren().clear();
-			mqttStatus.setText("");
+		} else if (e.getChange() == Change.DISCONNECT) {	
+			clearDesignPane();
+            mqttStatus.setTextFill(javafx.scene.paint.Color.RED);
+            mqttStatus.setText(e.getMessage());
 		}
 	}
 	

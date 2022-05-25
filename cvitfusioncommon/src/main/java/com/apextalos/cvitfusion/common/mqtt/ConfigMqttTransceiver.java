@@ -69,9 +69,11 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		statusTask = new SimpleThread() {
 			@Override
 			protected void running() {
+				setName("Status publisher");
 				while (!getStop()) {
-					// wait until the next run
-					SleepUtils.safeSleep((long) 1000 * freqsec);
+					// wait until the next run, or interrupted
+					if(stopDelay((long) 1000 * freqsec))
+						break;					
 					
 					// publish periodic status message (with aggregated BSM data)
 					try {
@@ -88,7 +90,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 
 	public void stop() {
 		if(statusTask != null) {
-			statusTask.setStop();
+			statusTask.setStopAndJoin(1000);
 			statusTask = null;
 		}
 		

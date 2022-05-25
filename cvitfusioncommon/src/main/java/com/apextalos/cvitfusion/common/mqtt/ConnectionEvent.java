@@ -3,6 +3,7 @@ package com.apextalos.cvitfusion.common.mqtt;
 public class ConnectionEvent {
 
 	public enum Change {
+		CONNECTING,
 		CONNECTSUCCESS,
 		CONNECTFAILURE,
 		DISCONNECT,
