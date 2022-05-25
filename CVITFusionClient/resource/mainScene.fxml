@@ -23,6 +23,9 @@
          <left>
             <Label fx:id="versionInfo" text="Version info" BorderPane.alignment="CENTER" />
          </left>
+         <center>
+            <Label fx:id="mqttStatus" text="Label" BorderPane.alignment="CENTER" />
+         </center>
       </BorderPane>
    </bottom>
    <top>

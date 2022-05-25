@@ -186,7 +186,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 			logger.debug("Connecting to broker: " + broker);
 			client.connect(connOpts);
 			logger.debug("Connected");
-			connectionChanged(new ConnectionEvent(Change.CONNECTSUCCESS, ""));
+			connectionChanged(new ConnectionEvent(Change.CONNECTSUCCESS, broker));
 			client.setCallback(this);
 			return true;
 		} catch (MqttException e) {
@@ -196,7 +196,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 		} catch (UnrecoverableKeyException | KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException | IOException e) {
 			client = null;
 			logger.error("TLS socket creation failure: " + e.getMessage());
-			connectionChanged(new ConnectionEvent(Change.CONNECTFAILURE, String.format("TLS failure: %s", e.getMessage())));
+			connectionChanged(new ConnectionEvent(Change.CONNECTFAILURE, String.format("TLS failure %s", e.getMessage())));
 		}
 		return false;
 	}

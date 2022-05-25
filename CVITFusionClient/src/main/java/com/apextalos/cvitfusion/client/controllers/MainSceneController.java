@@ -80,6 +80,7 @@ public class MainSceneController extends BaseController {
 	@FXML private VBox vbox2;
 	@FXML private TitledPane propertiesPanel;
 	@FXML private BorderPane topBorderPane;
+	@FXML private Label mqttStatus;
 
 	private DiagramBuilder db = new DiagramBuilder();
 	private Node activeSelection = null;
@@ -295,12 +296,15 @@ public class MainSceneController extends BaseController {
 		if(e.getChange() == Change.CONNECTSUCCESS) {
 			sample1();
 			designPane.getChildren().addAll(db.layout(activeFlow, this));
+			mqttStatus.setText(e.getMessage());
 		} else if (e.getChange() == Change.CONNECTFAILURE) {
 			activeFlow = null;		
 			designPane.getChildren().clear();
+			mqttStatus.setText(e.getMessage());
 		} else if (e.getChange() == Change.DISCONNECT) {
 			activeFlow = null;		
 			designPane.getChildren().clear();
+			mqttStatus.setText("");
 		}
 	}
 	
