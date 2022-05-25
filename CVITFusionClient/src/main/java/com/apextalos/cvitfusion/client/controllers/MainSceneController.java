@@ -41,8 +41,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
@@ -65,9 +63,7 @@ public class MainSceneController extends BaseController {
 	}
 
 	// View
-	@FXML private Label welcomeText;
 	@FXML private ListView<String> propertiesListView;
-	@FXML private TextField welcomeTextField;
 	@FXML private TableView<KeyValuePairModel> propertiesTable;
 	@FXML private TableColumn<Object, Object> propertiesColumnKey;
 	@FXML private TableColumn<Object, Object> propertiesColumnValue;
@@ -81,7 +77,7 @@ public class MainSceneController extends BaseController {
 	@FXML private VBox vbox2;
 	@FXML private TitledPane propertiesPanel;
 	@FXML private BorderPane topBorderPane;
-	@FXML private Label mqttStatus;
+	@FXML private Label mqttStatusLabel;
 
 	private DiagramBuilder db = new DiagramBuilder();
 	private Node activeSelection = null;
@@ -97,7 +93,7 @@ public class MainSceneController extends BaseController {
 		model = new MainSceneModel(1000d);
 
 		// create bindings
-		welcomeText.textProperty().bind(model.getAccountBalanceProperty().asString());
+		//welcomeText.textProperty().bind(model.getAccountBalanceProperty().asString());
 		propertiesListView.setItems(model.getListItems());
 		propertiesColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
 		propertiesColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
@@ -105,6 +101,7 @@ public class MainSceneController extends BaseController {
 
 		versionInfo.setText(String.format("%s.%s", Version.getInstance().getVersion(), Version.getInstance().getBuild()));
 
+		/*
 		// link Controller to View - ensure only numeric input (integers) in text field
 		welcomeTextField.setTextFormatter(new TextFormatter<>(change -> {
 			if (change.getText().matches("\\d+") || change.getText().equals("")) {
@@ -115,6 +112,7 @@ public class MainSceneController extends BaseController {
 			change.setRange(change.getRangeStart(), change.getRangeStart());
 			return change;
 		}));
+		*/
 
 		// bind heights to create fill
 		propertiesTable.prefHeightProperty().bind(vbox2.heightProperty());
@@ -326,21 +324,21 @@ public class MainSceneController extends BaseController {
 		
 		if(e.getChange() == Change.CONNECTSUCCESS) {
 			clearDesignPane();
-			mqttStatus.setTextFill(javafx.scene.paint.Color.ORANGE);
-			mqttStatus.setText(e.getMessage());
+			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.ORANGE);
+			mqttStatusLabel.setText(e.getMessage());
 		} if(e.getChange() == Change.CONNECTSUCCESS) {
 			sample1();
 			fillDesignPane();
-			mqttStatus.setTextFill(javafx.scene.paint.Color.BLACK);
-			mqttStatus.setText(e.getMessage());
+			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.BLACK);
+			mqttStatusLabel.setText(e.getMessage());
 		} else if (e.getChange() == Change.CONNECTFAILURE) {	
 			clearDesignPane();
-			mqttStatus.setTextFill(javafx.scene.paint.Color.RED);
-			mqttStatus.setText(e.getMessage());
+			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.RED);
+			mqttStatusLabel.setText(e.getMessage());
 		} else if (e.getChange() == Change.DISCONNECT) {	
 			clearDesignPane();
-            mqttStatus.setTextFill(javafx.scene.paint.Color.RED);
-            mqttStatus.setText(e.getMessage());
+			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.RED);
+			mqttStatusLabel.setText(e.getMessage());
 		}
 	}
 	

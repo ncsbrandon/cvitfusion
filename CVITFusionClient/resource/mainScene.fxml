@@ -24,7 +24,7 @@
             <Label fx:id="versionInfo" text="Version info" BorderPane.alignment="CENTER" />
          </left>
          <center>
-            <Label fx:id="mqttStatus" text="Label" BorderPane.alignment="CENTER" />
+            <Label fx:id="mqttStatusLabel" text="Label" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </bottom>
@@ -57,23 +57,12 @@
                <items>
                   <Accordion>
                     <panes>
-                      <TitledPane animated="false" text="Actions">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <Button layoutX="38.0" layoutY="37.0" mnemonicParsing="false" onAction="#onHelloButtonClick" text="Button" />
-                                    <Label fx:id="welcomeText" layoutX="64.0" layoutY="134.0" text="Label" />
-                                    <TextField fx:id="welcomeTextField" layoutX="15.0" layoutY="194.0" />
-                                 </children>
-                              </AnchorPane>
-                        </content>
-                      </TitledPane>
                       <TitledPane animated="false" expanded="false" text="Toolbox">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                         </content>
                       </TitledPane>
-                      <TitledPane animated="false" expanded="false" text="untitled 3">
+                      <TitledPane animated="false" text="Devices">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                         </content>

@@ -154,7 +154,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 
 	public boolean connect() {
 		if (isConnected())
-			disconnect();
+			disconnect(true);
 
 		if (broker == null || broker.isEmpty() || clientId == null || clientId.isEmpty()) {
 			logger.error("broker and client id are required");
@@ -202,24 +202,34 @@ public abstract class MqttTransceiver implements MqttCallback {
 		return false;
 	}
 
-	public void disconnect() {
-		if (!isConnected())
-			return;
-
+	public void disconnect(boolean clearPubSubs) {
 		try {
-			logger.debug("Disconnecting from broker: " + broker);
-			client.setCallback(null);
-			client.disconnect();
-			client.close();
-			logger.debug("Disconnected");
-			client = null;
-			activeSubscriptions.clear();
-			activePublications.clear();
-			connectionChanged(new ConnectionEvent(Change.DISCONNECT, ""));
+			if(client != null) {
+				logger.debug("Disconnecting from broker: " + broker);
+				client.setCallback(null);
+				if(client.isConnected())
+					client.disconnect();
+				client.close(true);
+				client = null;
+			}
+			if(clearPubSubs) {
+				logger.debug("Clearing subscriptions");
+				activeSubscriptions.clear();
+				activePublications.clear();
+			}
+			connectionChanged(new ConnectionEvent(Change.DISCONNECT, "Connection lost"));
 		} catch (MqttException e) {
 			logger.error("disonnection failure reason " + e.getReasonCode());
 			logger.error("msg " + e.getMessage());
 			logger.error("cause " + e.getCause());
+			
+			try {
+				client.disconnectForcibly();
+				client.close(true);
+				client = null;
+			} catch (MqttException e1) {
+				logger.error("disonnection FORCED failure reason " + e.getReasonCode());
+			}
 		}
 	}
 
@@ -307,8 +317,11 @@ public abstract class MqttTransceiver implements MqttCallback {
 	@Override
 	public void connectionLost(Throwable arg0) {
 		logger.debug("Connection lost: " + arg0.getMessage());
-		client = null;
-		connectionChanged(new ConnectionEvent(Change.DISCONNECT, "Connection lost"));
+		
+		// cleanup this connection
+		disconnect(false);
+		
+		// make a new one
 		if(connect())
 			resubscribe();
 	}

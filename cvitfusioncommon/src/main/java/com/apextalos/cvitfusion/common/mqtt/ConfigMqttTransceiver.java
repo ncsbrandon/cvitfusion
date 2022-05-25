@@ -93,7 +93,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 			statusTask = null;
 		}
 		
-		disconnect();
+		disconnect(true);
 	}
 	
 	@Override
