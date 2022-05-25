@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.client.app.ConfigItems;
 import com.apextalos.cvitfusion.client.app.Version;
@@ -180,8 +179,11 @@ public class MainSceneController extends BaseController {
 		cf.setDouble("sp11_divider_position", sp11.getDividerPositions()[0]);
 		cf.setDouble("sp112_divider_position", sp112.getDividerPositions()[0]);
 		
+		// shutdown mqtt
 		ccmt.stop();
 	}
+	
+	
 	
 	
 	//*********************
@@ -204,19 +206,8 @@ public class MainSceneController extends BaseController {
 		SceneManager.getInstance(cf).close(stage);
 	}
 	
+
 	
-
-	@FXML
-	protected void onHelloButtonClick() {
-		model.deposit(100);
-		model.getListItems().add("deposit");
-		model.getTableItems().clear();
-		model.getTableItems().add(new KeyValuePairModel("last", "deposit"));
-		model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
-
-		logger.debug("this is DEBUG");
-		logger.error("this is ERROR");
-	}
 	
 	//*********************
 	// DESIGN PANE EVENTS
@@ -244,6 +235,7 @@ public class MainSceneController extends BaseController {
 			}
 		}
 	}
+	
 
 	private void onLineSelection(Line line) {
 		line.setEffect(new DropShadow());
@@ -260,11 +252,13 @@ public class MainSceneController extends BaseController {
 		model.getTableItems().add(new KeyValuePairModel("To", String.format("%s %d", childType.getName(), childProcess.getProcessID())));
 	}
 	
+	
 	private void onLineDeselection(Line line) {
 		line.setEffect(null);
 		activeSelection = null;
 		model.getTableItems().clear();
 	}
+	
 
 	private void onProcessSelection(DiagramNodeControl dnc) {
 		dnc.getController().select(true);
@@ -283,11 +277,13 @@ public class MainSceneController extends BaseController {
 		model.getTableItems().add(new KeyValuePairModel("Enabled", String.valueOf(process.isEnabled())));
 	}
 	
+	
 	private void onProcessDeselection(DiagramNodeControl dnc) {
 		dnc.getController().select(false);
 		activeSelection = null;
 		model.getTableItems().clear();
 	}
+	
 
 	private void fillDesignPane() {
 		designPane.getChildren().addAll(db.layout(activeFlow, this));
@@ -300,6 +296,8 @@ public class MainSceneController extends BaseController {
         if(children != null && children.size() > 0)
         	designPane.getChildren().clear();
 	}
+	
+	
 	
 	
 	//*********************
@@ -318,6 +316,13 @@ public class MainSceneController extends BaseController {
 			return;
 		}
 		
+		/*
+		model.deposit(100);
+		model.getListItems().add("deposit");
+		model.getTableItems().clear();
+		model.getTableItems().add(new KeyValuePairModel("last", "deposit"));
+		model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
+		*/
 		
 		if(e.getChange() == Change.CONNECTSUCCESS) {
 			clearDesignPane();

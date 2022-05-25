@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusion.common.thread.SimpleThread;
-import com.apextalos.cvitfusion.common.utils.SleepUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
