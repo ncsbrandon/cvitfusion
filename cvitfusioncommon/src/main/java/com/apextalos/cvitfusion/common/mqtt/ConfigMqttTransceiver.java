@@ -18,17 +18,19 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	protected ObjectMapper mapper = new ObjectMapper();
 	private SimpleThread statusTask;
 	private ISubscriptionHander[] handlers;
-	
+
 	public ConfigMqttTransceiver(ConfigFile cf) {
 		super(cf.getString(ConfigItems.CONFIG_MQTT_BROKER, ConfigItems.CONFIG_MQTT_BROKER_DEFAULT),
 				cf.getString(ConfigItems.CONFIG_MQTT_CLIENTID, ConfigItems.CONFIG_MQTT_CLIENTID_DEFAULT));
 		this.cf = cf;
 	}
-	
+
 	public abstract String[] subscriptionTopics();
+
 	public abstract ISubscriptionHander[] subscriptionHandlers();
-	
+
 	public abstract String statusTopic();
+
 	public abstract String buildStatusPayload() throws JsonProcessingException;
 
 	public void start() {
@@ -38,13 +40,12 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 				cf.getString(ConfigItems.CONFIG_MQTT_CLIENTCERT, ConfigItems.CONFIG_MQTT_CLIENTCERT_DEFAULT),
 				cf.getString(ConfigItems.CONFIG_MQTT_CLIENTKEY, ConfigItems.CONFIG_MQTT_USERNAME_DEFAULT)
 				);
-		
+
 		// set user auth
-		setUserAuth(
-				cf.getString(ConfigItems.CONFIG_MQTT_USERNAME, ConfigItems.CONFIG_MQTT_USERNAME_DEFAULT),
+		setUserAuth(cf.getString(ConfigItems.CONFIG_MQTT_USERNAME, ConfigItems.CONFIG_MQTT_USERNAME_DEFAULT),
 				cf.getString(ConfigItems.CONFIG_MQTT_PASSWORD, ConfigItems.CONFIG_MQTT_PASSWORD_DEFAULT).toCharArray()
 				);
-		
+
 		// connect
 		if (!connect()) {
 			logger.error("ConfigMqttTransceiver connection failed");
@@ -54,17 +55,17 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		// subscriptions
 		subscribe(subscriptionTopics());
 		handlers = subscriptionHandlers();
-		for(ISubscriptionHander handler : handlers) {
+		for (ISubscriptionHander handler : handlers) {
 			subscribe(handler.topic());
 		}
-		
+
 		// create the thread for periodic summary reports
 		int freqsec = cf.getInt(ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC, ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT);
-		if(freqsec == 0) {
+		if (freqsec == 0) {
 			logger.info("MQTT status reporting disabled");
 			return;
 		}
-		
+
 		// status thread
 		statusTask = new SimpleThread() {
 			@Override
@@ -72,9 +73,9 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 				setName("Status publisher");
 				while (!getStop()) {
 					// wait until the next run, or interrupted
-					if(stopDelay((long) 1000 * freqsec))
-						break;					
-					
+					if (stopDelay((long) 1000 * freqsec))
+						break;
+
 					// publish periodic status message (with aggregated BSM data)
 					try {
 						publish(statusTopic(), buildStatusPayload(), true);
@@ -89,18 +90,18 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	}
 
 	public void stop() {
-		if(statusTask != null) {
+		if (statusTask != null) {
 			statusTask.setStopAndJoin(1000);
 			statusTask = null;
 		}
-		
+
 		disconnect(true);
 	}
-	
+
 	@Override
 	protected void incomingMessage(String topic, String payload) {
-		for(ISubscriptionHander handler : handlers) {
-			if(TopicParser.match(handler.topic(), topic)) {
+		for (ISubscriptionHander handler : handlers) {
+			if (TopicParser.match(handler.topic(), topic)) {
 				handler.onMessage(payload);
 				return;
 			}

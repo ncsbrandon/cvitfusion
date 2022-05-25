@@ -2,9 +2,9 @@ package com.apextalos.cvitfusion.common.settings;
 
 public class ConfigItems {
 
-	// THESE ARE APPLICATION COMMON	
+	// THESE ARE APPLICATION COMMON
 	public static final String PARSE_FAILED = "Failure while parsing the value [%s] for key [%s]";
-	
+
 	public static final String DEVICE_UUID_CONFIG = "DEVICE_UUID";
 	public static final String DEVICE_UUID_DEFAULT = "UNKNOWN";
 	public static final String DEVICE_LICENSEID_CONFIG = "DEVICE_LICENSEID";
@@ -13,14 +13,14 @@ public class ConfigItems {
 	public static final String DEVICE_LICENSEKEY_DEFAULT = "UNKNOWN";
 	public static final String DEVICE_LOCATION_CONFIG = "DEVICE_LOCATION";
 	public static final String DEVICE_LOCATION_DEFAULT = "UNKNOWN";
-	
+
 	public static final String DEVICE_LATITUDE_CONFIG = "DEVICE_LATITUDE";
 	public static final double DEVICE_LATITUDE_DEFAULT = -9999;
 	public static final String DEVICE_LONGITUDE_CONFIG = "DEVICE_LONGITUDE";
 	public static final double DEVICE_LONGITUDE_DEFAULT = -9999;
 	public static final String DEVICE_ELEVATION_CONFIG = "DEVICE_ELEVATION";
 	public static final double DEVICE_ELEVATION_DEFAULT = -9999;
-	
+
 	public static final String CONFIG_MQTT_CACERT_DESC = "";
 	public static final String CONFIG_MQTT_CACERT = "MQTT_CACERT";
 	public static final String CONFIG_MQTT_CACERT_DEFAULT = "ca-cert.pem";
@@ -42,7 +42,7 @@ public class ConfigItems {
 	public static final String CONFIG_MQTT_PASSWORD_DESC = "Broker Password";
 	public static final String CONFIG_MQTT_PASSWORD = "MQTT_PASSWORD";
 	public static final String CONFIG_MQTT_PASSWORD_DEFAULT = "";
-	
+
 	public static final String CONFIG_MQTT_PERIODIC_FREQ_SEC = "MQTT_PERIODIC_FREQ_SEC";
 	public static final int CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT = 60;
 }
