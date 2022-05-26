@@ -124,6 +124,8 @@ public class ConnectionsSceneController extends BaseController {
 		super.end();
 		
 		Stage stage = (Stage)topVbox.getScene().getWindow();
+		if(stage == null)
+			return;
 		
 		// stage position
 		cf.setDouble(ConfigItems.CONNECTIONS_POSITION_X_CONFIG, stage.getX());

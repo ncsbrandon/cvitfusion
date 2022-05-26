@@ -1,7 +1,7 @@
 package com.apextalos.cvitfusion.client.controls;
 
 import com.apextalos.cvitfusion.client.controllers.ResourceLoader;
-import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
+import com.apextalos.cvitfusion.client.models.EngineStatusModel;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,15 +11,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
-public class EngineStatusListViewCell extends ListCell<EngineStatus> {
+public class EngineStatusListViewCell extends ListCell<EngineStatusModel> {
 
 	//private static final Logger logger = LogManager.getLogger(EngineStatusListViewCell.class.getSimpleName());
 
 	private FXMLLoader loader;
 	private Image errorImage;
-	private Image runningImage;
-	private Image standbyImage;
-	private Image unknownImage;
+	//private Image runningImage;
+	//private Image standbyImage;
+	//private Image unknownImage;
 	private ResourceLoader<Object> rl = new ResourceLoader<>();
 
 	// View
@@ -30,7 +30,7 @@ public class EngineStatusListViewCell extends ListCell<EngineStatus> {
 	@FXML private Label sinceLabel;
 
 	@Override
-	protected void updateItem(EngineStatus engineStatus, boolean empty) {
+	protected void updateItem(EngineStatusModel engineStatus, boolean empty) {
 		super.updateItem(engineStatus, empty);
 
 		if (empty || engineStatus == null) {
@@ -42,27 +42,30 @@ public class EngineStatusListViewCell extends ListCell<EngineStatus> {
 		if (loader == null) {
 			loader = rl.createLoader("engineStatusListViewCell.fxml", this);
 			errorImage = rl.loadImage("cancel.png");
-			runningImage = rl.loadImage("accept.png");
-			standbyImage = rl.loadImage("block.png");
-			unknownImage = rl.loadImage("help.png");
+			//runningImage = rl.loadImage("accept.png");
+			//standbyImage = rl.loadImage("block.png");
+			//unknownImage = rl.loadImage("help.png");
 		}	
 
-		nameLabel.setText(engineStatus.getLocationName());
-		idLabel.setText(engineStatus.getId().substring(engineStatus.getId().length()-6));
-		sinceLabel.setText(engineStatus.timeSinceLastUpdate());
 
-		if (engineStatus.getMode().equals(EngineStatus.Mode.ERROR)) {
-			modeImage.setImage(errorImage);		
-		} else if (engineStatus.getMode().equals(EngineStatus.Mode.RUNNING)) {
-			modeImage.setImage(runningImage);
-		} else if (engineStatus.getMode().equals(EngineStatus.Mode.STANDBY)) {
-			modeImage.setImage(standbyImage);
-		} else {
+		nameLabel.textProperty().bind(engineStatus.getLocationNameProperty());
+		idLabel.textProperty().bind(engineStatus.getIdProperty());
+		sinceLabel.textProperty().bind(engineStatus.getSinceLastUpdateProperty());
+
+		//if (engineStatus.getMode().equals(EngineStatus.Mode.ERROR)) {
+			modeImage.setImage(errorImage);
+		//} else if (engineStatus.getMode().equals(EngineStatus.Mode.RUNNING)) {
+		//	modeImage.setImage(runningImage);
+		//} else if (engineStatus.getMode().equals(EngineStatus.Mode.STANDBY)) {
+		//	modeImage.setImage(standbyImage);
+		//} else {
 			// UNKNOWN
-			modeImage.setImage(unknownImage);
-		}
+		//	modeImage.setImage(unknownImage);
+		//}
+		
 		modeImage.maxWidth(40);
-		modeImage.maxHeight(40);
+		modeImage.maxHeight(40);			
+
 
 		setText(null);
 		setGraphic(vboxParent);

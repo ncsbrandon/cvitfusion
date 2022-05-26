@@ -79,12 +79,12 @@ public class SceneManager {
 	public void close(Stage stage) {
 		if(controllerMain != null) {
 			controllerMain.end();
-			controllerMain = null;
+			//controllerMain = null;
 		}
 		
 		if(controllerConnections != null) {
 			controllerConnections.end();
-			controllerConnections = null;
+			//controllerConnections = null;
 		}
 		
 		stage.close();

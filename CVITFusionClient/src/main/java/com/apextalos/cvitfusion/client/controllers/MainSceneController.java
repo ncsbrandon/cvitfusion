@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.client.app.ConfigItems;
 import com.apextalos.cvitfusion.client.app.Version;
@@ -16,6 +19,7 @@ import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
 import com.apextalos.cvitfusion.client.controls.EngineStatusListViewCell;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
+import com.apextalos.cvitfusion.client.models.EngineStatusModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.client.models.MainSceneModel;
 import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
@@ -33,6 +37,7 @@ import com.apextalos.cvitfusion.common.opflow.ProcessLink;
 import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
+import com.apextalos.cvitfusion.common.utils.DateTimeUtils;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -41,6 +46,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
@@ -55,6 +61,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class MainSceneController extends BaseController implements SubscriptionListener {
 
@@ -70,7 +77,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	// View
 	@FXML private AnchorPane designPane;
     @FXML private ScrollPane designScroll;
-    @FXML private ListView<EngineStatus> engineStatusListView;
+    @FXML private ListView<EngineStatusModel> engineStatusListView;
     @FXML private Label mqttStatusLabel;
     @FXML private TableColumn<Object, Object> propertiesColumnKey;
     @FXML private TableColumn<Object, Object> propertiesColumnValue;
@@ -85,7 +92,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
     @FXML private VBox vbox2;
     @FXML private Label versionInfo;
     
-	private ObservableList<EngineStatus> engineStatusList = FXCollections.observableArrayList();
+	private ObservableList<EngineStatusModel> engineStatusList = FXCollections.observableArrayList();
 	
 	private DiagramBuilder db = new DiagramBuilder();
 	private Node activeSelection = null;
@@ -110,7 +117,14 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		versionInfo.setText(String.format("%s.%s", Version.getInstance().getVersion(), Version.getInstance().getBuild()));
 
 		engineStatusListView.setItems(engineStatusList);
-		engineStatusListView.setCellFactory(engineStatusListView -> new EngineStatusListViewCell());
+
+		//engineStatusListView.setCellFactory(studentListView -> new EngineStatusListViewCell());
+		engineStatusListView.setCellFactory(new Callback<ListView<EngineStatusModel>, ListCell<EngineStatusModel>>() {
+		    @Override
+		    public ListCell<EngineStatusModel> call(ListView<EngineStatusModel> engineStatusListView) {
+		        return new EngineStatusListViewCell();
+		    }
+		});
 		
 		/*
 		// link Controller to View - ensure only numeric input (integers) in text field
@@ -130,22 +144,24 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		designScroll.prefHeightProperty().bind(vbox.heightProperty());
 		designPane.prefHeightProperty().bind(designScroll.heightProperty());
 		
-		/*Timer t = new Timer();
-		t.scheduleAtFixedRate(new TimerTask() {			
+		Timer t = new Timer();
+		t.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						if(engineStatusList.size() > 0)
-							engineStatusList.set(0, engineStatusList.get(0));
-					}
-				});			
+				if (!Platform.isFxApplicationThread()) {
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							for(EngineStatusModel esm : engineStatusList) {
+								esm.getSinceLastUpdateProperty().set(DateTimeUtils.timeSinceLastUpdate(esm.getLastUpdate(), DateTime.now()));
+							}
+						}
+					});
+				}
 			}
-		}, 1000, 1000);*/
+		}, 100, 100);
 	}
 
-	
 	@Override
 	public void begin(ConfigFile cf) {
 		super.begin(cf);
@@ -181,12 +197,13 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		ccmt.start(this);	
 	}
 		
-	
 	@Override
 	public void end() {
 		super.end();
 		
 		Stage stage = (Stage)topBorderPane.getScene().getWindow();
+		if(stage == null)
+			return;
 		
 		// stage position
 		cf.setDouble(ConfigItems.MAIN_POSITION_X_CONFIG, stage.getX());
@@ -389,10 +406,16 @@ public class MainSceneController extends BaseController implements SubscriptionL
 
 		EngineStatus es = (EngineStatus) subscriptionEvent.getObj();
 		
-		if(engineStatusList.size() == 0)
-			engineStatusList.add(es);
-		else
-			engineStatusList.set(0, es);
+		// if we are updating an existing status
+		for(EngineStatusModel esm : engineStatusList) {
+			if(0 == esm.getIdProperty().getValue().compareToIgnoreCase(es.getId())) {
+				esm.update(es);
+				return;
+			}
+		}
+		
+		// add a new status
+		engineStatusList.add(new EngineStatusModel(es));
 	}
 		
 	
