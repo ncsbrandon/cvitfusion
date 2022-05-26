@@ -1,5 +1,8 @@
 package com.apextalos.cvitfusion.common.mqtt.message;
 
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
+
 public class EngineStatus {
 
 	public enum Mode {
@@ -72,6 +75,18 @@ public class EngineStatus {
 
 	public void setCoord(Coordinate coord) {
 		this.coord = coord;
+	}
+	
+	public String timeSinceLastUpdate() {
+		int sec = Seconds.secondsBetween(DateTime.parse(ts), DateTime.now()).getSeconds();
+		if(sec < 60)
+			return String.format("%ds", sec);
+		else if(sec < 3600)
+			return String.format("%dm", sec/60);
+		else if(sec < 86400)
+			return String.format("%dh", sec/3600);
+		else
+			return ">1d";
 	}
 
 	public EngineStatus() {

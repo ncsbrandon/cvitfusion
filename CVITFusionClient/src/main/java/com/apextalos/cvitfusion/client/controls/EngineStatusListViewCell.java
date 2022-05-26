@@ -1,5 +1,8 @@
 package com.apextalos.cvitfusion.client.controls;
 
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
+
 import com.apextalos.cvitfusion.client.controllers.ResourceLoader;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 
@@ -48,11 +51,11 @@ public class EngineStatusListViewCell extends ListCell<EngineStatus> {
 		}	
 
 		nameLabel.setText(engineStatus.getLocationName());
-		idLabel.setText(engineStatus.getId());
-		sinceLabel.setText("TBD");
+		idLabel.setText(engineStatus.getId().substring(engineStatus.getId().length()-6));
+		sinceLabel.setText(engineStatus.timeSinceLastUpdate());
 
 		if (engineStatus.getMode().equals(EngineStatus.Mode.ERROR)) {
-			modeImage.setImage(errorImage);
+			modeImage.setImage(errorImage);		
 		} else if (engineStatus.getMode().equals(EngineStatus.Mode.RUNNING)) {
 			modeImage.setImage(runningImage);
 		} else if (engineStatus.getMode().equals(EngineStatus.Mode.STANDBY)) {
@@ -61,6 +64,8 @@ public class EngineStatusListViewCell extends ListCell<EngineStatus> {
 			// UNKNOWN
 			modeImage.setImage(unknownImage);
 		}
+		modeImage.maxWidth(40);
+		modeImage.maxHeight(40);
 
 		setText(null);
 		setGraphic(vboxParent);

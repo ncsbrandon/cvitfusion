@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
 
 import com.apextalos.cvitfusion.client.app.ConfigItems;
 import com.apextalos.cvitfusion.client.app.Version;
@@ -41,7 +45,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
@@ -56,7 +59,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 public class MainSceneController extends BaseController implements SubscriptionListener {
 
@@ -103,8 +105,8 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		model = new MainSceneModel(1000d);
 
 		// create bindings
-		//welcomeText.textProperty().bind(model.getAccountBalanceProperty().asString());
 		statusListView.setItems(model.getListItems());
+		
 		propertiesColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
 		propertiesColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
 		propertiesTable.setItems(model.getTableItems());
@@ -112,14 +114,8 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		versionInfo.setText(String.format("%s.%s", Version.getInstance().getVersion(), Version.getInstance().getBuild()));
 
 		engineStatusListView.setItems(engineStatusList);
-		//engineStatusListView.setCellFactory(studentListView -> new EngineStatusListViewCell());
+		engineStatusListView.setCellFactory(engineStatusListView -> new EngineStatusListViewCell());
 		
-		engineStatusListView.setCellFactory(new Callback<ListView<EngineStatus>, ListCell<EngineStatus>>() {
-		    @Override
-		    public ListCell<EngineStatus> call(ListView<EngineStatus> engineStatusListView) {
-		        return new EngineStatusListViewCell();
-		    }
-		});
 		
 		/*
 		// link Controller to View - ensure only numeric input (integers) in text field
@@ -134,10 +130,20 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		}));
 		*/
 
-		// bind heights to create fill
+		// bind heights to create window fill
 		propertiesTable.prefHeightProperty().bind(vbox2.heightProperty());
 		designScroll.prefHeightProperty().bind(vbox.heightProperty());
 		designPane.prefHeightProperty().bind(designScroll.heightProperty());
+		
+		/*Timer t = new Timer();
+		t.scheduleAtFixedRate(new TimerTask() {			
+			@Override
+			public void run() {
+				for(EngineStatus cell : engineStatusList) {
+					sinceLabel.setText(cell.timeSinceLastUpdate());
+				}
+			}
+		}, 1000, 1000);*/
 	}
 
 	
@@ -382,7 +388,11 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		model.getListItems().add(subscriptionEvent.getObj().toString());
 
 		EngineStatus es = (EngineStatus) subscriptionEvent.getObj();
-		engineStatusList.add(es);
+		
+		if(engineStatusList.size() == 0)
+			engineStatusList.add(es);
+		else
+			engineStatusList.set(0, es);
 	}
 		
 	
