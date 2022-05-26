@@ -1,8 +1,5 @@
 package com.apextalos.cvitfusion.client.controls;
 
-import org.joda.time.DateTime;
-import org.joda.time.Seconds;
-
 import com.apextalos.cvitfusion.client.controllers.ResourceLoader;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 

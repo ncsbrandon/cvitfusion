@@ -6,13 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.Seconds;
 
 import com.apextalos.cvitfusion.client.app.ConfigItems;
 import com.apextalos.cvitfusion.client.app.Version;
@@ -116,7 +112,6 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		engineStatusListView.setItems(engineStatusList);
 		engineStatusListView.setCellFactory(engineStatusListView -> new EngineStatusListViewCell());
 		
-		
 		/*
 		// link Controller to View - ensure only numeric input (integers) in text field
 		welcomeTextField.setTextFormatter(new TextFormatter<>(change -> {
@@ -139,9 +134,13 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		t.scheduleAtFixedRate(new TimerTask() {			
 			@Override
 			public void run() {
-				for(EngineStatus cell : engineStatusList) {
-					sinceLabel.setText(cell.timeSinceLastUpdate());
-				}
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						if(engineStatusList.size() > 0)
+							engineStatusList.set(0, engineStatusList.get(0));
+					}
+				});			
 			}
 		}, 1000, 1000);*/
 	}
@@ -370,6 +369,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			mqttStatusLabel.setText(e.getMessage());
 		}
 	}
+	
 	
 	@Override
 	public void onSubscriptionArrived(SubscriptionEvent subscriptionEvent) {
