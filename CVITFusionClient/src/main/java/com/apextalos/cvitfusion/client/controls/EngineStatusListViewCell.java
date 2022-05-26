@@ -41,9 +41,6 @@ public class EngineStatusListViewCell extends ListCell<EngineStatus> {
 			
 		if (loader == null) {
 			loader = rl.createLoader("engineStatusListViewCell.fxml", this);
-			if(loader == null)
-				return;
-			
 			errorImage = rl.loadImage("cancel.png");
 			runningImage = rl.loadImage("accept.png");
 			standbyImage = rl.loadImage("block.png");
