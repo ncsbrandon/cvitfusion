@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox fx:id="vboxParent" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EngineStatusListViewCellController">
+   <children>
+      <BorderPane>
+         <left>
+            <Label fx:id="nameLabel" text="NAME" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+         </left>
+         <right>
+            <ImageView fx:id="modeImage" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+         </right>
+      </BorderPane>
+      <BorderPane>
+         <left>
+            <Label fx:id="idLabel" text="ID" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Label fx:id="sinceLabel" text="Since" BorderPane.alignment="CENTER" />
+         </right>
+      </BorderPane>
+   </children>
+</VBox>

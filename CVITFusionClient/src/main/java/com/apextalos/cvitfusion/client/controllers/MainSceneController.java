@@ -22,7 +22,6 @@ import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent.Change;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
-import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
 import com.apextalos.cvitfusion.common.opflow.Color;
@@ -34,13 +33,11 @@ import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
@@ -67,7 +64,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	}
 
 	// View
-	@FXML private ListView<EngineStatus> engineStatusListView;
+	//@FXML private ListView<EngineStatus> engineStatusListView;
 	@FXML private TableView<KeyValuePairModel> propertiesTable;
 	@FXML private TableColumn<Object, Object> propertiesColumnKey;
 	@FXML private TableColumn<Object, Object> propertiesColumnValue;
@@ -83,7 +80,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	@FXML private BorderPane topBorderPane;
 	@FXML private Label mqttStatusLabel;
 
-	private ObservableList<EngineStatus> engineStatusList = FXCollections.observableArrayList();
+	//private ObservableList<EngineStatus> engineStatusList = FXCollections.observableArrayList();
 	
 	private DiagramBuilder db = new DiagramBuilder();
 	private Node activeSelection = null;
@@ -109,7 +106,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 
 		
 		
-		engineStatusListView.setItems(engineStatusList);
+		//engineStatusListView.setItems(engineStatusList);
 		//engineStatusListView.setCellFactory(studentListView -> new EngineStatusListViewCell());
 		
 		/*
@@ -484,7 +481,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	@Override
 	public void onSubscriptionArrived(SubscriptionEvent subscriptionEvent) {
 		model.getListItems().add(subscriptionEvent.getObj().toString());
-		EngineStatus es = (EngineStatus)subscriptionEvent.getObj();
-		engineStatusList.add(es);
+		//EngineStatus es = (EngineStatus)subscriptionEvent.getObj();
+		//engineStatusList.add(es);
 	}
 }

@@ -28,20 +28,13 @@ public class DiagramNodeController extends BaseController {
 	}
 
 	// View
-	@FXML
-	private Rectangle connectOut;
-	@FXML
-	private Rectangle connectIn;
-	@FXML
-	private Rectangle body;
-	@FXML
-	private Rectangle header;
-	@FXML
-	private CheckBox enabled;
-	@FXML
-	private Label name;
-	@FXML
-	private Label id;
+	@FXML private Rectangle connectOut;
+	@FXML private Rectangle connectIn;
+	@FXML private Rectangle body;
+	@FXML private Rectangle header;
+	@FXML private CheckBox enabled;
+	@FXML private Label name;
+	@FXML private Label id;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
