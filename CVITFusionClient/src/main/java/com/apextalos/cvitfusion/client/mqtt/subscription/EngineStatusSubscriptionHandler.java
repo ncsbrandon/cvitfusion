@@ -35,6 +35,7 @@ public class EngineStatusSubscriptionHandler extends SubscriptionHandler {
 			engineStatus = mapper.readValue(payload, EngineStatus.class);
 		} catch (JsonProcessingException e) {
 			logger.error("Engine status parsing failure" + e.getMessage());
+			return;
 		}
 		
 		// switch threads

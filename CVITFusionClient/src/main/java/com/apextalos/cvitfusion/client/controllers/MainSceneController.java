@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import com.apextalos.cvitfusion.client.app.ConfigItems;
 import com.apextalos.cvitfusion.client.app.Version;
 import com.apextalos.cvitfusion.client.controls.DiagramNodeControl;
+import com.apextalos.cvitfusion.client.controls.EngineStatusListViewCell;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
@@ -22,6 +23,7 @@ import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent.Change;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
+import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
 import com.apextalos.cvitfusion.common.opflow.Color;
@@ -33,11 +35,14 @@ import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
@@ -51,6 +56,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class MainSceneController extends BaseController implements SubscriptionListener {
 
@@ -64,23 +70,24 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	}
 
 	// View
-	//@FXML private ListView<EngineStatus> engineStatusListView;
-	@FXML private TableView<KeyValuePairModel> propertiesTable;
-	@FXML private TableColumn<Object, Object> propertiesColumnKey;
-	@FXML private TableColumn<Object, Object> propertiesColumnValue;
 	@FXML private AnchorPane designPane;
-	@FXML private ScrollPane designScroll;
-	@FXML private Label versionInfo;
-	@FXML private SplitPane sp1;
-	@FXML private SplitPane sp11;
-	@FXML private SplitPane sp112;
-	@FXML private VBox vbox;
-	@FXML private VBox vbox2;
-	@FXML private TitledPane propertiesPanel;
-	@FXML private BorderPane topBorderPane;
-	@FXML private Label mqttStatusLabel;
-
-	//private ObservableList<EngineStatus> engineStatusList = FXCollections.observableArrayList();
+    @FXML private ScrollPane designScroll;
+    @FXML private ListView<EngineStatus> engineStatusListView;
+    @FXML private Label mqttStatusLabel;
+    @FXML private TableColumn<Object, Object> propertiesColumnKey;
+    @FXML private TableColumn<Object, Object> propertiesColumnValue;
+    @FXML private TitledPane propertiesPanel;
+    @FXML private TableView<KeyValuePairModel> propertiesTable;
+    @FXML private SplitPane sp1;
+    @FXML private SplitPane sp11;
+    @FXML private SplitPane sp112;
+    @FXML private ListView<String> statusListView;
+    @FXML private BorderPane topBorderPane;
+    @FXML private VBox vbox;
+    @FXML private VBox vbox2;
+    @FXML private Label versionInfo;
+    
+	private ObservableList<EngineStatus> engineStatusList = FXCollections.observableArrayList();
 	
 	private DiagramBuilder db = new DiagramBuilder();
 	private Node activeSelection = null;
@@ -97,17 +104,22 @@ public class MainSceneController extends BaseController implements SubscriptionL
 
 		// create bindings
 		//welcomeText.textProperty().bind(model.getAccountBalanceProperty().asString());
-		//propertiesListView.setItems(model.getListItems());
+		statusListView.setItems(model.getListItems());
 		propertiesColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
 		propertiesColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
 		propertiesTable.setItems(model.getTableItems());
 
 		versionInfo.setText(String.format("%s.%s", Version.getInstance().getVersion(), Version.getInstance().getBuild()));
 
-		
-		
-		//engineStatusListView.setItems(engineStatusList);
+		engineStatusListView.setItems(engineStatusList);
 		//engineStatusListView.setCellFactory(studentListView -> new EngineStatusListViewCell());
+		
+		engineStatusListView.setCellFactory(new Callback<ListView<EngineStatus>, ListCell<EngineStatus>>() {
+		    @Override
+		    public ListCell<EngineStatus> call(ListView<EngineStatus> engineStatusListView) {
+		        return new EngineStatusListViewCell();
+		    }
+		});
 		
 		/*
 		// link Controller to View - ensure only numeric input (integers) in text field
@@ -128,6 +140,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		designPane.prefHeightProperty().bind(designScroll.heightProperty());
 	}
 
+	
 	@Override
 	public void begin(ConfigFile cf) {
 		super.begin(cf);
@@ -163,6 +176,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		ccmt.start(this);	
 	}
 		
+	
 	@Override
 	public void end() {
 		super.end();
@@ -295,6 +309,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		designPane.getChildren().addAll(db.layout(activeFlow, this));
 	}
 	
+	
 	private void clearDesignPane() {
 		activeFlow = null;
 		
@@ -309,15 +324,15 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	//*********************
 	// MQTT EVENTS
 	//*********************
-	private void onConnectionChanged(ConnectionEvent e) {
-		
+	private void onConnectionChanged(ConnectionEvent e) {	
 		// if this event is coming from another thread (MQTT)
 		// run it later on the GUI thread
-		if(!Platform.isFxApplicationThread()) {
+		if (!Platform.isFxApplicationThread()) {
 			Platform.runLater(new Runnable() {
-                @Override public void run() {
-                	onConnectionChanged(e);
-                }
+				@Override
+				public void run() {
+					onConnectionChanged(e);
+				}
 			});
 			return;
 		}
@@ -348,6 +363,26 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.RED);
 			mqttStatusLabel.setText(e.getMessage());
 		}
+	}
+	
+	@Override
+	public void onSubscriptionArrived(SubscriptionEvent subscriptionEvent) {
+		// if this event is coming from another thread (MQTT)
+		// run it later on the GUI thread
+		if (!Platform.isFxApplicationThread()) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					onSubscriptionArrived(subscriptionEvent);
+				}
+			});
+			return;
+		}
+
+		model.getListItems().add(subscriptionEvent.getObj().toString());
+
+		EngineStatus es = (EngineStatus) subscriptionEvent.getObj();
+		engineStatusList.add(es);
 	}
 		
 	
@@ -478,10 +513,5 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	}
 
 
-	@Override
-	public void onSubscriptionArrived(SubscriptionEvent subscriptionEvent) {
-		model.getListItems().add(subscriptionEvent.getObj().toString());
-		//EngineStatus es = (EngineStatus)subscriptionEvent.getObj();
-		//engineStatusList.add(es);
-	}
+	
 }

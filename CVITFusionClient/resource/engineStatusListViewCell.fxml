@@ -7,11 +7,11 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox fx:id="vboxParent" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EngineStatusListViewCellController">
+<VBox fx:id="vboxParent" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane>
          <left>
-            <Label fx:id="nameLabel" text="NAME" BorderPane.alignment="CENTER">
+            <Label fx:id="nameLabel" text="Engine Name" BorderPane.alignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

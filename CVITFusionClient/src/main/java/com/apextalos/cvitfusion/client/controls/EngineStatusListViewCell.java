@@ -1,6 +1,5 @@
 package com.apextalos.cvitfusion.client.controls;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -39,37 +38,38 @@ public class EngineStatusListViewCell extends ListCell<EngineStatus> {
 			setGraphic(null);
 			return;
 		}
-
-		if (loader == null) {
-			String name = "engineStatusListViewCell.fxml";
-
-			InputStream in = getClass().getResourceAsStream("/" + name);
-			logger.info(String.format("getResourceAsStream is null: %b", in == null));
-			if (in != null) {
-				loader = new FXMLLoader();
-			} else {
-				// try loading as the debugger
-				URL url = getClass().getResource("../../../../../" + name);
-				logger.info(String.format("getResource is null: %b", url == null));
-				if (url != null) {
-					loader = new FXMLLoader(url);
+		
+		try {		
+			if (loader == null) {
+				String name = "engineStatusListViewCell.fxml";
+	
+				InputStream in = getClass().getResourceAsStream("/" + name);
+				logger.info(String.format("getResourceAsStream is null: %b", in == null));
+				if (in != null) {
+					loader = new FXMLLoader();
+					loader.setController(this);
+					loader.load(in);
 				} else {
-					logger.error("unable to find the fxml " + name);
+					// try loading as the debugger
+					URL url = getClass().getResource("../../../../../" + name);
+					logger.info(String.format("getResource is null: %b", url == null));
+					if (url != null) {
+						loader = new FXMLLoader(url);
+						loader.setController(this);
+						loader.load();
+					} else {
+						logger.error("unable to find the fxml " + name);
+					}
 				}
 			}
-
-			loader.setController(this);
-
-			try {
-				loader.load();
-			} catch (IOException e) {
-				logger.error("unable to load the fxml " + name);
-			}
-
+		} catch( Exception e) {
+			logger.error("Failure loading fxml: " + e.getMessage());
+			return;
 		}
 
 		nameLabel.setText(engineStatus.getLocationName());
 		idLabel.setText(engineStatus.getId());
+		sinceLabel.setText("TBD");
 
 		if (engineStatus.getMode().equals(EngineStatus.Mode.ERROR)) {
 			modeImage.setImage(loadIcon("cancel.png"));
