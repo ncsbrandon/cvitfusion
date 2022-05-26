@@ -1,11 +1,6 @@
 package com.apextalos.cvitfusion.client.controls;
 
-import java.io.InputStream;
-import java.net.URL;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.apextalos.cvitfusion.client.controllers.ResourceLoader;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 
 import javafx.fxml.FXML;
@@ -18,9 +13,14 @@ import javafx.scene.layout.VBox;
 
 public class EngineStatusListViewCell extends ListCell<EngineStatus> {
 
-	private static final Logger logger = LogManager.getLogger(EngineStatusListViewCell.class.getSimpleName());
+	//private static final Logger logger = LogManager.getLogger(EngineStatusListViewCell.class.getSimpleName());
 
 	private FXMLLoader loader;
+	private Image errorImage;
+	private Image runningImage;
+	private Image standbyImage;
+	private Image unknownImage;
+	private ResourceLoader<Object> rl = new ResourceLoader<>();
 
 	// View
 	@FXML private VBox vboxParent;
@@ -38,73 +38,34 @@ public class EngineStatusListViewCell extends ListCell<EngineStatus> {
 			setGraphic(null);
 			return;
 		}
-		
-		try {		
-			if (loader == null) {
-				String name = "engineStatusListViewCell.fxml";
-	
-				InputStream in = getClass().getResourceAsStream("/" + name);
-				logger.info(String.format("getResourceAsStream is null: %b", in == null));
-				if (in != null) {
-					loader = new FXMLLoader();
-					loader.setController(this);
-					loader.load(in);
-				} else {
-					// try loading as the debugger
-					URL url = getClass().getResource("../../../../../" + name);
-					logger.info(String.format("getResource is null: %b", url == null));
-					if (url != null) {
-						loader = new FXMLLoader(url);
-						loader.setController(this);
-						loader.load();
-					} else {
-						logger.error("unable to find the fxml " + name);
-					}
-				}
-			}
-		} catch( Exception e) {
-			logger.error("Failure loading fxml: " + e.getMessage());
-			return;
-		}
+			
+		if (loader == null) {
+			loader = rl.createLoader("engineStatusListViewCell.fxml", this);
+			if(loader == null)
+				return;
+			
+			errorImage = rl.loadImage("cancel.png");
+			runningImage = rl.loadImage("accept.png");
+			standbyImage = rl.loadImage("block.png");
+			unknownImage = rl.loadImage("help.png");
+		}	
 
 		nameLabel.setText(engineStatus.getLocationName());
 		idLabel.setText(engineStatus.getId());
 		sinceLabel.setText("TBD");
 
 		if (engineStatus.getMode().equals(EngineStatus.Mode.ERROR)) {
-			modeImage.setImage(loadIcon("cancel.png"));
+			modeImage.setImage(errorImage);
 		} else if (engineStatus.getMode().equals(EngineStatus.Mode.RUNNING)) {
-			modeImage.setImage(loadIcon("accept.png"));
+			modeImage.setImage(runningImage);
 		} else if (engineStatus.getMode().equals(EngineStatus.Mode.STANDBY)) {
-			modeImage.setImage(loadIcon("block.png"));
+			modeImage.setImage(standbyImage);
 		} else {
 			// UNKNOWN
-			modeImage.setImage(loadIcon("help.png"));
+			modeImage.setImage(unknownImage);
 		}
 
 		setText(null);
 		setGraphic(vboxParent);
-	}
-	
-	private Image loadIcon(String name) {
-		Image icon = null;
-		
-		// try loading as the jar
-		InputStream in = getClass().getResourceAsStream("/" + name);
-		logger.info(String.format("getResourceAsStream is null: %b", in==null));
-		if(in != null) {
-			icon = new Image(in);
-		} else {	
-			// try loading as the debugger
-			URL url = getClass().getResource("../../../../../" + name);
-			logger.info(String.format("getResource is null: %b", url==null));
-			if(url != null) {
-				icon = new Image(url.toExternalForm());
-			} else {
-				logger.error("unable to load the icon fxml " + name);
-			}
-		}
-		
-		return icon;
 	}
 }
