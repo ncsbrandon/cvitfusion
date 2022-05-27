@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -53,24 +52,11 @@
          <items>
             <SplitPane fx:id="sp11" dividerPositions="0.2">
                <items>
-                  <Accordion>
-                    <panes>
-                      <TitledPane animated="false" expanded="false" text="Toolbox">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                        </content>
-                      </TitledPane>
-                      <TitledPane animated="false" text="Devices">
-                        <content>
-                              <VBox>
-                                 <children>
-                                    <ListView fx:id="engineStatusListView" />
-                                 </children>
-                              </VBox>
-                        </content>
-                      </TitledPane>
-                    </panes>
-                  </Accordion>
+                  <TitledPane collapsible="false" text="Engines">
+                     <content>
+                        <ListView fx:id="engineStatusListView" />
+                     </content>
+                  </TitledPane>
                   <SplitPane fx:id="sp112" dividerPositions="0.5">
                      <items>
                         <VBox fx:id="vbox">

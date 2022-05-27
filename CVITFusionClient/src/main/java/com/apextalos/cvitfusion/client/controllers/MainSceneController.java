@@ -41,6 +41,8 @@ import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.utils.DateTimeUtils;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -93,11 +95,13 @@ public class MainSceneController extends BaseController implements SubscriptionL
     @FXML private VBox vbox2;
     @FXML private Label versionInfo;
     
+    // sub-models
 	private ObservableList<EngineStatusModel> engineStatusList = FXCollections.observableArrayList();
-	
 	private DiagramBuilder db = new DiagramBuilder();
 	private Node activeSelection = null;
 	private OperationalFlow activeFlow = null;
+	
+	// services
 	private ClientConfigMqttTransceiver ccmt;
 	private Timer guiUpdateTimer;
 	
@@ -109,23 +113,30 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		// create model
 		model = new MainSceneModel(1000d);
 
-		// create bindings
+		// status view
 		statusListView.setItems(model.getListItems());
 		
+		// properties view
 		propertiesColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
 		propertiesColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
 		propertiesTable.setItems(model.getTableItems());
 
+		// version view
 		versionInfo.setText(String.format("%s.%s", Version.getInstance().getVersion(), Version.getInstance().getBuild()));
 
+		// engine status view
 		engineStatusListView.setItems(engineStatusList);
-
-		//engineStatusListView.setCellFactory(studentListView -> new EngineStatusListViewCell());
 		engineStatusListView.setCellFactory(new Callback<ListView<EngineStatusModel>, ListCell<EngineStatusModel>>() {
 		    @Override
 		    public ListCell<EngineStatusModel> call(ListView<EngineStatusModel> engineStatusListView) {
 		        return new EngineStatusListViewCell();
 		    }
+		});
+		engineStatusListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<EngineStatusModel>() {
+			@Override
+			public void changed(ObservableValue<? extends EngineStatusModel> observable, EngineStatusModel oldValue, EngineStatusModel newValue) {
+				onEngineStatusSelected(newValue);
+			}
 		});
 		
 		/*
@@ -154,9 +165,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
-							for(EngineStatusModel esm : engineStatusList) {
-								esm.getSinceLastUpdateProperty().set(DateTimeUtils.timeSinceLastUpdate(esm.getLastUpdate(), DateTime.now()));
-							}
+							onUpdateTimer();
 						}
 					});
 				}
@@ -228,6 +237,12 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		guiUpdateTimer.cancel();
 	}
 	
+	protected void onUpdateTimer() {
+		// update the engine status "last update"
+		for(EngineStatusModel esm : engineStatusList) {
+			esm.getSinceLastUpdateProperty().set(DateTimeUtils.timeSinceLastUpdate(esm.getLastUpdate(), DateTime.now()));
+		}
+	}
 	
 	
 	
@@ -252,6 +267,13 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	}
 	
 
+	
+	//*********************
+	// ENGINE EVENTS
+	//*********************
+	protected void onEngineStatusSelected(EngineStatusModel newValue) {
+		
+	}
 	
 	
 	//*********************
@@ -435,7 +457,6 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	
 	
 	
-	
 	public void sample1() {
 		activeFlow = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
 
@@ -553,7 +574,4 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		activeFlow.getTypeStyle().put(7, 7);
 		activeFlow.getTypeStyle().put(8, 8);
 	}
-
-
-	
 }
