@@ -3,6 +3,7 @@ package com.apextalos.cvitfusion.client.models;
 import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

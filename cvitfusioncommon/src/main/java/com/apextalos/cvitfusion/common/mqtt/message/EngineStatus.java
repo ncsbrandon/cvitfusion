@@ -2,6 +2,8 @@ package com.apextalos.cvitfusion.common.mqtt.message;
 
 import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class EngineStatus {
 
 	public enum Mode {
@@ -76,6 +78,7 @@ public class EngineStatus {
 		this.coord = coord;
 	}
 
+	@JsonIgnore
 	public DateTime getLastUpdate() {
 		return DateTime.parse(ts);
 	}

@@ -1,7 +1,10 @@
 package com.apextalos.cvitfusion.common.mqtt.subscription;
 
+import com.apextalos.cvitfusion.common.mqtt.topics.TopicDef;
+
 public class SubscriptionEvent {
 
+	private TopicDef topic;
 	private Object obj;
 
 	public Object getObj() {
@@ -12,8 +15,17 @@ public class SubscriptionEvent {
 		this.obj = obj;
 	}
 
-	public SubscriptionEvent(Object obj) {
+	public TopicDef getTopic() {
+		return topic;
+	}
+
+	public void setTopic(TopicDef topic) {
+		this.topic = topic;
+	}
+
+	public SubscriptionEvent(Object obj, TopicDef topic) {
 		super();
 		this.obj = obj;
+		this.topic = topic;
 	}
 }

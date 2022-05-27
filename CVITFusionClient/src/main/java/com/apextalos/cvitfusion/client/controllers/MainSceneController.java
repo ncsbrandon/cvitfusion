@@ -30,6 +30,7 @@ import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
+import com.apextalos.cvitfusion.common.mqtt.topics.TopicDef;
 import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
@@ -98,6 +99,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	private Node activeSelection = null;
 	private OperationalFlow activeFlow = null;
 	private ClientConfigMqttTransceiver ccmt;
+	private Timer guiUpdateTimer;
 	
 	//*********************
 	// SCENE EVENTS
@@ -144,8 +146,8 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		designScroll.prefHeightProperty().bind(vbox.heightProperty());
 		designPane.prefHeightProperty().bind(designScroll.heightProperty());
 		
-		Timer t = new Timer();
-		t.scheduleAtFixedRate(new TimerTask() {
+		guiUpdateTimer = new Timer();
+		guiUpdateTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
 				if (!Platform.isFxApplicationThread()) {
@@ -223,6 +225,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		
 		// shutdown mqtt
 		ccmt.stop();
+		guiUpdateTimer.cancel();
 	}
 	
 	
@@ -387,7 +390,6 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		}
 	}
 	
-	
 	@Override
 	public void onSubscriptionArrived(SubscriptionEvent subscriptionEvent) {
 		// if this event is coming from another thread (MQTT)
@@ -402,11 +404,18 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			return;
 		}
 
+		// print in the status
 		model.getListItems().add(subscriptionEvent.getObj().toString());
-
+		
+		if(subscriptionEvent.getTopic() == TopicDef.engine_status)
+			onEngineStatus(subscriptionEvent);
+		
+	}
+	
+	private void onEngineStatus(SubscriptionEvent subscriptionEvent) {
 		EngineStatus es = (EngineStatus) subscriptionEvent.getObj();
 		
-		// if we are updating an existing status
+		// update an existing status
 		for(EngineStatusModel esm : engineStatusList) {
 			if(0 == esm.getIdProperty().getValue().compareToIgnoreCase(es.getId())) {
 				esm.update(es);

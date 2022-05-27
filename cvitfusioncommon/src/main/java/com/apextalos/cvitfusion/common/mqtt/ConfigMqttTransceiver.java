@@ -74,16 +74,16 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 			protected void running() {
 				setName("Status publisher");
 				while (!getStop()) {
-					// wait until the next run, or interrupted
-					if (stopDelay((long) 1000 * freqsec))
-						break;
-
 					// publish periodic status message (with aggregated BSM data)
 					try {
 						publish(statusTopic(), buildStatusPayload(), true);
 					} catch (JsonProcessingException e) {
 						logger.error("Unable to build status payload: " + e.getMessage());
 					}
+					
+					// wait until the next run, or interrupted
+					if (stopDelay((long) 1000 * freqsec))
+						break;
 				}
 			}
 		};
