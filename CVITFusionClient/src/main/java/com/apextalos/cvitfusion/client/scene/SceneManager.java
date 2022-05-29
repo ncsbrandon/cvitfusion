@@ -1,7 +1,5 @@
 package com.apextalos.cvitfusion.client.scene;
 
-import java.io.IOException;
-
 import com.apextalos.cvitfusion.client.controllers.BaseController;
 import com.apextalos.cvitfusion.client.controllers.ResourceLoader;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
@@ -35,7 +33,7 @@ public class SceneManager {
 		this.cf = cf;
 	}
 	
-	public void showConnections(Stage stage) throws IOException {
+	public void showConnections(Stage stage) {
 		close(stage);
 		
 		if(sceneConnections == null) {
@@ -56,7 +54,7 @@ public class SceneManager {
 		});
 	}
 	
-	public void showMain(Stage stage) throws IOException {
+	public void showMain(Stage stage) {
 		close(stage);
 		
 		if(sceneMain == null) {

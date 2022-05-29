@@ -20,10 +20,6 @@ public class ConnectionsSceneModel {
 		this.sessionsMap = connectionMap;
 	}
 	
-	public ConnectionsSceneModel() {
-		
-	}
-	
 	public boolean sessionsFromJSON(String json) {
 		try {
 			sessionsMap = mapper.readValue(json, new TypeReference<Map<String, Connection>>(){});

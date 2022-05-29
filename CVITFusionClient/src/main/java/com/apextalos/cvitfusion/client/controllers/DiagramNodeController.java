@@ -80,6 +80,6 @@ public class DiagramNodeController extends BaseController {
 
 	@Override
 	public void onActionPerformed(Object o, EventType et) {
-
+		// N/A
 	}
 }

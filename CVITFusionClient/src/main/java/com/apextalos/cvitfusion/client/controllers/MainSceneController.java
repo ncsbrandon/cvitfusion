@@ -1,6 +1,5 @@
 package com.apextalos.cvitfusion.client.controllers;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -252,12 +251,8 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	@FXML
 	protected void onActionDisconnectMenu(ActionEvent event) {
 		// go back to connections
-		try {
-			Stage stage = (Stage)topBorderPane.getScene().getWindow();
-			SceneManager.getInstance(cf).showConnections(stage);
-		} catch (IOException e) {
-			logger.error(String.format("Unable to change to the main scene: %s", e.getMessage()));
-		}
+		Stage stage = (Stage)topBorderPane.getScene().getWindow();
+		SceneManager.getInstance(cf).showConnections(stage);
 	}
 	
 	@FXML

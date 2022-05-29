@@ -45,7 +45,7 @@ public class DiagramBuilder {
 		int nextX = 0;
 		for (Process topProcess : opflow.getProcesses()) {
 
-			logger.info(String.format("layout top process ID [] Type []", topProcess.getProcessID(), topProcess.getTypeID()));
+			logger.info(String.format("layout top process ID [%d] Type [%d]", topProcess.getProcessID(), topProcess.getTypeID()));
 			
 			// restart each at the top
 			pos.setY(0);
@@ -93,8 +93,8 @@ public class DiagramBuilder {
 		try {
 			r = new DiagramNodeControl();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("DiagramNodeCOntrol creation failure %s", e.getMessage());
+			return;
 		}
 		r.setLayoutX(x);
 		r.setLayoutY(thisPos.getY());

@@ -33,6 +33,4 @@ public abstract class BaseController implements Initializable, ActionListener {
 			l.onActionPerformed(o, et);
 		}
 	}
-
-	public abstract void onActionPerformed(Object o, EventType et);
 }

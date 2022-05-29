@@ -1,7 +1,6 @@
 package com.apextalos.cvitfusion.client.controllers;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -142,7 +141,7 @@ public class ConnectionsSceneController extends BaseController {
 	}
 
 	@FXML
-	private void OnActionDeleteButton(ActionEvent action) {
+	private void onActionDeleteButton(ActionEvent action) {
 		// update the list
 		model.getSessionsMap().remove(nameTextField.getText());
 		
@@ -156,7 +155,7 @@ public class ConnectionsSceneController extends BaseController {
 	}
 	
 	@FXML
-	private void OnActionSaveButton(ActionEvent action) {
+	private void onActionSaveButton(ActionEvent action) {
 		// cannot save blank name
 		if(nameTextField.getText().isBlank())
 			return;
@@ -210,7 +209,7 @@ public class ConnectionsSceneController extends BaseController {
 	}
 	
 	@FXML
-	private void OnActionConnectButton(ActionEvent action) {
+	private void onActionConnectButton(ActionEvent action) {
 		// validate settings
 		if(nameTextField.getText().isBlank()) {
 			showError("Name cannot be blank");
@@ -224,7 +223,7 @@ public class ConnectionsSceneController extends BaseController {
 		}
 		
 		// save any changes
-		OnActionSaveButton(action);
+		onActionSaveButton(action);
 		
 		// update the config to say this is the connection we are using
 		cf.setString(ConfigItems.CONNECTIONS_ACTIVESESSION_CONFIG, nameTextField.getText(), false);
@@ -250,12 +249,8 @@ public class ConnectionsSceneController extends BaseController {
 		}
 		
 		// change to the main scene
-		try {
-			Stage stage = (Stage)topVbox.getScene().getWindow();
-			SceneManager.getInstance(cf).showMain(stage);
-		} catch (IOException e) {
-			logger.error("Unable to change to the main scene: " + e.getMessage());
-		}
+		Stage stage = (Stage)topVbox.getScene().getWindow();
+		SceneManager.getInstance(cf).showMain(stage);
 	}
 	
 	private void showError(String message) {
@@ -263,14 +258,14 @@ public class ConnectionsSceneController extends BaseController {
 	}
 	
 	@FXML
-	private void OnActionCancelButton(ActionEvent action) {
+	private void onActionCancelButton(ActionEvent action) {
 		// close
 		Stage stage = (Stage)topVbox.getScene().getWindow();
 		SceneManager.getInstance(cf).close(stage);
 	}
 	
 	@FXML
-	private void OnActionCaCertButton(ActionEvent action) {
+	private void onActionCaCertButton(ActionEvent action) {
 		Stage stage = (Stage)topVbox.getScene().getWindow();
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open CA Cert File");
@@ -283,7 +278,7 @@ public class ConnectionsSceneController extends BaseController {
 	}
 	
 	@FXML
-	private void OnActionClientCertButton(ActionEvent action) {
+	private void onActionClientCertButton(ActionEvent action) {
 		Stage stage = (Stage)topVbox.getScene().getWindow();
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open CA Cert File");
@@ -296,7 +291,7 @@ public class ConnectionsSceneController extends BaseController {
 	}
 	
 	@FXML
-	private void OnActionClientKeyButton(ActionEvent action) {
+	private void onActionClientKeyButton(ActionEvent action) {
 		Stage stage = (Stage)topVbox.getScene().getWindow();
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Client Key File");

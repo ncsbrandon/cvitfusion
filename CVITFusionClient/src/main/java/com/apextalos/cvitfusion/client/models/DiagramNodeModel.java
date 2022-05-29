@@ -10,8 +10,8 @@ public class DiagramNodeModel {
 	private final StringProperty name = new SimpleStringProperty();
 	private final StringProperty id = new SimpleStringProperty();
 	private final BooleanProperty enabled = new SimpleBooleanProperty();
-	private final ObjectProperty<Paint> fillPaint = new SimpleObjectProperty<Paint>();
-	private final ObjectProperty<Paint> fontPaint = new SimpleObjectProperty<Paint>();
+	private final ObjectProperty<Paint> fillPaint = new SimpleObjectProperty<>();
+	private final ObjectProperty<Paint> fontPaint = new SimpleObjectProperty<>();
 	private final BooleanProperty hasInput = new SimpleBooleanProperty();
 	private final BooleanProperty hasOutput = new SimpleBooleanProperty();
 
@@ -73,8 +73,5 @@ public class DiagramNodeModel {
 
 	public void setHasOutput(boolean hasOutput) {
 		this.hasOutput.set(hasOutput);
-	}
-
-	public DiagramNodeModel() {
 	}
 }

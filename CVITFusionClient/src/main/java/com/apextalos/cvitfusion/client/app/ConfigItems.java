@@ -23,4 +23,8 @@ public class ConfigItems {
 	public static final String CONNECTIONS_SESSIONLIST_DEFAULT = "";
 	public static final String CONNECTIONS_ACTIVESESSION_CONFIG = "active_session";
 	public static final String CONNECTIONS_ACTIVESESSION_DEFAULT = "";
+	
+	private ConfigItems() {
+		// prevent instances
+	}
 }
