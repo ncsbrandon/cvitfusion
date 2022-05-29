@@ -159,7 +159,7 @@ public class ConfigFile {
 	}
 
 	public void setDouble(String key, double value) {
-		setString(key, String.valueOf(value), false);
+		setString(key, String.format("%.02f", value), false);
 	}
 
 	public double getDouble(String key, double defaultValue) {
@@ -177,7 +177,7 @@ public class ConfigFile {
 	}
 
 	public void setFloat(String key, float value) {
-		setString(key, String.valueOf(value), false);
+		setString(key, String.format("%.02f", value), false);
 	}
 
 	public float getFloat(String key, float defaultValue) {

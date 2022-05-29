@@ -131,7 +131,7 @@ public class DiagramBuilder {
 
 	private int calculateWidth(List<Process> processes) {
 		// no process is no width
-		if (processes == null || processes.size() == 0)
+		if (processes == null || processes.isEmpty())
 			return 0;
 
 		// width of each

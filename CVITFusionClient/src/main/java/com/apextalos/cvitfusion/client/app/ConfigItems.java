@@ -11,6 +11,9 @@ public class ConfigItems {
 	public static final String MAIN_HEIGHT_CONFIG = "main_height";
 	public static final String MAIN_MAXIMIZED_CONFIG = "main_maximized";
 	public static final Boolean MAIN_MAXIMIZED_DEFAULT = false;
+	public static final String MAIN_SP1_DIV_POS_CONFIG = "main_sp1_div_pos";
+	public static final String MAIN_SP11_DIV_POS_CONFIG = "main_sp11_div_pos";
+	public static final String MAIN_SP112_DIV_POS_CONFIG = "main_sp112_div_pos";
 	
 	public static final String CONNECTIONS_POSITION_X_CONFIG = "connections_position_x";
 	public static final double CONNECTIONS_POSITION_X_DEFAULT = -1;

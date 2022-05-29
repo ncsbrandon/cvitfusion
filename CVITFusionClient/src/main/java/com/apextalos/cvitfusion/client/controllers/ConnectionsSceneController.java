@@ -113,7 +113,7 @@ public class ConnectionsSceneController extends BaseController {
 		fillSessionsList();
 		
 		// if we have items, select the first one
-		if(sessionList.getItems().size() > 0)
+		if(!sessionList.getItems().isEmpty())
 			sessionList.getSelectionModel().select(sessionList.getItems().get(0));
 			
 	}
@@ -301,5 +301,26 @@ public class ConnectionsSceneController extends BaseController {
 		File f = fileChooser.showOpenDialog(stage);
 		if(f != null)
 			clientKeyTextField.setText(f.getAbsolutePath());
+	}
+	
+	@FXML
+	private void onMenuWindowReset(ActionEvent action) {
+		cf.removeKey(ConfigItems.CONNECTIONS_POSITION_X_CONFIG);
+		cf.removeKey(ConfigItems.CONNECTIONS_POSITION_Y_CONFIG);
+		cf.removeKey(ConfigItems.CONNECTIONS_WIDTH_CONFIG);
+		cf.removeKey(ConfigItems.CONNECTIONS_HEIGHT_CONFIG);
+		
+		cf.removeKey(ConfigItems.MAIN_POSITION_X_CONFIG);
+		cf.removeKey(ConfigItems.MAIN_POSITION_Y_CONFIG);
+		cf.removeKey(ConfigItems.MAIN_WIDTH_CONFIG);
+		cf.removeKey(ConfigItems.MAIN_HEIGHT_CONFIG);			
+		cf.removeKey(ConfigItems.MAIN_MAXIMIZED_CONFIG);		
+		cf.removeKey(ConfigItems.MAIN_SP1_DIV_POS_CONFIG);
+		cf.removeKey(ConfigItems.MAIN_SP11_DIV_POS_CONFIG);
+		cf.removeKey(ConfigItems.MAIN_SP112_DIV_POS_CONFIG);
+		
+		cf.save();
+		
+		System.exit(0);
 	}
 }

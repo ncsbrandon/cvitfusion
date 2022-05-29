@@ -192,9 +192,12 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		stage.setMaximized(cf.getBoolean(ConfigItems.MAIN_MAXIMIZED_CONFIG, ConfigItems.MAIN_MAXIMIZED_DEFAULT));
 		
 		// divider positions
-		sp1.setDividerPosition(0, cf.getDouble("sp1_divider_position", -1));
-		sp11.setDividerPosition(0, cf.getDouble("sp11_divider_position", -1));
-		sp112.setDividerPosition(0, cf.getDouble("sp112_divider_position", -1));
+		if(cf.hasKey(ConfigItems.MAIN_SP1_DIV_POS_CONFIG))
+			sp1.setDividerPosition(0, cf.getDouble(ConfigItems.MAIN_SP1_DIV_POS_CONFIG, -1));
+		if(cf.hasKey(ConfigItems.MAIN_SP11_DIV_POS_CONFIG))
+			sp11.setDividerPosition(0, cf.getDouble(ConfigItems.MAIN_SP11_DIV_POS_CONFIG, -1));
+		if(cf.hasKey(ConfigItems.MAIN_SP112_DIV_POS_CONFIG))
+			sp112.setDividerPosition(0, cf.getDouble(ConfigItems.MAIN_SP112_DIV_POS_CONFIG, -1));
 		
 		// start MQTT
 		ccmt = new ClientConfigMqttTransceiver(cf);
@@ -227,9 +230,9 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		cf.setBoolean(ConfigItems.MAIN_MAXIMIZED_CONFIG, stage.isMaximized());
 		
 		// divider positions
-		cf.setDouble("sp1_divider_position", sp1.getDividerPositions()[0]);
-		cf.setDouble("sp11_divider_position", sp11.getDividerPositions()[0]);
-		cf.setDouble("sp112_divider_position", sp112.getDividerPositions()[0]);
+		cf.setDouble(ConfigItems.MAIN_SP1_DIV_POS_CONFIG, sp1.getDividerPositions()[0]);
+		cf.setDouble(ConfigItems.MAIN_SP11_DIV_POS_CONFIG, sp11.getDividerPositions()[0]);
+		cf.setDouble(ConfigItems.MAIN_SP112_DIV_POS_CONFIG, sp112.getDividerPositions()[0]);
 		
 		// shutdown mqtt
 		ccmt.stop();
