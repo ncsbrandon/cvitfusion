@@ -23,7 +23,7 @@ public class EngineStatusSubscriptionHandler extends SubscriptionHandler {
 	@Override
 	public String topic() {
 		// listen for any engine status
-		return "/apextalos/cvitfusion/" + TopicDef.engine_status + "/#";
+		return "/apextalos/cvitfusion/" + TopicDef.ENGINE_STATUS + "/#";
 	}
 
 	@Override
@@ -48,11 +48,11 @@ public class EngineStatusSubscriptionHandler extends SubscriptionHandler {
 			Platform.runLater(new Runnable() {
                 @Override public void run() {
                 	// publish to the GUI
-            		subscriptionArrived(new SubscriptionEvent(engineStatus, TopicDef.engine_status));
+            		subscriptionArrived(new SubscriptionEvent(engineStatus, TopicDef.ENGINE_STATUS));
                 }
 			});
 		} else {
-			subscriptionArrived(new SubscriptionEvent(engineStatus, TopicDef.engine_status));
+			subscriptionArrived(new SubscriptionEvent(engineStatus, TopicDef.ENGINE_STATUS));
 		}
 	}
 }

@@ -9,8 +9,8 @@ public class Type {
 	private int version;
 	private String name;
 	private Properties properties;
-	public List<Integer> supportedInputs;
-	public List<Integer> supportedOutputs;
+	private List<Integer> supportedInputs;
+	private List<Integer> supportedOutputs;
 
 	public int getTypeID() {
 		return typeID;
@@ -45,7 +45,7 @@ public class Type {
 	}
 
 	public boolean hasSupportedInputs() {
-		return supportedInputs != null && supportedInputs.size() > 0;
+		return supportedInputs != null && !supportedInputs.isEmpty();
 	}
 
 	public List<Integer> getSupportedInputs() {
@@ -57,7 +57,7 @@ public class Type {
 	}
 
 	public boolean hasSupportedOutputs() {
-		return supportedOutputs != null && supportedOutputs.size() > 0;
+		return supportedOutputs != null && !supportedOutputs.isEmpty();
 	}
 
 	public List<Integer> getSupportedOutputs() {

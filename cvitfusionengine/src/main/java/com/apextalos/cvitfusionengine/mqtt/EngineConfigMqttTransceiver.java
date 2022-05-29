@@ -36,7 +36,7 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 	@Override
 	public String statusTopic() {
 		return String.format("/apextalos/cvitfusion/%s/%s",
-				TopicDef.engine_status.toString(),
+				TopicDef.ENGINE_STATUS.toString(),
 				cf.getString(ConfigItems.DEVICE_UUID_CONFIG, ConfigItems.DEVICE_UUID_DEFAULT));
 	}
 

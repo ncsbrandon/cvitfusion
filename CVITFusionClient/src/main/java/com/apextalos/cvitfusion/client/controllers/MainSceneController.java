@@ -256,7 +256,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			Stage stage = (Stage)topBorderPane.getScene().getWindow();
 			SceneManager.getInstance(cf).showConnections(stage);
 		} catch (IOException e) {
-			logger.error("Unable to change to the main scene: " + e.getMessage());
+			logger.error(String.format("Unable to change to the main scene: %s", e.getMessage()));
 		}
 	}
 	
@@ -272,7 +272,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	// ENGINE EVENTS
 	//*********************
 	protected void onEngineStatusSelected(EngineStatusModel newValue) {
-		
+		//TBD
 	}
 	
 	
@@ -281,7 +281,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	//*********************
 	@FXML
 	protected void onDesignPaneMouseClicked(MouseEvent mouseEvent) {
-		logger.debug("onMouseClicked " + mouseEvent.toString());
+		logger.debug("onDesignPaneMouseClicked");
 		mouseEvent.consume();
 		onActionPerformed(null, EventType.DESELECTED);
 	}
@@ -295,9 +295,9 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			onActionPerformed(null, EventType.DESELECTED);
 			onProcessSelection((DiagramNodeControl) o);
 		} else if (et == EventType.DESELECTED) {
-			if (activeSelection != null && activeSelection instanceof Line) {
+			if (activeSelection instanceof Line) {
 				onLineDeselection((Line) activeSelection);
-			} else if (activeSelection != null && activeSelection instanceof DiagramNodeControl) {
+			} else if (activeSelection instanceof DiagramNodeControl) {
 				onProcessDeselection((DiagramNodeControl) activeSelection);
 			}
 		}
@@ -361,7 +361,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		activeFlow = null;
 		
 		ObservableList<Node> children = designPane.getChildren();
-        if(children != null && children.size() > 0)
+        if(children != null && !children.isEmpty())
         	designPane.getChildren().clear();
 	}
 	
@@ -392,20 +392,16 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
 		*/
 		
-		if(e.getChange() == Change.CONNECTSUCCESS) {
+		if(e.getChange() == Change.CONNECTING) {
 			clearDesignPane();
 			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.ORANGE);
 			mqttStatusLabel.setText(e.getMessage());
-		} if(e.getChange() == Change.CONNECTSUCCESS) {
+		} else if(e.getChange() == Change.CONNECTSUCCESS) {
 			sample1();
 			fillDesignPane();
 			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.BLACK);
 			mqttStatusLabel.setText(e.getMessage());
-		} else if (e.getChange() == Change.CONNECTFAILURE) {	
-			clearDesignPane();
-			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.RED);
-			mqttStatusLabel.setText(e.getMessage());
-		} else if (e.getChange() == Change.DISCONNECT) {	
+		} else if (e.getChange() == Change.CONNECTFAILURE || e.getChange() == Change.DISCONNECT) {	
 			clearDesignPane();
 			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.RED);
 			mqttStatusLabel.setText(e.getMessage());
@@ -429,7 +425,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		// print in the status
 		model.getListItems().add(subscriptionEvent.getObj().toString());
 		
-		if(subscriptionEvent.getTopic() == TopicDef.engine_status)
+		if(subscriptionEvent.getTopic() == TopicDef.ENGINE_STATUS)
 			onEngineStatus(subscriptionEvent);
 		
 	}

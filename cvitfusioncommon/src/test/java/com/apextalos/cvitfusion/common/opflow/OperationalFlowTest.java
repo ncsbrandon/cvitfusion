@@ -1,5 +1,7 @@
 package com.apextalos.cvitfusion.common.opflow;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
@@ -70,7 +72,9 @@ public class OperationalFlowTest {
 	}
 	
 	@Test
-	public void test() {
-		logger.debug(OperationalFlow.toJSON(sample1()));
+	public void testToJSON() {
+		OperationalFlow of = sample1();
+		assertNotNull(of);
+		logger.debug(OperationalFlow.toJSON(of));
 	}
 }

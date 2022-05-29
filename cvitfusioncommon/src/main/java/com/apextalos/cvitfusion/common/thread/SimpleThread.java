@@ -25,7 +25,7 @@ public abstract class SimpleThread extends Thread {
 		try {
 			join(millis);
 		} catch (InterruptedException e) {
-			logger.error("failed to join: " + e.getMessage());
+			logger.error("failed to join: %s", e.getMessage());
 		}
 	}
 

@@ -71,7 +71,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 		}
 	}
 	
-	public MqttTransceiver(String broker, String clientId) {	
+	protected MqttTransceiver(String broker, String clientId) {	
 		this.broker = broker;
 		this.clientId = clientId;
 	}
@@ -294,9 +294,9 @@ public abstract class MqttTransceiver implements MqttCallback {
 			activeSubscriptions.addAll(Arrays.asList(topicFilters));
 			client.subscribe(topicFilters);
 		} catch (MqttException e) {
-			logger.error("subscription failure reason " + e.getReasonCode());
-			logger.error("msg " + e.getMessage());
-			logger.error("cause " + e.getCause());
+			logger.error("subscription failure reason %s", e.getReasonCode());
+			logger.error("msg %s", e.getMessage());
+			logger.error("cause %s", e.getCause());
 		}
 	}
 	

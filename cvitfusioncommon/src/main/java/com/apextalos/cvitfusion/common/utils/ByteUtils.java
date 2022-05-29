@@ -4,6 +4,10 @@ public class ByteUtils {
 
 	private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
+	private ByteUtils() {
+		// prevent instances
+	}
+	
 	public static String bytesToHex(byte[] bytes) {
 		char[] hexChars = new char[bytes.length * 2];
 		for (int j = 0; j < bytes.length; j++) {

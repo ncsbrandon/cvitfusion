@@ -45,4 +45,8 @@ public class ConfigItems {
 
 	public static final String CONFIG_MQTT_PERIODIC_FREQ_SEC = "MQTT_PERIODIC_FREQ_SEC";
 	public static final int CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT = 60;
+	
+	private ConfigItems() {
+		// prevent instance
+	}
 }

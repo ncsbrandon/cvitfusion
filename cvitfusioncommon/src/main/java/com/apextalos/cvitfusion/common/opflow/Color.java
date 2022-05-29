@@ -2,52 +2,52 @@ package com.apextalos.cvitfusion.common.opflow;
 
 public class Color {
 
-	private int R;
-	private int G;
-	private int B;
-	private double A;
+	private int r;
+	private int g;
+	private int b;
+	private double a;
 
 	public int getR() {
-		return R;
+		return r;
 	}
 
 	public void setR(int r) {
-		R = r;
+		this.r = r;
 	}
 
 	public int getG() {
-		return G;
+		return g;
 	}
 
 	public void setG(int g) {
-		G = g;
+		this.g = g;
 	}
 
 	public int getB() {
-		return B;
+		return b;
 	}
 
 	public void setB(int b) {
-		B = b;
+		this.b = b;
 	}
 
 	public double getA() {
-		return A;
+		return a;
 	}
 
 	public void setA(double a) {
-		A = a;
+		this.a = a;
 	}
 
 	public String asColorString() {
-		return String.format("rgba(%d, %d, %d, %.02f)", R, G, B, A);
+		return String.format("rgba(%d, %d, %d, %.02f)", r, g, b, a);
 	}
 
 	public Color(int r, int g, int b, double a) {
 		super();
-		R = r;
-		G = g;
-		B = b;
-		A = a;
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.a = a;
 	}
 }

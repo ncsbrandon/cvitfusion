@@ -26,11 +26,7 @@ public class License {
 	}
 	
 	public boolean hasStringFeature(Feature feature) {
-		if (props == null || !props.containsKey(feature.getId())) {
-			return false;
-		}
-
-		return true;
+		return (props != null && props.containsKey(feature.getId()));
 	}
 	
 	public Map<Feature, String> getAllFeatures() {

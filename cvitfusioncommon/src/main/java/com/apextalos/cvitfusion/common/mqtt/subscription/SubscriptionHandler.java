@@ -19,8 +19,4 @@ public abstract class SubscriptionHandler implements ISubscriptionHander {
 			subscriptionListener.onSubscriptionArrived(subscriptionEvent);
 		}
 	}
-
-	public abstract String topic();
-
-	public abstract void onMessage(String payload);
 }
