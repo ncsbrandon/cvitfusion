@@ -23,7 +23,7 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 
 	@Override
 	public String[] subscriptionTopics() {
-		return null;
+		return new String[0];
 	}
 
 	@Override

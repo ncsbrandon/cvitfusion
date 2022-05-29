@@ -31,6 +31,7 @@ public class App {
 		// create the shutdown hook		
 		final Thread mainThread = Thread.currentThread();
 		Runtime.getRuntime().addShutdownHook(new Thread() {
+		    @Override
 		    public void run() {
 		        keepRunning = false;
 		        try {

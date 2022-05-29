@@ -20,6 +20,7 @@ public class ConfigRequestSubscriptionHandler implements ISubscriptionHander {
 
 	@Override
 	public void onMessage(String payload) {
+		// TBD
 	}
 
 }
