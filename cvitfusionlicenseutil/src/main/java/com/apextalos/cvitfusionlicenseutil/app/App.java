@@ -101,13 +101,12 @@ public class App
     		} else if(feature.getType() == Integer.class) {
     			int number = 0;
     			if(!response.isBlank())
-    				Integer.valueOf(response);
+    				number = Integer.valueOf(response);
     			license.setIntFeature(feature, number);
     		} else if(feature.getType() == Boolean.class) {
     			license.setBooleanFeature(feature, response.equalsIgnoreCase("y"));
     		} else {
-    			logger.error("Unknown feature type " + feature.getType().toString());
-    			continue;
+    			logger.error("Unknown feature type %s", feature.getType().toString());
     		}
     	}
     	
@@ -121,6 +120,6 @@ public class App
 		}
     	
     	// print to the user
-    	logger.info("Key: " + licenseKey);
+    	logger.info("Key: %s", licenseKey);
     }
 }
