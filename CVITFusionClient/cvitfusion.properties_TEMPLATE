@@ -1,0 +1,12 @@
+#com.apextalos.cvitfusion.common.settings.ConfigFile
+#Sun May 29 07:42:24 EDT 2022
+MQTT_BROKER=tcp\://localhost\:1883
+MQTT_CACERT=
+MQTT_CLIENTCERT=
+MQTT_CLIENTID=clientid
+MQTT_CLIENTKEY=
+MQTT_PASSWORD=
+MQTT_PERIODIC_FREQ_SEC=0
+MQTT_USERNAME=
+active_session=localhost
+sessions={\n  "localhost" \: {\n    "url" \: "tcp\://localhost\:1883",\n    "clientId" \: "clientid",\n    "useTls" \: false,\n    "caCertFile" \: "/home/firstuser/one.key",\n    "clientCertFile" \: "/home/firstuser/two.pem",\n    "clientKeyFile" \: "/home/firstuser/three.ca",\n    "usePassword" \: false,\n    "username" \: "user1",\n    "password" \: "pass1"\n  }\n}
