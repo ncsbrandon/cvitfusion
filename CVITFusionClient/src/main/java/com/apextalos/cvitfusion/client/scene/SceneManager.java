@@ -44,13 +44,13 @@ public class SceneManager {
 		stage.setScene(sceneConnections);
 		stage.setResizable(false);
 		stage.setMaximized(false);		
-		controllerConnections.begin(cf);
+		controllerConnections.begin(cf, stage);
 		stage.show();
 		
 		// save window size and position at app close
 		stage.setOnCloseRequest((final WindowEvent event) -> {
 			if(controllerConnections != null)
-				controllerConnections.end();
+				controllerConnections.end(stage);
 		});
 	}
 	
@@ -64,24 +64,24 @@ public class SceneManager {
 		
 		stage.setScene(sceneMain);
 		stage.setResizable(true);		
-		controllerMain.begin(cf);
+		controllerMain.begin(cf, stage);
 		stage.show();
 		
 		// save window size and position at app close
 		stage.setOnCloseRequest((final WindowEvent event) -> {
 			if(controllerMain != null)
-				controllerMain.end();
+				controllerMain.end(stage);
 		});
 	}
 	
 	public void close(Stage stage) {
 		if(controllerMain != null) {
-			controllerMain.end();
+			controllerMain.end(stage);
 			//controllerMain = null;
 		}
 		
 		if(controllerConnections != null) {
-			controllerConnections.end();
+			controllerConnections.end(stage);
 			//controllerConnections = null;
 		}
 		

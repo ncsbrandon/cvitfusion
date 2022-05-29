@@ -83,10 +83,8 @@ public class ConnectionsSceneController extends BaseController {
 	}
 	
 	@Override
-	public void begin(ConfigFile cf) {
-		super.begin(cf);
-		
-		Stage stage = (Stage)topVbox.getScene().getWindow();
+	public void begin(ConfigFile cf, Stage stage) {
+		super.begin(cf, stage);
 		
 		// stage size
 		if(cf.hasKey(ConfigItems.CONNECTIONS_WIDTH_CONFIG))
@@ -119,10 +117,9 @@ public class ConnectionsSceneController extends BaseController {
 	}
 
 	@Override
-	public void end() {
-		super.end();
+	public void end(Stage stage) {
+		super.end(stage);
 		
-		Stage stage = (Stage)topVbox.getScene().getWindow();
 		if(stage == null)
 			return;
 		
@@ -131,8 +128,8 @@ public class ConnectionsSceneController extends BaseController {
 		cf.setDouble(ConfigItems.CONNECTIONS_POSITION_Y_CONFIG, stage.getY());
 		
 		// stage size
-		cf.setDouble(ConfigItems.CONNECTIONS_WIDTH_CONFIG, stage.getWidth());
-		cf.setDouble(ConfigItems.CONNECTIONS_HEIGHT_CONFIG, stage.getHeight());
+		cf.setDouble(ConfigItems.CONNECTIONS_WIDTH_CONFIG, 712); // stage.getWidth()
+		cf.setDouble(ConfigItems.CONNECTIONS_HEIGHT_CONFIG, 573); // stage.getHeight()
 	}
 
 	@Override

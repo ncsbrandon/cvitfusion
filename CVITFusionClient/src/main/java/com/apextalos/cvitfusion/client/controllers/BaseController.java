@@ -6,6 +6,7 @@ import java.util.List;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.fxml.Initializable;
+import javafx.stage.Stage;
 
 public abstract class BaseController implements Initializable, ActionListener {
 
@@ -15,11 +16,11 @@ public abstract class BaseController implements Initializable, ActionListener {
 
 	protected ConfigFile cf = null;
 	
-	public void begin(ConfigFile cf) {
+	public void begin(ConfigFile cf, Stage stage) {
 		this.cf = cf;
 	}
 
-	public void end() {
+	public void end(Stage stage) {
 	}
 
 	private final List<ActionListener> listeners = new ArrayList<>();

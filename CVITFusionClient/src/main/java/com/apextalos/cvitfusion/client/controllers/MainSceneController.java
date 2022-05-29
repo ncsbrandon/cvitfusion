@@ -173,10 +173,8 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	}
 
 	@Override
-	public void begin(ConfigFile cf) {
-		super.begin(cf);
-		
-		Stage stage = (Stage)topBorderPane.getScene().getWindow();
+	public void begin(ConfigFile cf, Stage stage) {
+		super.begin(cf, stage);
 		
 		// stage size
 		if(cf.hasKey(ConfigItems.MAIN_WIDTH_CONFIG))
@@ -211,10 +209,9 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	}
 		
 	@Override
-	public void end() {
-		super.end();
+	public void end(Stage stage) {
+		super.end(stage);
 		
-		Stage stage = (Stage)topBorderPane.getScene().getWindow();
 		if(stage == null)
 			return;
 		
