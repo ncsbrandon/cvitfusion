@@ -53,12 +53,12 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#onActionCancelButton" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Window">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#onMenuWindowReset" text="Reset saved positions" />
+              <MenuItem mnemonicParsing="false" onAction="#onMenuWindowReset" text="Reset saved positions and exit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -96,7 +96,7 @@
             <TextField fx:id="urlTextField" layoutX="422.0" layoutY="65.0" prefHeight="24.0" prefWidth="258.0" promptText="tcp://ip_address:1883" />
             <Label layoutX="320.0" layoutY="104.0" text="Client ID" />
             <TextField fx:id="clientIdTextField" layoutX="422.0" layoutY="100.0" prefHeight="24.0" prefWidth="258.0" promptText="Access control" />
-            <TitledPane animated="false" collapsible="false" layoutX="303.0" layoutY="138.0" text="TLS security">
+            <TitledPane animated="false" collapsible="false" layoutX="301.0" layoutY="138.0" text="TLS security">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="145.0" prefWidth="395.0">
                      <children>
@@ -114,7 +114,7 @@
                   </AnchorPane>
               </content>
             </TitledPane>
-            <TitledPane animated="false" collapsible="false" layoutX="303.0" layoutY="323.0" text="Password authentication">
+            <TitledPane animated="false" collapsible="false" layoutX="301.0" layoutY="323.0" text="Password authentication">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="110.0" prefWidth="395.0">
                      <children>
@@ -127,7 +127,7 @@
                   </AnchorPane>
                </content>
             </TitledPane>
-            <Button defaultButton="true" layoutX="530.0" layoutY="475.0" mnemonicParsing="false" onAction="#onActionConnectButton" text="Connect">
+            <Button defaultButton="true" layoutX="599.0" layoutY="475.0" mnemonicParsing="false" onAction="#onActionConnectButton" text="Connect">
                <graphic>
                   <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -136,7 +136,6 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button cancelButton="true" layoutX="637.0" layoutY="475.0" mnemonicParsing="false" onAction="#onActionCancelButton" prefHeight="30.0" prefWidth="63.0" text="Exit" />
             <Label fx:id="errorMessageLabel" layoutX="14.0" layoutY="480.0" prefHeight="21.0" prefWidth="496.0" text="ERROR MESSAGE" textFill="RED">
                <font>
                   <Font size="18.0" />

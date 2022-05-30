@@ -95,10 +95,10 @@ public class MainSceneController extends BaseController implements SubscriptionL
     @FXML private Label versionInfo;
     
     // sub-models
-	private ObservableList<EngineStatusModel> engineStatusList = FXCollections.observableArrayList();
+	private ObservableList<EngineStatusModel> engineStatusModelList = FXCollections.observableArrayList();
 	private DiagramBuilder db = new DiagramBuilder();
-	private Node activeSelection = null;
-	private OperationalFlow activeFlow = null;
+	private Node designSelection = null;
+	private OperationalFlow activeDesign = null;
 	
 	// services
 	private ClientConfigMqttTransceiver ccmt;
@@ -124,7 +124,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		versionInfo.setText(String.format("%s.%s", Version.getInstance().getVersion(), Version.getInstance().getBuild()));
 
 		// engine status view
-		engineStatusListView.setItems(engineStatusList);
+		engineStatusListView.setItems(engineStatusModelList);
 		engineStatusListView.setCellFactory(new Callback<ListView<EngineStatusModel>, ListCell<EngineStatusModel>>() {
 		    @Override
 		    public ListCell<EngineStatusModel> call(ListView<EngineStatusModel> engineStatusListView) {
@@ -238,7 +238,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	
 	protected void onUpdateTimer() {
 		// update the engine status "last update"
-		for(EngineStatusModel esm : engineStatusList) {
+		for(EngineStatusModel esm : engineStatusModelList) {
 			esm.getSinceLastUpdateProperty().set(DateTimeUtils.timeSinceLastUpdate(esm.getLastUpdate(), DateTime.now()));
 		}
 	}
@@ -290,10 +290,10 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			onActionPerformed(null, EventType.DESELECTED);
 			onProcessSelection((DiagramNodeControl) o);
 		} else if (et == EventType.DESELECTED) {
-			if (activeSelection instanceof Line) {
-				onLineDeselection((Line) activeSelection);
-			} else if (activeSelection instanceof DiagramNodeControl) {
-				onProcessDeselection((DiagramNodeControl) activeSelection);
+			if (designSelection instanceof Line) {
+				onLineDeselection((Line) designSelection);
+			} else if (designSelection instanceof DiagramNodeControl) {
+				onProcessDeselection((DiagramNodeControl) designSelection);
 			}
 		}
 	}
@@ -301,13 +301,13 @@ public class MainSceneController extends BaseController implements SubscriptionL
 
 	private void onLineSelection(Line line) {
 		line.setEffect(new DropShadow());
-		activeSelection = line;
+		designSelection = line;
 		
 		ProcessLink pc = (ProcessLink) line.getUserData();
 		Process parentProcess = pc.getParentProcess();
-		Type parentType = activeFlow.lookupType(parentProcess.getTypeID());
+		Type parentType = activeDesign.lookupType(parentProcess.getTypeID());
 		Process childProcess = pc.getChildProcess();
-		Type childType = activeFlow.lookupType(childProcess.getTypeID());
+		Type childType = activeDesign.lookupType(childProcess.getTypeID());
 		
 		model.getTableItems().clear();
 		model.getTableItems().add(new KeyValuePairModel("From", String.format("%s %d", parentType.getName(), parentProcess.getProcessID())));
@@ -317,20 +317,19 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	
 	private void onLineDeselection(Line line) {
 		line.setEffect(null);
-		activeSelection = null;
-		model.getTableItems().clear();
+		onNoSelection();
 	}
 	
 
 	private void onProcessSelection(DiagramNodeControl dnc) {
 		dnc.getController().select(true);
-		activeSelection = dnc;
+		designSelection = dnc;
 		
 		DiagramNodeController dncController = dnc.getController();
 		DiagramNodeModel dncModel = dncController.getModel();
 		
-		Process process = activeFlow.lookupProcess(Integer.valueOf(dncModel.getIDProperty().get()));
-		Type type = activeFlow.lookupType(process.getTypeID());
+		Process process = activeDesign.lookupProcess(Integer.valueOf(dncModel.getIDProperty().get()));
+		Type type = activeDesign.lookupType(process.getTypeID());
 		
 		model.getTableItems().clear();
 		model.getTableItems().add(new KeyValuePairModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
@@ -342,18 +341,21 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	
 	private void onProcessDeselection(DiagramNodeControl dnc) {
 		dnc.getController().select(false);
-		activeSelection = null;
-		model.getTableItems().clear();
+		onNoSelection();
 	}
 	
+	private void onNoSelection() {
+		designSelection = null;
+		model.getTableItems().clear();
+	}
 
 	private void fillDesignPane() {
-		designPane.getChildren().addAll(db.layout(activeFlow, this));
+		designPane.getChildren().addAll(db.layout(activeDesign, this));
 	}
 	
 	
 	private void clearDesignPane() {
-		activeFlow = null;
+		activeDesign = null;
 		
 		ObservableList<Node> children = designPane.getChildren();
         if(children != null && !children.isEmpty())
@@ -429,7 +431,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		EngineStatus es = (EngineStatus) subscriptionEvent.getObj();
 		
 		// update an existing status
-		for(EngineStatusModel esm : engineStatusList) {
+		for(EngineStatusModel esm : engineStatusModelList) {
 			if(0 == esm.getIdProperty().getValue().compareToIgnoreCase(es.getId())) {
 				esm.update(es);
 				return;
@@ -437,7 +439,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		}
 		
 		// add a new status
-		engineStatusList.add(new EngineStatusModel(es));
+		engineStatusModelList.add(new EngineStatusModel(es));
 	}
 		
 	
@@ -449,7 +451,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	
 	
 	public void sample1() {
-		activeFlow = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
+		activeDesign = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
 
 		Process n111 = new Process(111, true, 3, null, "", 4317, new Properties());
 		Process n112 = new Process(112, true, 6, null, "", 4317, new Properties());
@@ -473,7 +475,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 				add(n12);
 			}
 		}, "", 69, new Properties());
-		activeFlow.getProcesses().add(n1);
+		activeDesign.getProcesses().add(n1);
 
 		Process n211 = new Process(211, true, 6, null, "", 4317, new Properties());
 		Process n21 = new Process(21, true, 7, new ArrayList<>() {
@@ -486,22 +488,22 @@ public class MainSceneController extends BaseController implements SubscriptionL
 				add(n21);
 			}
 		}, "", 69, new Properties());
-		activeFlow.getProcesses().add(n2);
+		activeDesign.getProcesses().add(n2);
 
 		// INPUTS----------------------
-		activeFlow.getTypes().add(new Type(1, 1, "Lidar", new Properties(), null, new ArrayList<>() {
+		activeDesign.getTypes().add(new Type(1, 1, "Lidar", new Properties(), null, new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
 			}
-		}));
-		activeFlow.getTypes().add(new Type(4, 1, "Camera", new Properties(), null, new ArrayList<>() {
+		}, true));
+		activeDesign.getTypes().add(new Type(4, 1, "Camera", new Properties(), null, new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
 			}
-		}));
+		}, true));
 
 		// LOGICS-------------------------
-		activeFlow.getTypes().add(new Type(2, 1, "WWVD", new Properties(), new ArrayList<>() {
+		activeDesign.getTypes().add(new Type(2, 1, "WWVD", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(1));
 			}
@@ -509,8 +511,8 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			{
 				add(Integer.valueOf(3));
 			}
-		}));
-		activeFlow.getTypes().add(new Type(5, 1, "Curve Speed", new Properties(), new ArrayList<>() {
+		}, false));
+		activeDesign.getTypes().add(new Type(5, 1, "Curve Speed", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(1));
 			}
@@ -518,8 +520,8 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			{
 				add(Integer.valueOf(3));
 			}
-		}));
-		activeFlow.getTypes().add(new Type(7, 1, "Queue Detection", new Properties(), new ArrayList<>() {
+		}, false));
+		activeDesign.getTypes().add(new Type(7, 1, "Queue Detection", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(1));
 			}
@@ -527,42 +529,42 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			{
 				add(Integer.valueOf(3));
 			}
-		}));
+		}, false));
 
 		// OUTPUTS -------------
-		activeFlow.getTypes().add(new Type(3, 1, "Email", new Properties(), new ArrayList<>() {
+		activeDesign.getTypes().add(new Type(3, 1, "Email", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
 			}
-		}, null));
-		activeFlow.getTypes().add(new Type(6, 1, "Flashing Beacon", new Properties(), new ArrayList<>() {
+		}, null, false));
+		activeDesign.getTypes().add(new Type(6, 1, "Flashing Beacon", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
 			}
-		}, null));
-		activeFlow.getTypes().add(new Type(8, 1, "Digital Output", new Properties(), new ArrayList<>() {
+		}, null, false));
+		activeDesign.getTypes().add(new Type(8, 1, "Digital Output", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
 			}
-		}, null));
+		}, null, false));
 
 		// https://coolors.co/233d4d-915e3d-fe7f2d-fda53a-fcca46-cfc664-a1c181-619b8a
-		activeFlow.getStyles().add(new Style(1, 1, new Color(0x23, 0x3D, 0x4D, 1), new Color(255, 255, 255, 1))); // Charcoal
-		activeFlow.getStyles().add(new Style(2, 1, new Color(0x91, 0x5E, 0x3D, 1), new Color(255, 255, 255, 1))); // Coyote Brown
-		activeFlow.getStyles().add(new Style(3, 1, new Color(0xFE, 0x7F, 0x2D, 1), new Color(255, 255, 255, 1))); // Pumpkin
-		activeFlow.getStyles().add(new Style(4, 1, new Color(0xFD, 0xA5, 0x3A, 1), new Color(0, 0, 0, 1))); // Yellow Orange
-		activeFlow.getStyles().add(new Style(5, 1, new Color(0xFC, 0xCA, 0x46, 1), new Color(0, 0, 0, 1))); // Sunglow
-		activeFlow.getStyles().add(new Style(6, 1, new Color(0xCF, 0xC6, 0x64, 1), new Color(0, 0, 0, 1))); // Straw
-		activeFlow.getStyles().add(new Style(7, 1, new Color(0xA1, 0xC1, 0x81, 1), new Color(0, 0, 0, 1))); // Olivine
-		activeFlow.getStyles().add(new Style(8, 1, new Color(0x61, 0x9B, 0x8A, 1), new Color(0, 0, 0, 1))); // Polished Pine
+		activeDesign.getStyles().add(new Style(1, 1, new Color(0x23, 0x3D, 0x4D, 1), new Color(255, 255, 255, 1))); // Charcoal
+		activeDesign.getStyles().add(new Style(2, 1, new Color(0x91, 0x5E, 0x3D, 1), new Color(255, 255, 255, 1))); // Coyote Brown
+		activeDesign.getStyles().add(new Style(3, 1, new Color(0xFE, 0x7F, 0x2D, 1), new Color(255, 255, 255, 1))); // Pumpkin
+		activeDesign.getStyles().add(new Style(4, 1, new Color(0xFD, 0xA5, 0x3A, 1), new Color(0, 0, 0, 1))); // Yellow Orange
+		activeDesign.getStyles().add(new Style(5, 1, new Color(0xFC, 0xCA, 0x46, 1), new Color(0, 0, 0, 1))); // Sunglow
+		activeDesign.getStyles().add(new Style(6, 1, new Color(0xCF, 0xC6, 0x64, 1), new Color(0, 0, 0, 1))); // Straw
+		activeDesign.getStyles().add(new Style(7, 1, new Color(0xA1, 0xC1, 0x81, 1), new Color(0, 0, 0, 1))); // Olivine
+		activeDesign.getStyles().add(new Style(8, 1, new Color(0x61, 0x9B, 0x8A, 1), new Color(0, 0, 0, 1))); // Polished Pine
 
-		activeFlow.getTypeStyle().put(1, 1);
-		activeFlow.getTypeStyle().put(2, 2);
-		activeFlow.getTypeStyle().put(3, 3);
-		activeFlow.getTypeStyle().put(4, 4);
-		activeFlow.getTypeStyle().put(5, 5);
-		activeFlow.getTypeStyle().put(6, 6);
-		activeFlow.getTypeStyle().put(7, 7);
-		activeFlow.getTypeStyle().put(8, 8);
+		activeDesign.getTypeStyle().put(1, 1);
+		activeDesign.getTypeStyle().put(2, 2);
+		activeDesign.getTypeStyle().put(3, 3);
+		activeDesign.getTypeStyle().put(4, 4);
+		activeDesign.getTypeStyle().put(5, 5);
+		activeDesign.getTypeStyle().put(6, 6);
+		activeDesign.getTypeStyle().put(7, 7);
+		activeDesign.getTypeStyle().put(8, 8);
 	}
 }

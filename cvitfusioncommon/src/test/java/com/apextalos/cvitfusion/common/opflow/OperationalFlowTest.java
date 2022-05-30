@@ -45,7 +45,7 @@ public class OperationalFlowTest {
 			{
 			add(Integer.valueOf(2));
 			}
-		}));
+		}, true));
 		of.getTypes().add(new Type(2, 1, "Logic", new Properties(), new ArrayList<>() {
 			{
 			add(Integer.valueOf(1));
@@ -54,12 +54,12 @@ public class OperationalFlowTest {
 			{
 			add(Integer.valueOf(3));
 			}
-		}));
+		}, false));
 		of.getTypes().add(new Type(3, 1, "Output", new Properties(), new ArrayList<>() {
 			{
 			add(Integer.valueOf(2));
 			}
-		}, null));
+		}, null, false));
 		
 		of.getStyles().add(new Style(1, 1, new Color(100, 100, 100, .20), new Color(100, 100, 100, 20)));
 		of.getStyles().add(new Style(2, 1, new Color(100, 100, 100, .20), new Color(100, 100, 100, 20)));
