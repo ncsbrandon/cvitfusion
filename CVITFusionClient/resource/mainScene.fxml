@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
@@ -14,7 +18,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="topBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="756.0" prefWidth="1127.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.apextalos.cvitfusion.client.controllers.MainSceneController">
+<BorderPane fx:id="topBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="928.0" prefWidth="1127.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.apextalos.cvitfusion.client.controllers.MainSceneController">
    <bottom>
       <BorderPane>
          <left>
@@ -52,25 +56,41 @@
          <items>
             <SplitPane fx:id="sp11" dividerPositions="0.2">
                <items>
-                  <TitledPane collapsible="false" text="Engines">
-                     <content>
-                        <ListView fx:id="engineStatusListView" />
-                     </content>
-                  </TitledPane>
+                  <VBox fx:id="enginesVbox">
+                     <children>
+                        <TitledPane collapsible="false" text="Engines">
+                           <content>
+                              <ListView fx:id="engineStatusListView" />
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </VBox>
                   <SplitPane fx:id="sp112" dividerPositions="0.5">
                      <items>
-                        <VBox fx:id="vbox">
+                        <VBox fx:id="designVbox">
                            <children>
                               <ScrollPane fx:id="designScroll">
                                  <content>
-                                    <AnchorPane fx:id="designPane" onMouseClicked="#onDesignPaneMouseClicked" />
+                                    <AnchorPane fx:id="designAnchor" onMouseClicked="#onDesignPaneMouseClicked" />
                                  </content>
                               </ScrollPane>
+                              <ButtonBar buttonMinWidth="120.0">
+                                <buttons>
+                                    <MenuButton fx:id="designButtonAddOutput" layoutX="357.0" layoutY="18.0" mnemonicParsing="false" popupSide="TOP" text="Add output">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </MenuButton>
+                                    <Button fx:id="designButtonDisable" layoutX="214.0" layoutY="18.0" mnemonicParsing="false" onAction="#onDesignButtonDisable" text="Disable" />
+                                    <Button fx:id="designButtonRemove" layoutX="214.0" layoutY="18.0" mnemonicParsing="false" onAction="#onDesignButtonRemove" text="Remove" />
+                                    <MenuButton fx:id="designButtonCreateInput" mnemonicParsing="false" popupSide="TOP" text="Create input" />
+                                </buttons>
+                              </ButtonBar>
                            </children>
                         </VBox>
-                        <VBox fx:id="vbox2">
+                        <VBox fx:id="propertiesVbox" prefWidth="385.0">
                            <children>
-                              <TitledPane fx:id="propertiesPanel" animated="false" collapsible="false" text="Properties">
+                              <TitledPane animated="false" collapsible="false" text="Properties">
                                  <content>
                                     <TableView fx:id="propertiesTable">
                                       <columns>

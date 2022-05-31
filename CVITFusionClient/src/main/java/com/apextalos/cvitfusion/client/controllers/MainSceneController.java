@@ -3,6 +3,7 @@ package com.apextalos.cvitfusion.client.controllers;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -47,14 +48,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
@@ -77,21 +80,25 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	}
 
 	// View
-	@FXML private AnchorPane designPane;
-    @FXML private ScrollPane designScroll;
-    @FXML private ListView<EngineStatusModel> engineStatusListView;
-    @FXML private Label mqttStatusLabel;
-    @FXML private TableColumn<Object, Object> propertiesColumnKey;
-    @FXML private TableColumn<Object, Object> propertiesColumnValue;
-    @FXML private TitledPane propertiesPanel;
-    @FXML private TableView<KeyValuePairModel> propertiesTable;
-    @FXML private SplitPane sp1;
+	@FXML private BorderPane topBorderPane;
+	@FXML private SplitPane sp1;
     @FXML private SplitPane sp11;
     @FXML private SplitPane sp112;
+    @FXML private VBox enginesVbox;
+    @FXML private ListView<EngineStatusModel> engineStatusListView;
+    @FXML private VBox designVbox;
+    @FXML private AnchorPane designAnchor;
+    @FXML private ScrollPane designScroll;
+    @FXML private MenuButton designButtonAddOutput;
+    @FXML private MenuButton designButtonCreateInput;
+    @FXML private Button designButtonDisable;
+    @FXML private Button designButtonRemove;
+    @FXML private VBox propertiesVbox;
+    @FXML private TableView<KeyValuePairModel> propertiesTable;
+    @FXML private TableColumn<Object, Object> propertiesColumnKey;
+    @FXML private TableColumn<Object, Object> propertiesColumnValue;
     @FXML private ListView<String> statusListView;
-    @FXML private BorderPane topBorderPane;
-    @FXML private VBox vbox;
-    @FXML private VBox vbox2;
+    @FXML private Label mqttStatusLabel;
     @FXML private Label versionInfo;
     
     // sub-models
@@ -152,9 +159,10 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		*/
 
 		// bind heights to create window fill
-		propertiesTable.prefHeightProperty().bind(vbox2.heightProperty());
-		designScroll.prefHeightProperty().bind(vbox.heightProperty());
-		designPane.prefHeightProperty().bind(designScroll.heightProperty());
+		engineStatusListView.prefHeightProperty().bind(enginesVbox.heightProperty());
+		propertiesTable.prefHeightProperty().bind(propertiesVbox.heightProperty());
+		designScroll.prefHeightProperty().bind(designVbox.heightProperty());
+		designAnchor.prefHeightProperty().bind(designScroll.heightProperty());
 		
 		guiUpdateTimer = new Timer();
 		guiUpdateTimer.scheduleAtFixedRate(new TimerTask() {
@@ -171,6 +179,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			}
 		}, 100, 100);
 	}
+	
 
 	@Override
 	public void begin(ConfigFile cf, Stage stage) {
@@ -196,6 +205,8 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			sp11.setDividerPosition(0, cf.getDouble(ConfigItems.MAIN_SP11_DIV_POS_CONFIG, -1));
 		if(cf.hasKey(ConfigItems.MAIN_SP112_DIV_POS_CONFIG))
 			sp112.setDividerPosition(0, cf.getDouble(ConfigItems.MAIN_SP112_DIV_POS_CONFIG, -1));
+		
+		onNoSelection();
 		
 		// start MQTT
 		ccmt = new ClientConfigMqttTransceiver(cf);
@@ -235,6 +246,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		ccmt.stop();
 		guiUpdateTimer.cancel();
 	}
+	
 	
 	protected void onUpdateTimer() {
 		// update the engine status "last update"
@@ -298,7 +310,6 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		}
 	}
 	
-
 	private void onLineSelection(Line line) {
 		line.setEffect(new DropShadow());
 		designSelection = line;
@@ -314,12 +325,10 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		model.getTableItems().add(new KeyValuePairModel("To", String.format("%s %d", childType.getName(), childProcess.getProcessID())));
 	}
 	
-	
 	private void onLineDeselection(Line line) {
 		line.setEffect(null);
 		onNoSelection();
 	}
-	
 
 	private void onProcessSelection(DiagramNodeControl dnc) {
 		dnc.getController().select(true);
@@ -336,8 +345,22 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		model.getTableItems().add(new KeyValuePairModel("Version", String.valueOf(type.getVersion())));
 		model.getTableItems().add(new KeyValuePairModel("Notes", process.getNotes()));
 		model.getTableItems().add(new KeyValuePairModel("Enabled", String.valueOf(process.isEnabled())));
+		
+		designButtonAddOutput.setVisible(type.hasSupportedOutputs());
+		designButtonAddOutput.getItems().clear();
+		if(type.hasSupportedOutputs()) {
+			for(Integer id : type.getSupportedOutputs()) {
+				Type outputType = activeDesign.lookupType(id);
+				MenuItem mi = new MenuItem(outputType.getName());
+				mi.setUserData(outputType);
+				mi.setOnAction(e -> onDesignButtonAddOutput(e));
+				designButtonAddOutput.getItems().add(mi);
+			}
+		}
+		designButtonDisable.setVisible(true);
+		designButtonDisable.setText(process.isEnabled() ? "Disable" : "Enable");
+		designButtonRemove.setVisible(true);
 	}
-	
 	
 	private void onProcessDeselection(DiagramNodeControl dnc) {
 		dnc.getController().select(false);
@@ -347,19 +370,55 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	private void onNoSelection() {
 		designSelection = null;
 		model.getTableItems().clear();
+		designButtonAddOutput.setVisible(false);
+		designButtonDisable.setVisible(false);
+		designButtonRemove.setVisible(false);
 	}
 
-	private void fillDesignPane() {
-		designPane.getChildren().addAll(db.layout(activeDesign, this));
-	}
+    @FXML
+    void onDesignButtonDisable(ActionEvent event) {
+    	logger.info("onDesignButtonDisable");
+    }
+
+    @FXML
+    void onDesignButtonRemove(ActionEvent event) {
+    	logger.info("onDesignButtonRemove");
+    }
+    
+    @FXML
+    void onDesignButtonAddOutput(ActionEvent event) {
+    	logger.info("onDesignButtonAddOutput " + ((Type)((MenuItem)event.getSource()).getUserData()).getName());
+    }
+    
+    @FXML
+    void onDesignButtonCreateInput(ActionEvent event) {
+    	logger.info("onDesignButtonCreateInput " + ((Type)((MenuItem)event.getSource()).getUserData()).getName());
+    }
 	
+	private void fillDesignPane() {
+		// layout the design and add it to the pane
+		designAnchor.getChildren().addAll(db.layout(activeDesign, this));
+		
+		designButtonCreateInput.getItems().clear();
+		List<Type> topLevelTypes = activeDesign.getTopLevelTypes();
+		if(topLevelTypes != null && !topLevelTypes.isEmpty()) {
+			for(Type topLevelType : topLevelTypes) {
+				MenuItem mi = new MenuItem(topLevelType.getName());
+				mi.setUserData(topLevelType);
+				mi.setOnAction(e -> onDesignButtonCreateInput(e));
+				designButtonCreateInput.getItems().add(mi);
+			}
+		}
+	}
 	
 	private void clearDesignPane() {
 		activeDesign = null;
 		
-		ObservableList<Node> children = designPane.getChildren();
+		ObservableList<Node> children = designAnchor.getChildren();
         if(children != null && !children.isEmpty())
-        	designPane.getChildren().clear();
+        	designAnchor.getChildren().clear();
+        
+        designButtonCreateInput.getItems().clear();
 	}
 	
 	
@@ -494,11 +553,15 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		activeDesign.getTypes().add(new Type(1, 1, "Lidar", new Properties(), null, new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
+				add(Integer.valueOf(5));
+				add(Integer.valueOf(7));
 			}
 		}, true));
 		activeDesign.getTypes().add(new Type(4, 1, "Camera", new Properties(), null, new ArrayList<>() {
 			{
 				add(Integer.valueOf(2));
+				add(Integer.valueOf(5));
+				add(Integer.valueOf(7));
 			}
 		}, true));
 
@@ -506,28 +569,37 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		activeDesign.getTypes().add(new Type(2, 1, "WWVD", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(1));
+				add(Integer.valueOf(4));
 			}
 		}, new ArrayList<>() {
 			{
 				add(Integer.valueOf(3));
+				add(Integer.valueOf(6));
+				add(Integer.valueOf(8));
 			}
 		}, false));
 		activeDesign.getTypes().add(new Type(5, 1, "Curve Speed", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(1));
+				add(Integer.valueOf(4));
 			}
 		}, new ArrayList<>() {
 			{
 				add(Integer.valueOf(3));
+				add(Integer.valueOf(6));
+				add(Integer.valueOf(8));
 			}
 		}, false));
 		activeDesign.getTypes().add(new Type(7, 1, "Queue Detection", new Properties(), new ArrayList<>() {
 			{
 				add(Integer.valueOf(1));
+				add(Integer.valueOf(4));
 			}
 		}, new ArrayList<>() {
 			{
 				add(Integer.valueOf(3));
+				add(Integer.valueOf(6));
+				add(Integer.valueOf(8));
 			}
 		}, false));
 

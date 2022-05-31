@@ -1,5 +1,6 @@
 package com.apextalos.cvitfusion.common.opflow;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +72,7 @@ public class OperationalFlow {
 		return null;
 	}
 	
+	@JsonIgnore
 	private Process lookupProcessRecur(int id, Process process) {
 		for (Process p : process.getChildren()) {
 			if (p.getProcessID() == id)
@@ -91,6 +93,16 @@ public class OperationalFlow {
 				return t;
 		}
 		return null;
+	}
+	
+	@JsonIgnore
+	public List<Type> getTopLevelTypes() {
+		List<Type> topLevelTypes = new ArrayList<>();
+		for (Type t : types) {
+			if (t.getIsTopLevel())
+				topLevelTypes.add(t);
+		}
+		return topLevelTypes;
 	}
 
 	@JsonIgnore
