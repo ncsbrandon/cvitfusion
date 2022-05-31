@@ -13,7 +13,7 @@ public class ResourceLoader<T> {
 
 	private static final Logger logger = LogManager.getLogger(ResourceLoader.class.getSimpleName());
 
-	T res = null;
+	private T res = null;
 	
 	public T getResource() {
 		return res;

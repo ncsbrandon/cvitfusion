@@ -49,8 +49,10 @@ public class SceneManager {
 		
 		// save window size and position at app close
 		stage.setOnCloseRequest((final WindowEvent event) -> {
-			if(controllerConnections != null)
+			if(controllerConnections != null) {
 				controllerConnections.end(stage);
+				controllerConnections = null;
+			}
 		});
 	}
 	
@@ -69,20 +71,22 @@ public class SceneManager {
 		
 		// save window size and position at app close
 		stage.setOnCloseRequest((final WindowEvent event) -> {
-			if(controllerMain != null)
+			if(controllerMain != null) {
 				controllerMain.end(stage);
+				controllerMain = null;
+			}
 		});
 	}
 	
 	public void close(Stage stage) {
 		if(controllerMain != null) {
 			controllerMain.end(stage);
-			//controllerMain = null;
+			controllerMain = null;
 		}
 		
 		if(controllerConnections != null) {
 			controllerConnections.end(stage);
-			//controllerConnections = null;
+			controllerConnections = null;
 		}
 		
 		stage.close();
