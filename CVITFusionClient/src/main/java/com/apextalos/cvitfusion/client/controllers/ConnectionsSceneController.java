@@ -63,7 +63,9 @@ public class ConnectionsSceneController extends BaseController {
 				// get the session from the map
 				Connection session = model.getSessionsMap().get(newValue);
 				if(session == null) {
-					logger.debug("null session selected");
+					String error = "Missing session [" + newValue + "] selected";
+					showError(error);
+					logger.error(error);
 					return;
 				}
 				
@@ -80,6 +82,13 @@ public class ConnectionsSceneController extends BaseController {
 				passwordTextField.setText(session.getPassword());
 			}
 		});
+		
+		caCertTextField.disableProperty().bind(tlsEnabledCheckBox.selectedProperty().not());
+		clientCertTextField.disableProperty().bind(tlsEnabledCheckBox.selectedProperty().not());
+		clientKeyTextField.disableProperty().bind(tlsEnabledCheckBox.selectedProperty().not());
+		
+		usernameTextField.disableProperty().bind(pwdEnabledCheckBox.selectedProperty().not());
+		passwordTextField.disableProperty().bind(pwdEnabledCheckBox.selectedProperty().not());
 	}
 	
 	@Override
@@ -111,9 +120,8 @@ public class ConnectionsSceneController extends BaseController {
 		fillSessionsList();
 		
 		// if we have items, select the first one
-		if(!sessionList.getItems().isEmpty())
+		if(sessionList != null && sessionList.getItems() != null && !sessionList.getItems().isEmpty())
 			sessionList.getSelectionModel().select(sessionList.getItems().get(0));
-			
 	}
 
 	@Override
@@ -153,10 +161,18 @@ public class ConnectionsSceneController extends BaseController {
 	
 	@FXML
 	private void onActionSaveButton(ActionEvent action) {
-		// cannot save blank name
-		if(nameTextField.getText().isBlank())
+		// validate settings
+		if(nameTextField.getText().isBlank()) {
+			showError("Name cannot be blank");
 			return;
-		
+		} else if(urlTextField.getText().isBlank()) {
+			showError("URL cannot be blank");
+			return;
+		} else if(clientIdTextField.getText().isBlank()) {
+			showError("Client ID cannot be blank");
+			return;
+		}
+	
 		// load from the fields
 		Connection current = new Connection();
 		current.setUrl(urlTextField.getText());
@@ -204,6 +220,7 @@ public class ConnectionsSceneController extends BaseController {
 		if(currentSelection != null && !currentSelection.isBlank() && names.contains(currentSelection))
 			sessionList.getSelectionModel().select(currentSelection);
 	}
+	
 	
 	@FXML
 	private void onActionConnectButton(ActionEvent action) {
@@ -254,12 +271,14 @@ public class ConnectionsSceneController extends BaseController {
 		errorMessageLabel.setText(message);
 	}
 	
+	
 	@FXML
 	private void onActionCancelButton(ActionEvent action) {
 		// close
 		Stage stage = (Stage)topVbox.getScene().getWindow();
 		SceneManager.getInstance(cf).close(stage);
 	}
+	
 	
 	@FXML
 	private void onActionCaCertButton(ActionEvent action) {
@@ -274,6 +293,7 @@ public class ConnectionsSceneController extends BaseController {
 			caCertTextField.setText(f.getAbsolutePath());
 	}
 	
+	
 	@FXML
 	private void onActionClientCertButton(ActionEvent action) {
 		Stage stage = (Stage)topVbox.getScene().getWindow();
@@ -287,6 +307,7 @@ public class ConnectionsSceneController extends BaseController {
 			clientCertTextField.setText(f.getAbsolutePath());
 	}
 	
+	
 	@FXML
 	private void onActionClientKeyButton(ActionEvent action) {
 		Stage stage = (Stage)topVbox.getScene().getWindow();
@@ -299,6 +320,7 @@ public class ConnectionsSceneController extends BaseController {
 		if(f != null)
 			clientKeyTextField.setText(f.getAbsolutePath());
 	}
+	
 	
 	@FXML
 	private void onMenuWindowReset(ActionEvent action) {
