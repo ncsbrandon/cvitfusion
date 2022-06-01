@@ -267,7 +267,7 @@ public class ConnectionsSceneController extends BaseController {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open CA Cert File");
 		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("Certificates and Keys", "*.ca", "*.pem", "*.key", "*.cer")
+				new FileChooser.ExtensionFilter("Certificates and Keys", "*.ca", "*.pem", "*.key", "*.cer", "*.crt")
             );
 		File f = fileChooser.showOpenDialog(stage);
 		if(f != null)
@@ -280,7 +280,7 @@ public class ConnectionsSceneController extends BaseController {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open CA Cert File");
 		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("Certificates and Keys", "*.ca", "*.pem", "*.key", "*.cer")
+				new FileChooser.ExtensionFilter("Certificates and Keys", "*.ca", "*.pem", "*.key", "*.cer", "*.crt")
             );
 		File f = fileChooser.showOpenDialog(stage);
 		if(f != null)
@@ -293,7 +293,7 @@ public class ConnectionsSceneController extends BaseController {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Client Key File");
 		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("Certificates and Keys", "*.ca", "*.pem", "*.key", "*.cer")
+				new FileChooser.ExtensionFilter("Certificates and Keys", "*.ca", "*.pem", "*.key", "*.cer", "*.crt")
             );
 		File f = fileChooser.showOpenDialog(stage);
 		if(f != null)
