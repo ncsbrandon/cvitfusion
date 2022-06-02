@@ -61,17 +61,6 @@ public class DiagramNodeController extends BaseController {
 	}
 
 	@FXML
-	protected void onEnabledCheckboxAction(ActionEvent actionEvent) {
-		logger.debug("onEnabledCheckboxAction " + actionEvent.toString());
-		actionEvent.consume();
-		model.setEnabled(((CheckBox)actionEvent.getTarget()).isSelected());
-		if(((CheckBox)actionEvent.getTarget()).isSelected())
-			actionPerformed(this, EventType.ENABLED);
-		else
-			actionPerformed(this, EventType.DISABLED);
-	}
-
-	@FXML
 	protected void onMouseClicked(MouseEvent mouseEvent) {
 		logger.debug("onMouseClicked " + mouseEvent.toString());
 		mouseEvent.consume();

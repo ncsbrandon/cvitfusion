@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
@@ -10,17 +9,17 @@
 
 <AnchorPane onMouseClicked="#onMouseClicked" prefHeight="75.0" prefWidth="150.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Rectangle fx:id="connectOut" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="70.0" layoutY="80.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="20.0">
+      <Rectangle fx:id="connectOut" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="70.0" layoutY="78.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="20.0">
       </Rectangle>
-      <Rectangle fx:id="connectIn" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="70.0" layoutY="5.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="20.0">
+      <Rectangle fx:id="connectIn" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="70.0" layoutY="3.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="20.0">
 	  </Rectangle>
-      <Rectangle fx:id="body" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="75.0" layoutY="15.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="150.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="15.0">
+      <Rectangle fx:id="body" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="75.0" layoutX="5.0" layoutY="13.0" stroke="BLACK" strokeDashOffset="50.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeMiterLimit="100.0" strokeType="INSIDE" strokeWidth="4.0" width="150.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="13.0">
       </Rectangle>
-      <Rectangle fx:id="header" fill="#0b1825" height="22.0" layoutX="9.0" layoutY="19.0" opacity="0.65" stroke="BLACK" strokeMiterLimit="0.0" strokeWidth="0.0" width="142.0">
+      <Rectangle fx:id="header" fill="#0b1825" height="22.0" layoutX="9.0" layoutY="17.0" opacity="0.65" stroke="BLACK" strokeMiterLimit="0.0" strokeWidth="0.0" width="142.0">
       </Rectangle>
-      <Line endX="145.0" layoutX="8.0" layoutY="41.0" strokeWidth="2.0" />
-      <CheckBox fx:id="enabled" layoutX="125.0" layoutY="20.0" mnemonicParsing="false" onAction="#onEnabledCheckboxAction" selected="true" />
-      <Label fx:id="name" alignment="BOTTOM_LEFT" layoutX="11.0" layoutY="43.0" prefHeight="42.0" prefWidth="139.0" text="node" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10.0">
+      <Line endX="145.0" layoutX="8.0" layoutY="39.0" strokeWidth="2.0" />
+      <CheckBox fx:id="enabled" disable="true" layoutX="132.0" layoutY="18.0" mnemonicParsing="false" selected="true" style="-fx-opacity: 1;" />
+      <Label fx:id="name" alignment="BOTTOM_LEFT" layoutX="11.0" layoutY="41.0" prefHeight="42.0" prefWidth="139.0" text="node" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10.0">
          <font>
             <Font size="12.0" />
          </font>
