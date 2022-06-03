@@ -14,6 +14,9 @@ import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class OperationalFlowTest {
 
 	private final Logger logger = LogManager.getLogger(OperationalFlowTest.class.getSimpleName());
@@ -73,8 +76,26 @@ public class OperationalFlowTest {
 	
 	@Test
 	public void testToJSON() {
-		OperationalFlow of = sample1();
-		assertNotNull(of);
-		logger.debug(OperationalFlow.toJSON(of));
+		ObjectMapper mapper = new ObjectMapper();
+
+		OperationalFlow of1 = sample1();
+		assertNotNull(of1);
+		
+		String json = "";
+		try {
+			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(of1);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		assertNotNull(json);
+		logger.debug(json);
+
+		OperationalFlow of2 = null;
+		try {
+			of2 = mapper.readValue(json, OperationalFlow.class);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		assertNotNull(of2);
 	}
 }

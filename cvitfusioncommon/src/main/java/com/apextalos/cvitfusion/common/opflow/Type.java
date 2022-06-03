@@ -77,6 +77,9 @@ public class Type {
 		this.isTopLevel = isTopLevel;
 	}
 
+	public Type() {
+	}
+	
 	public Type(int typeID, int version, String name, Properties properties, 
 			List<Integer> supportedInputs, List<Integer> supportedOutputs, boolean isTopLevel) {
 		super();

@@ -36,6 +36,7 @@ public class Request {
 		this.uuid = uuid;
 		this.at = DateTime.now().toString();
 	}
+	
 	public Request(String uuid, DateTime at) {
 		super();
 		this.uuid = uuid;

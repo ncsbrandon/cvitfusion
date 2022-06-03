@@ -4,11 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.common.mqtt.message.Request;
-import com.apextalos.cvitfusion.common.mqtt.message.Response;
+import com.apextalos.cvitfusion.common.mqtt.message.ResponseEngineConfig;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExListener;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
-import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,14 +34,14 @@ public class EngineConfigSubscriptionExListener implements SubscriptionExListene
 
 	@Override
 	public void incomingMessage(SubscriptionExEvent se) {
-		logger.debug("incoming engine config");
+		logger.debug("incoming engine config response");
 		
 		// convert it from json to pojo
-		Response response = null;
+		ResponseEngineConfig response = null;
 		try {
-			response = mapper.readValue(se.getPayload(), Response.class);
+			response = mapper.readValue(se.getPayload(), ResponseEngineConfig.class);
 		} catch (JsonProcessingException e) {
-			logger.error("Engine config response parsing failure" + e.getMessage());
+			logger.error("Engine config response parsing failure: " + e.getMessage());
 			return;
 		}
 
@@ -54,8 +53,7 @@ public class EngineConfigSubscriptionExListener implements SubscriptionExListene
 		
 		// pass to the GUI
 		if (guiListener != null) {
-			guiListener.onEngineConfig(se.getTopic(), se.getPayload(), (OperationalFlow) response.getData());
+			guiListener.onEngineConfig(se.getTopic(), se.getPayload(), response.getData());
 		}
 	}
-
 }

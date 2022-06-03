@@ -5,12 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class OperationalFlow {
-
-	private static final ObjectMapper mapper = new ObjectMapper();
 
 	private List<Process> processes;
 	private List<Type> types;
@@ -49,6 +45,9 @@ public class OperationalFlow {
 		this.typeStyle = typeStyle;
 	}
 
+	public OperationalFlow() {
+	}
+	
 	public OperationalFlow(List<Process> processes, List<Type> types, List<Style> styles, Map<Integer, Integer> typeStyle) {
 		super();
 		this.processes = processes;
@@ -120,25 +119,5 @@ public class OperationalFlow {
 			return null;
 
 		return lookupStyle(typeStyle.get(typeID));
-	}
-
-	@JsonIgnore
-	public static String toJSON(OperationalFlow instance) {
-		try {
-			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(instance);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return "";
-	}
-
-	@JsonIgnore
-	public static OperationalFlow fromJSON(String json) {
-		try {
-			return mapper.readValue(json, OperationalFlow.class);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 }

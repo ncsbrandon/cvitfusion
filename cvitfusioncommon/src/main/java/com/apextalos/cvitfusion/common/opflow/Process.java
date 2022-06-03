@@ -73,6 +73,9 @@ public class Process {
 		this.properties = properties;
 	}
 
+	public Process() {
+	}
+	
 	public Process(int processID, boolean enabled, int typeID, List<Process> children, String notes, int status, Properties properties) {
 		super();
 		this.processID = processID;

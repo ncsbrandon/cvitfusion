@@ -19,7 +19,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 
 	protected ConfigMqttTransceiver(ConfigFile cf) {
 		super(cf.getString(ConfigItems.CONFIG_MQTT_BROKER, ConfigItems.CONFIG_MQTT_BROKER_DEFAULT),
-				cf.getString(ConfigItems.CONFIG_MQTT_CLIENTID, ConfigItems.CONFIG_MQTT_CLIENTID_DEFAULT));
+			  cf.getString(ConfigItems.CONFIG_MQTT_CLIENTID, ConfigItems.CONFIG_MQTT_CLIENTID_DEFAULT));
 		this.cf = cf;
 	}
 

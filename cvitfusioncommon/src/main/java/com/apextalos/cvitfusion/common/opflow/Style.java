@@ -39,6 +39,9 @@ public class Style {
 		this.font = font;
 	}
 
+	public Style() {
+	}
+	
 	public Style(int styleID, int shape, Color fill, Color font) {
 		super();
 		this.styleID = styleID;

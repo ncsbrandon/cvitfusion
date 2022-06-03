@@ -1,5 +1,7 @@
 package com.apextalos.cvitfusion.common.opflow;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Color {
 
 	private int r;
@@ -39,10 +41,14 @@ public class Color {
 		this.a = a;
 	}
 
+	@JsonIgnore
 	public String asColorString() {
 		return String.format("rgba(%d, %d, %d, %.02f)", r, g, b, a);
 	}
 
+	public Color() {
+	}
+	
 	public Color(int r, int g, int b, double a) {
 		super();
 		this.r = r;
