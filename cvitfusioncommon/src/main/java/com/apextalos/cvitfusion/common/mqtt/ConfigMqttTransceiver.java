@@ -3,9 +3,6 @@ package com.apextalos.cvitfusion.common.mqtt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.apextalos.cvitfusion.common.mqtt.subscription.ISubscriptionHander;
-import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
-import com.apextalos.cvitfusion.common.mqtt.topics.TopicParser;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusion.common.thread.SimpleThread;
@@ -19,7 +16,6 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	protected ConfigFile cf;
 	protected ObjectMapper mapper = new ObjectMapper();
 	private SimpleThread statusTask;
-	private ISubscriptionHander[] handlers;
 
 	protected ConfigMqttTransceiver(ConfigFile cf) {
 		super(cf.getString(ConfigItems.CONFIG_MQTT_BROKER, ConfigItems.CONFIG_MQTT_BROKER_DEFAULT),
@@ -27,15 +23,11 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		this.cf = cf;
 	}
 
-	public abstract String[] subscriptionTopics();
-
-	public abstract ISubscriptionHander[] subscriptionHandlers(SubscriptionListener subscriptionListener);
-
 	public abstract String statusTopic();
 
 	public abstract String buildStatusPayload() throws JsonProcessingException;
 
-	public void start(SubscriptionListener subscriptionListener) {
+	public void start() {
 		// check for TLS certs
 		setCerts(
 				cf.getString(ConfigItems.CONFIG_MQTT_CACERT, ConfigItems.CONFIG_MQTT_CACERT_DEFAULT),
@@ -55,11 +47,13 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		}
 
 		// subscriptions
+		/*
 		subscribe(subscriptionTopics());
 		handlers = subscriptionHandlers(subscriptionListener);
 		for (ISubscriptionHander handler : handlers) {
 			subscribe(handler.topic());
 		}
+		*/
 
 		// create the thread for periodic summary reports
 		int freqsec = cf.getInt(ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC, ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT);
@@ -87,7 +81,6 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 				}
 			}
 		};
-
 		statusTask.start();
 	}
 
@@ -98,15 +91,5 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		}
 
 		disconnect(true);
-	}
-
-	@Override
-	protected void incomingMessage(String topic, String payload) {
-		for (ISubscriptionHander handler : handlers) {
-			if (TopicParser.match(handler.topic(), topic)) {
-				handler.onMessage(payload);
-				return;
-			}
-		}
 	}
 }

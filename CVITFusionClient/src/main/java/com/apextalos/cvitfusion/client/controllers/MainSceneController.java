@@ -23,13 +23,12 @@ import com.apextalos.cvitfusion.client.models.EngineStatusModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.client.models.MainSceneModel;
 import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
+import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusGuiListener;
 import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent.Change;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
-import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionEvent;
-import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
 import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
@@ -67,7 +66,7 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class MainSceneController extends BaseController implements SubscriptionListener {
+public class MainSceneController extends BaseController implements EngineStatusGuiListener {
 
 	private static final Logger logger = LogManager.getLogger(MainSceneController.class.getSimpleName());
 
@@ -462,32 +461,24 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			mqttStatusLabel.setText(e.getMessage());
 		}
 	}
-	
+		
 	@Override
-	public void onSubscriptionArrived(SubscriptionEvent subscriptionEvent) {
+	public void onEngineStatus(String topic, String payload, EngineStatus es) {
 		// if this event is coming from another thread (MQTT)
 		// run it later on the GUI thread
 		if (!Platform.isFxApplicationThread()) {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					onSubscriptionArrived(subscriptionEvent);
+					onEngineStatus(topic, payload, es);
 				}
 			});
 			return;
 		}
-
+						
 		// print in the status
-		model.getListItems().add(subscriptionEvent.getObj().toString());
-		
-		if(0 == subscriptionEvent.getObjType().compareToIgnoreCase(EngineStatus.class.getSimpleName()))
-			onEngineStatus(subscriptionEvent);
-		
-	}
-	
-	private void onEngineStatus(SubscriptionEvent subscriptionEvent) {
-		EngineStatus es = (EngineStatus) subscriptionEvent.getObj();
-		
+		model.getListItems().add(es.toString());
+				
 		// update an existing status
 		for(EngineStatusModel esm : engineStatusModelList) {
 			if(0 == esm.getIdProperty().getValue().compareToIgnoreCase(es.getId())) {
@@ -495,11 +486,10 @@ public class MainSceneController extends BaseController implements SubscriptionL
 				return;
 			}
 		}
-		
+				
 		// add a new status
 		engineStatusModelList.add(new EngineStatusModel(es));
 	}
-		
 	
 	
 	
@@ -638,4 +628,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		activeDesign.getTypeStyle().put(7, 7);
 		activeDesign.getTypeStyle().put(8, 8);
 	}
+
+
+
 }

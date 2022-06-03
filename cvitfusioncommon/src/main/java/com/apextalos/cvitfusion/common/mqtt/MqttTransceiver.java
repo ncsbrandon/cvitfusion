@@ -29,6 +29,9 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent.Change;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
+import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExEvent;
+import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExListener;
+import com.apextalos.cvitfusion.common.mqtt.topics.TopicParser;
 
 public abstract class MqttTransceiver implements MqttCallback {
 
@@ -67,6 +70,20 @@ public abstract class MqttTransceiver implements MqttCallback {
 	public void connectionChanged(ConnectionEvent ce) {
 		for (ConnectionListener l : connectionlisteners) {
 			l.connectionChange(ce);
+		}
+	}
+	
+	// subscription events
+	private final List<SubscriptionExListener> subsriptionExlisteners = new ArrayList<>();
+	public void addSubscriptionListener(SubscriptionExListener l) {
+		subsriptionExlisteners.add(l);
+	}
+	public void incomingMessage(SubscriptionExEvent se) {
+		for (SubscriptionExListener l : subsriptionExlisteners) {
+			if (TopicParser.match(l.topic(), se.getTopic())) {
+				l.incomingMessage(se);
+				return;
+			}
 		}
 	}
 	
@@ -332,7 +349,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 		// logger.debug("Delivery complete");
 	}
 
-	protected abstract void incomingMessage(String topic, String payload);
+	//protected abstract void incomingMessage(String topic, String payload);
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) {
@@ -348,6 +365,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 			return;
 		}
 		
+		/*
 		// handle with a child class
 		try {
 			incomingMessage(topic, decoded);
@@ -356,6 +374,9 @@ public abstract class MqttTransceiver implements MqttCallback {
 			//failedCount++;
 			return;
 		}
+		*/
+		
+		incomingMessage(new SubscriptionExEvent(topic, decoded));
 		
 		// increment count
 		receivedCount++;

@@ -7,12 +7,11 @@ import com.apextalos.cvitfusion.common.mqtt.message.Coordinate;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus.LogLevel;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus.Mode;
-import com.apextalos.cvitfusion.common.mqtt.subscription.ISubscriptionHander;
-import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusionengine.app.Version;
+import com.apextalos.cvitfusionengine.mqtt.subscription.ConfigRequestSubscriptionExListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
@@ -21,16 +20,10 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 		super(cf);
 	}
 
-	@Override
-	public String[] subscriptionTopics() {
-		return new String[0];
-	}
-
-	@Override
-	public ISubscriptionHander[] subscriptionHandlers(SubscriptionListener subscriptionListener) {
-		ISubscriptionHander[] subscriptionHandlers = new ISubscriptionHander[1];
-		subscriptionHandlers[0] = new ConfigRequestSubscriptionHandler(cf);
-		return subscriptionHandlers;
+	public void start() {
+		super.start();
+		
+		addSubscriptionListener(new ConfigRequestSubscriptionExListener(cf));
 	}
 
 	@Override
