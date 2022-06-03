@@ -7,7 +7,7 @@ import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionHandler;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
-import com.apextalos.cvitfusion.common.mqtt.topics.TopicDef;
+import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javafx.application.Platform;
@@ -23,7 +23,7 @@ public class EngineStatusSubscriptionHandler extends SubscriptionHandler {
 	@Override
 	public String topic() {
 		// listen for any engine status
-		return "/apextalos/cvitfusion/" + TopicDef.ENGINE_STATUS + "/#";
+		return TopicBuilder.engineStatusAny();
 	}
 
 	@Override
@@ -48,11 +48,11 @@ public class EngineStatusSubscriptionHandler extends SubscriptionHandler {
 			Platform.runLater(new Runnable() {
                 @Override public void run() {
                 	// publish to the GUI
-            		subscriptionArrived(new SubscriptionEvent(engineStatus, TopicDef.ENGINE_STATUS));
+            		subscriptionArrived(new SubscriptionEvent(engineStatus, EngineStatus.class.getSimpleName()));
                 }
 			});
 		} else {
-			subscriptionArrived(new SubscriptionEvent(engineStatus, TopicDef.ENGINE_STATUS));
+			subscriptionArrived(new SubscriptionEvent(engineStatus, EngineStatus.class.getSimpleName()));
 		}
 	}
 }

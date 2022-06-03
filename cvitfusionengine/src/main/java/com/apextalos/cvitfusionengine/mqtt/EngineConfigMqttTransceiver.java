@@ -9,7 +9,7 @@ import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus.LogLevel;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus.Mode;
 import com.apextalos.cvitfusion.common.mqtt.subscription.ISubscriptionHander;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
-import com.apextalos.cvitfusion.common.mqtt.topics.TopicDef;
+import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusionengine.app.Version;
@@ -22,11 +22,6 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 	}
 
 	@Override
-	public String[] subscriptionTopics() {
-		return new String[0];
-	}
-
-	@Override
 	public ISubscriptionHander[] subscriptionHandlers(SubscriptionListener subscriptionListener) {
 		ISubscriptionHander[] subscriptionHandlers = new ISubscriptionHander[1];
 		subscriptionHandlers[0] = new ConfigRequestSubscriptionHandler(cf);
@@ -35,9 +30,7 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 
 	@Override
 	public String statusTopic() {
-		return String.format("/apextalos/cvitfusion/%s/%s",
-				TopicDef.ENGINE_STATUS.toString(),
-				cf.getString(ConfigItems.DEVICE_UUID_CONFIG, ConfigItems.DEVICE_UUID_DEFAULT));
+		return TopicBuilder.engineStatus(cf.getString(ConfigItems.DEVICE_UUID_CONFIG, ConfigItems.DEVICE_UUID_DEFAULT));
 	}
 
 	@Override

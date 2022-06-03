@@ -29,6 +29,10 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
+import com.apextalos.cvitfusion.common.mqtt.subscription.ISubscriptionHander;
+import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionEvent;
+import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
+import com.apextalos.cvitfusion.common.mqtt.topics.TopicParser;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent.Change;
 
 public abstract class MqttTransceiver implements MqttCallback {
@@ -60,7 +64,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 	private int receivedCount = 0;
 	public int getReceivedCount() { return receivedCount; }
 	
-	// connection event
+	// connection events
 	private final List<ConnectionListener> connectionlisteners = new ArrayList<>();
 	public void addConnectionListener(ConnectionListener l) {
 		connectionlisteners.add(l);
@@ -68,6 +72,17 @@ public abstract class MqttTransceiver implements MqttCallback {
 	public void connectionChanged(ConnectionEvent ce) {
 		for (ConnectionListener l : connectionlisteners) {
 			l.connectionChange(ce);
+		}
+	}
+	
+	// message events
+	private final List<SubscriptionListener> subscriptionlisteners = new ArrayList<>();
+	public void addSubscriptionListener(SubscriptionListener sl) {
+		subscriptionlisteners.add(sl);
+	}
+	public void subscriptionIncoming(SubscriptionEvent me) {
+		for (SubscriptionListener sl : subscriptionlisteners) {
+			sl.onSubscriptionArrived(me);
 		}
 	}
 	
@@ -140,7 +155,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 		return (client != null && client.isConnected());
 	}
 
-	public static String topicBuilder(String... parts) {
+	/*public static String topicBuilder(String... parts) {
 		StringBuilder sb = new StringBuilder();
 		Iterator<String> iterator = Arrays.stream(parts).iterator();
 		while (iterator.hasNext()) {
@@ -152,7 +167,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 			}
 		}
 		return sb.toString();
-	}
+	}*/
 
 	public boolean connect() {
 		if (isConnected())
@@ -333,8 +348,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 		// logger.debug("Delivery complete");
 	}
 
-	protected abstract void incomingMessage(String topic, String payload);
-
 	@Override
 	public void messageArrived(String topic, MqttMessage message) {
         // convert to a string
@@ -350,6 +363,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 		}
 		
 		// handle with a child class
+		/*
 		try {
 			incomingMessage(topic, decoded);
 		} catch (Exception e) {
@@ -357,6 +371,16 @@ public abstract class MqttTransceiver implements MqttCallback {
 			//failedCount++;
 			return;
 		}
+		*/
+		
+
+		 for (ISubscriptionHander handler : handlers) {
+			if (TopicParser.match(handler.topic(), topic)) {
+				handler.onMessage(payload);
+				return;
+			}
+		}
+
 		
 		// increment count
 		receivedCount++;

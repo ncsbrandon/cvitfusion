@@ -1,31 +1,29 @@
 package com.apextalos.cvitfusion.common.mqtt.subscription;
 
-import com.apextalos.cvitfusion.common.mqtt.topics.TopicDef;
-
 public class SubscriptionEvent {
 
-	private TopicDef topic;
-	private Object obj;
+	private String objectType;
+	private Object object;
 
-	public Object getObj() {
-		return obj;
+	public Object getObject() {
+		return object;
 	}
 
-	public void setObj(Object obj) {
-		this.obj = obj;
+	public void setObject(Object object) {
+		this.object = object;
 	}
 
-	public TopicDef getTopic() {
-		return topic;
+	public String getObectType() {
+		return objectType;
 	}
 
-	public void setTopic(TopicDef topic) {
-		this.topic = topic;
+	public void setObectType(String objectType) {
+		this.objectType = objectType;
 	}
 
-	public SubscriptionEvent(Object obj, TopicDef topic) {
+	public SubscriptionEvent(Object object, String objectType) {
 		super();
-		this.obj = obj;
-		this.topic = topic;
+		this.object = object;
+		this.objectType = objectType;
 	}
 }
