@@ -12,7 +12,6 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.net.ssl.SSLSocketFactory;
@@ -28,8 +27,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
-import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent.Change;
+import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
 
 public abstract class MqttTransceiver implements MqttCallback {
 
@@ -140,7 +139,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 		return (client != null && client.isConnected());
 	}
 
-	public static String topicBuilder(String... parts) {
+	/*public static String topicBuilder(String... parts) {
 		StringBuilder sb = new StringBuilder();
 		Iterator<String> iterator = Arrays.stream(parts).iterator();
 		while (iterator.hasNext()) {
@@ -152,7 +151,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 			}
 		}
 		return sb.toString();
-	}
+	}*/
 
 	public boolean connect() {
 		if (isConnected())

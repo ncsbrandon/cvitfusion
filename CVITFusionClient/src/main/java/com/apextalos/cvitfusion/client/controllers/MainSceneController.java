@@ -30,7 +30,6 @@ import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
-import com.apextalos.cvitfusion.common.mqtt.topics.TopicDef;
 import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
@@ -481,7 +480,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		// print in the status
 		model.getListItems().add(subscriptionEvent.getObj().toString());
 		
-		if(subscriptionEvent.getTopic() == TopicDef.ENGINE_STATUS)
+		if(0 == subscriptionEvent.getObjType().compareToIgnoreCase(EngineStatus.class.getSimpleName()))
 			onEngineStatus(subscriptionEvent);
 		
 	}

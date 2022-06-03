@@ -8,12 +8,12 @@ public class TopicParserTest {
 
 	@Test
 	public void testMatch() {
-		assertTrue(TopicParser.match("/apextalos/cvitfusion/status/#", "/apextalos/cvitfusion/status/87689768757685"));
-		assertTrue(TopicParser.match("/apextalos/cvitfusion/status/87689768757685", "/apextalos/cvitfusion/status/#"));
-		assertTrue(TopicParser.match("/apextalos/cvitfusion/status/#", "/apextalos/cvitfusion/status/#"));
-		assertTrue(TopicParser.match("/apextalos/cvitfusion/status/", "/apextalos/cvitfusion/status/"));
+		assertTrue(TopicParser.match("/testtopic/status/#", "/testtopic/status/87689768757685"));
+		assertTrue(TopicParser.match("/testtopic/status/87689768757685", "/testtopic/status/#"));
+		assertTrue(TopicParser.match("/testtopic/status/#", "/testtopic/status/#"));
+		assertTrue(TopicParser.match("/testtopic/status/", "/testtopic/status/"));
 		
-		assertFalse(TopicParser.match("/apextalos/cvitfusion/status1", "/apextalos/cvitfusion/status2"));
+		assertFalse(TopicParser.match("/testtopic/status1", "/testtopic/status2"));
 	}
 
 }
