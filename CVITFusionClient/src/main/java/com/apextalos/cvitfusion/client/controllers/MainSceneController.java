@@ -23,6 +23,7 @@ import com.apextalos.cvitfusion.client.models.EngineStatusModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.client.models.MainSceneModel;
 import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
+import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusGuiListener;
 import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
@@ -66,7 +67,7 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class MainSceneController extends BaseController implements EngineStatusGuiListener {
+public class MainSceneController extends BaseController implements EngineStatusGuiListener, EngineConfigGuiListener {
 
 	private static final Logger logger = LogManager.getLogger(MainSceneController.class.getSimpleName());
 
@@ -277,7 +278,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	// ENGINE EVENTS
 	//*********************
 	protected void onEngineStatusSelected(EngineStatusModel newValue) {
-		//TBD
+		// create a subscription, pubish a request, and callback on the repsonse
+		ccmt.requestConfig(newValue.getIdProperty().getValue(), this);
 	}
 	
 	
@@ -479,7 +481,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		// print in the status
 		model.getListItems().add(es.toString());
 				
-		// update an existing status
+		// 1 - update an existing status
 		for(EngineStatusModel esm : engineStatusModelList) {
 			if(0 == esm.getIdProperty().getValue().compareToIgnoreCase(es.getId())) {
 				esm.update(es);
@@ -487,12 +489,18 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			}
 		}
 				
-		// add a new status
+		// OR 2 - add a new status
 		engineStatusModelList.add(new EngineStatusModel(es));
 	}
 	
-	
-	
+	@Override
+	public void onEngineConfig(String topic, String payload, OperationalFlow engineConfig) {
+		// we are done with this subscription
+		
+		// remove the spinner
+		
+		
+	}
 	
 	
 	
@@ -628,6 +636,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		activeDesign.getTypeStyle().put(7, 7);
 		activeDesign.getTypeStyle().put(8, 8);
 	}
+
+
+
 
 
 

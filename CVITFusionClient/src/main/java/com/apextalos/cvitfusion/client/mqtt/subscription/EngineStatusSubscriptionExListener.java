@@ -14,11 +14,12 @@ public class EngineStatusSubscriptionExListener implements SubscriptionExListene
 
 	private static final Logger logger = LogManager.getLogger(EngineStatusSubscriptionExListener.class.getSimpleName());
 
-	private EngineStatusGuiListener eventListener = null;
 	protected ObjectMapper mapper = new ObjectMapper();
 	
-	public EngineStatusSubscriptionExListener(EngineStatusGuiListener eventListener) {
-		this.eventListener = eventListener;
+	private EngineStatusGuiListener guiListener = null;
+	
+	public EngineStatusSubscriptionExListener(EngineStatusGuiListener guiListener) {
+		this.guiListener = guiListener;
 	}
 	
 	@Override
@@ -40,8 +41,8 @@ public class EngineStatusSubscriptionExListener implements SubscriptionExListene
 			return;
 		}
 		
-		if (eventListener != null) {
-			eventListener.onEngineStatus(se.getTopic(), se.getPayload(), engineStatus);
+		if (guiListener != null) {
+			guiListener.onEngineStatus(se.getTopic(), se.getPayload(), engineStatus);
 		}
 	}
 }
