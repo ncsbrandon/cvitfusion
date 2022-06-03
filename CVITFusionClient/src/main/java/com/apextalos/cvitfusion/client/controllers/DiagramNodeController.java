@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;

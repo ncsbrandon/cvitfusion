@@ -168,7 +168,7 @@ public class App {
 		cmt = new EngineConfigMqttTransceiver(cf);
 		
 		// in the engine, the handlers are autonomous; they don't need listeners
-		cmt.start();
+		cmt.start(null);
 		
 		logger.info("app started");
 		return true;

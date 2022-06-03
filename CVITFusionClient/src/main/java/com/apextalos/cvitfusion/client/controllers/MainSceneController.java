@@ -1,7 +1,10 @@
 package com.apextalos.cvitfusion.client.controllers;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,9 +30,12 @@ import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionListener;
+import com.apextalos.cvitfusion.common.mqtt.topics.TopicDef;
+import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Process;
 import com.apextalos.cvitfusion.common.opflow.ProcessLink;
+import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.utils.DateTimeUtils;
@@ -206,17 +212,11 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		ccmt = new ClientConfigMqttTransceiver(cf);
 		ccmt.addConnectionListener(new ConnectionListener() {	
 			@Override
-			public void connectionChange(ConnectionEvent ce) {
-				onConnectionChanged(ce);
+			public void connectionChange(ConnectionEvent e) {
+				onConnectionChanged(e);
 			}
 		});
-		ccmt.addSubscriptionListener(new SubscriptionListener() {
-			@Override
-			public void onSubscriptionArrived(SubscriptionEvent se) {
-				onSubscriptionArrived(se);				
-			}
-		});
-		ccmt.start();	
+		ccmt.start(this);	
 	}
 		
 	@Override
@@ -279,17 +279,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 	// ENGINE EVENTS
 	//*********************
 	protected void onEngineStatusSelected(EngineStatusModel newValue) {
-		ccmt.requestConfig(newValue.getIdProperty().getValue(), new SubscriptionListener() {
-			
-			@Override
-			public void onSubscriptionArrived(SubscriptionEvent subscriptionEvent) {
-				// delete the spinner
-				fillDesignPane();
-			}
-		});
-		
-		clearDesignPane();
-		// create the spinner
+		//TBD
 	}
 	
 	
@@ -363,7 +353,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 				Type outputType = activeDesign.lookupType(id);
 				MenuItem mi = new MenuItem(outputType.getName());
 				mi.setUserData(outputType);
-				mi.setOnAction(this::onDesignButtonAddOutput);
+				mi.setOnAction(e -> onDesignButtonAddOutput(e));
 				designButtonAddOutput.getItems().add(mi);
 			}
 		}
@@ -415,7 +405,7 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			for(Type topLevelType : topLevelTypes) {
 				MenuItem mi = new MenuItem(topLevelType.getName());
 				mi.setUserData(topLevelType);
-				mi.setOnAction(this::onDesignButtonCreateInput);
+				mi.setOnAction(e -> onDesignButtonCreateInput(e));
 				designButtonCreateInput.getItems().add(mi);
 			}
 		}
@@ -463,6 +453,8 @@ public class MainSceneController extends BaseController implements SubscriptionL
 			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.ORANGE);
 			mqttStatusLabel.setText(e.getMessage());
 		} else if(e.getChange() == Change.CONNECTSUCCESS) {
+			sample1();
+			fillDesignPane();
 			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.BLACK);
 			mqttStatusLabel.setText(e.getMessage());
 		} else if (e.getChange() == Change.CONNECTFAILURE || e.getChange() == Change.DISCONNECT) {	
@@ -487,15 +479,15 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		}
 
 		// print in the status
-		model.getListItems().add(subscriptionEvent.getObject().toString());
+		model.getListItems().add(subscriptionEvent.getObj().toString());
 		
-		if(0 == subscriptionEvent.getObectType().compareToIgnoreCase(EngineStatus.class.getSimpleName()))
+		if(subscriptionEvent.getTopic() == TopicDef.ENGINE_STATUS)
 			onEngineStatus(subscriptionEvent);
 		
 	}
 	
 	private void onEngineStatus(SubscriptionEvent subscriptionEvent) {
-		EngineStatus es = (EngineStatus) subscriptionEvent.getObject();
+		EngineStatus es = (EngineStatus) subscriptionEvent.getObj();
 		
 		// update an existing status
 		for(EngineStatusModel esm : engineStatusModelList) {
@@ -507,5 +499,144 @@ public class MainSceneController extends BaseController implements SubscriptionL
 		
 		// add a new status
 		engineStatusModelList.add(new EngineStatusModel(es));
+	}
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	public void sample1() {
+		activeDesign = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
+
+		Process n111 = new Process(111, true, 3, null, "", 4317, new Properties());
+		Process n112 = new Process(112, true, 6, null, "", 4317, new Properties());
+		Process n121 = new Process(121, true, 8, null, "", 4317, new Properties());
+		Process n122 = new Process(122, true, 3, null, "", 4317, new Properties());
+		Process n12 = new Process(12, true, 2, new ArrayList<>() {
+			{
+				add(n121);
+				add(n122);
+			}
+		}, "", 420, new Properties());
+		Process n11 = new Process(11, true, 5, new ArrayList<>() {
+			{
+				add(n111);
+				add(n112);
+			}
+		}, "", 420, new Properties());
+		Process n1 = new Process(1, true, 1, new ArrayList<>() {
+			{
+				add(n11);
+				add(n12);
+			}
+		}, "", 69, new Properties());
+		activeDesign.getProcesses().add(n1);
+
+		Process n211 = new Process(211, true, 6, null, "", 4317, new Properties());
+		Process n21 = new Process(21, true, 7, new ArrayList<>() {
+			{
+				add(n211);
+			}
+		}, "", 420, new Properties());
+		Process n2 = new Process(2, true, 4, new ArrayList<>() {
+			{
+				add(n21);
+			}
+		}, "", 69, new Properties());
+		activeDesign.getProcesses().add(n2);
+
+		// INPUTS----------------------
+		activeDesign.getTypes().add(new Type(1, 1, "Lidar", new Properties(), null, new ArrayList<>() {
+			{
+				add(Integer.valueOf(2));
+				add(Integer.valueOf(5));
+				add(Integer.valueOf(7));
+			}
+		}, true));
+		activeDesign.getTypes().add(new Type(4, 1, "Camera", new Properties(), null, new ArrayList<>() {
+			{
+				add(Integer.valueOf(2));
+				add(Integer.valueOf(5));
+				add(Integer.valueOf(7));
+			}
+		}, true));
+
+		// LOGICS-------------------------
+		activeDesign.getTypes().add(new Type(2, 1, "WWVD", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(1));
+				add(Integer.valueOf(4));
+			}
+		}, new ArrayList<>() {
+			{
+				add(Integer.valueOf(3));
+				add(Integer.valueOf(6));
+				add(Integer.valueOf(8));
+			}
+		}, false));
+		activeDesign.getTypes().add(new Type(5, 1, "Curve Speed", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(1));
+				add(Integer.valueOf(4));
+			}
+		}, new ArrayList<>() {
+			{
+				add(Integer.valueOf(3));
+				add(Integer.valueOf(6));
+				add(Integer.valueOf(8));
+			}
+		}, false));
+		activeDesign.getTypes().add(new Type(7, 1, "Queue Detection", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(1));
+				add(Integer.valueOf(4));
+			}
+		}, new ArrayList<>() {
+			{
+				add(Integer.valueOf(3));
+				add(Integer.valueOf(6));
+				add(Integer.valueOf(8));
+			}
+		}, false));
+
+		// OUTPUTS -------------
+		activeDesign.getTypes().add(new Type(3, 1, "Email", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(2));
+			}
+		}, null, false));
+		activeDesign.getTypes().add(new Type(6, 1, "Flashing Beacon", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(2));
+			}
+		}, null, false));
+		activeDesign.getTypes().add(new Type(8, 1, "Digital Output", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(2));
+			}
+		}, null, false));
+
+		// https://coolors.co/233d4d-915e3d-fe7f2d-fda53a-fcca46-cfc664-a1c181-619b8a
+		activeDesign.getStyles().add(new Style(1, 1, new Color(0x23, 0x3D, 0x4D, 1), new Color(255, 255, 255, 1))); // Charcoal
+		activeDesign.getStyles().add(new Style(2, 1, new Color(0x91, 0x5E, 0x3D, 1), new Color(255, 255, 255, 1))); // Coyote Brown
+		activeDesign.getStyles().add(new Style(3, 1, new Color(0xFE, 0x7F, 0x2D, 1), new Color(255, 255, 255, 1))); // Pumpkin
+		activeDesign.getStyles().add(new Style(4, 1, new Color(0xFD, 0xA5, 0x3A, 1), new Color(0, 0, 0, 1))); // Yellow Orange
+		activeDesign.getStyles().add(new Style(5, 1, new Color(0xFC, 0xCA, 0x46, 1), new Color(0, 0, 0, 1))); // Sunglow
+		activeDesign.getStyles().add(new Style(6, 1, new Color(0xCF, 0xC6, 0x64, 1), new Color(0, 0, 0, 1))); // Straw
+		activeDesign.getStyles().add(new Style(7, 1, new Color(0xA1, 0xC1, 0x81, 1), new Color(0, 0, 0, 1))); // Olivine
+		activeDesign.getStyles().add(new Style(8, 1, new Color(0x61, 0x9B, 0x8A, 1), new Color(0, 0, 0, 1))); // Polished Pine
+
+		activeDesign.getTypeStyle().put(1, 1);
+		activeDesign.getTypeStyle().put(2, 2);
+		activeDesign.getTypeStyle().put(3, 3);
+		activeDesign.getTypeStyle().put(4, 4);
+		activeDesign.getTypeStyle().put(5, 5);
+		activeDesign.getTypeStyle().put(6, 6);
+		activeDesign.getTypeStyle().put(7, 7);
+		activeDesign.getTypeStyle().put(8, 8);
 	}
 }

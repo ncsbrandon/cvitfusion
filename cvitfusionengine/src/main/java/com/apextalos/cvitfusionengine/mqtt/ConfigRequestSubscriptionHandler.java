@@ -1,7 +1,6 @@
 package com.apextalos.cvitfusionengine.mqtt;
 
 import com.apextalos.cvitfusion.common.mqtt.subscription.ISubscriptionHander;
-import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 
@@ -15,7 +14,8 @@ public class ConfigRequestSubscriptionHandler implements ISubscriptionHander {
 
 	@Override
 	public String topic() {
-		return TopicBuilder.requestConfig(cf.getString(ConfigItems.DEVICE_UUID_CONFIG, ConfigItems.DEVICE_UUID_DEFAULT));
+		return String.format("/apextalos/cvitfusion/requestconfig/%s",
+				cf.getString(ConfigItems.DEVICE_UUID_CONFIG, ConfigItems.DEVICE_UUID_DEFAULT));
 	}
 
 	@Override
