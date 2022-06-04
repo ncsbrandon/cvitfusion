@@ -280,6 +280,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	protected void onEngineStatusSelected(EngineStatusModel newValue) {
 		// create a subscription, pubish a request, and callback on the repsonse
 		ccmt.requestConfig(newValue.getIdProperty().getValue(), this);
+		clearDesignPane();
 	}
 	
 	
@@ -509,6 +510,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		
 		// remove the spinner
 		
+		activeDesign = engineConfig;
 		fillDesignPane();
 	}
 }

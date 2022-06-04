@@ -156,20 +156,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 		return (client != null && client.isConnected());
 	}
 
-	/*public static String topicBuilder(String... parts) {
-		StringBuilder sb = new StringBuilder();
-		Iterator<String> iterator = Arrays.stream(parts).iterator();
-		while (iterator.hasNext()) {
-			String part = iterator.next();
-			if (iterator.hasNext()) {
-				sb.append(part + "/");
-			} else {
-				sb.append(part);
-			}
-		}
-		return sb.toString();
-	}*/
-
 	public boolean connect() {
 		if (isConnected())
 			disconnect(true);
@@ -349,8 +335,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 		// logger.debug("Delivery complete");
 	}
 
-	//protected abstract void incomingMessage(String topic, String payload);
-
 	@Override
 	public void messageArrived(String topic, MqttMessage message) {
         // convert to a string
@@ -364,17 +348,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 			logger.error("Failure decoding: " + e.getMessage());
 			return;
 		}
-		
-		/*
-		// handle with a child class
-		try {
-			incomingMessage(topic, decoded);
-		} catch (Exception e) {
-			logger.error("Failure on incoming: " + e.getMessage());
-			//failedCount++;
-			return;
-		}
-		*/
 		
 		incomingMessage(new SubscriptionExEvent(topic, decoded));
 		

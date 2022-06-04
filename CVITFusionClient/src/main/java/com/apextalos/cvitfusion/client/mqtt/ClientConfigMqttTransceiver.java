@@ -51,6 +51,7 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		
 		String requestPayload;
 		try {
+			logger.debug("Requesting id: " + request.getUuid());
 			requestPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
 		} catch (JsonProcessingException e) {
 			logger.error("Engine config request write failure" + e.getMessage());

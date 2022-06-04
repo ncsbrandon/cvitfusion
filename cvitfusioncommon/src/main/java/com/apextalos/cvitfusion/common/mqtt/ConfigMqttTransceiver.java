@@ -46,15 +46,6 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 			return;
 		}
 
-		// subscriptions
-		/*
-		subscribe(subscriptionTopics());
-		handlers = subscriptionHandlers(subscriptionListener);
-		for (ISubscriptionHander handler : handlers) {
-			subscribe(handler.topic());
-		}
-		*/
-
 		// create the thread for periodic summary reports
 		int freqsec = cf.getInt(ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC, ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT);
 		if (freqsec == 0) {

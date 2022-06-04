@@ -42,9 +42,15 @@ public class DiagramBuilder {
 		PanelPosition pos = new PanelPosition(0, 0);
 
 		// go through the top-level nodes
+		if(opflow == null)
+			return dncs;
+		
+		List<Process> processes = opflow.getProcesses();
+		if(processes == null || processes.isEmpty())
+			return dncs;
+		
 		int nextX = 0;
-		for (Process topProcess : opflow.getProcesses()) {
-
+		for (Process topProcess : processes) {
 			logger.info(String.format("layout top process ID [%d] Type [%d]", topProcess.getProcessID(), topProcess.getTypeID()));
 			
 			// restart each at the top
