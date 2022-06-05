@@ -82,7 +82,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 		for (SubscriptionExListener l : subsriptionExlisteners) {
 			if (TopicParser.match(l.topic(), se.getTopic())) {
 				l.incomingMessage(se);
-				return;
 			}
 		}
 	}
@@ -344,11 +343,13 @@ public abstract class MqttTransceiver implements MqttCallback {
 		String decoded = "";
 		try {
 			decoded = URLDecoder.decode(payload, "UTF-8");
+			logger.debug(decoded);
 		} catch (UnsupportedEncodingException e) {
-			logger.error("Failure decoding: " + e.getMessage());
+			logger.error(String.format("Failure decoding [%s]: %s", topic, e.getMessage()));
 			return;
 		}
 		
+		// let all listeners handle it
 		incomingMessage(new SubscriptionExEvent(topic, decoded));
 		
 		// increment count

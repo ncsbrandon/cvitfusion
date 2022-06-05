@@ -94,6 +94,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
     @FXML private ListView<String> statusListView;
     @FXML private Label mqttStatusLabel;
     @FXML private Label versionInfo;
+    @FXML private Label messageStats;
     
     // sub-models
 	private ObservableList<EngineStatusModel> engineStatusModelList = FXCollections.observableArrayList();
@@ -252,6 +253,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		for(EngineStatusModel esm : engineStatusModelList) {
 			esm.getSinceLastUpdateProperty().set(DateTimeUtils.timeSinceLastUpdate(esm.getLastUpdate(), DateTime.now()));
 		}
+		
+		updateMessageStats();
 	}
 	
 	
@@ -272,7 +275,17 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		SceneManager.getInstance(cf).close(stage);
 	}
 	
-
+	//*********************
+	// STATUS BAR EVENTS
+	//*********************
+	protected void updateMessageStats() {
+		messageStats.setText(String.format("Sub[%d:%d] Pub[%d:%d]",
+				ccmt.getActiveSubscriptions().size(),
+				ccmt.getReceivedCount(),
+				ccmt.getActivePublications().size(),
+				ccmt.getSentCount()
+				));
+	}
 	
 	//*********************
 	// ENGINE EVENTS

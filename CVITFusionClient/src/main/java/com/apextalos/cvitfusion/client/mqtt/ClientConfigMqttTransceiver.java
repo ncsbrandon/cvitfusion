@@ -45,10 +45,12 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 	public void requestConfig(String engineID, EngineConfigGuiListener guiListener) {
 		Request request = new Request();
 		
+		// create a subscription for the response
 		EngineConfigSubscriptionExListener l = new EngineConfigSubscriptionExListener(guiListener, engineID, request);
 		subscribe(l.topic());
 		addSubscriptionListener(l);
 		
+		// build the payload
 		String requestPayload;
 		try {
 			logger.debug("Requesting id: " + request.getUuid());
@@ -58,6 +60,7 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 			return;
 		}
 		
+		// make the request
 		String requestTopic = TopicBuilder.requestConfig(engineID);
 		publish(requestTopic, requestPayload, false);
 	}

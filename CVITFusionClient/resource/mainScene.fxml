@@ -27,6 +27,9 @@
          <center>
             <Label fx:id="mqttStatusLabel" text="Connection status" BorderPane.alignment="CENTER" />
          </center>
+         <right>
+            <Label fx:id="messageStats" text="Label" BorderPane.alignment="CENTER" />
+         </right>
       </BorderPane>
    </bottom>
    <top>
