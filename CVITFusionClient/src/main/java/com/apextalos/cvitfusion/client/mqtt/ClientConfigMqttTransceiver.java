@@ -10,6 +10,7 @@ import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusSubscriptio
 import com.apextalos.cvitfusion.common.mqtt.ConfigMqttTransceiver;
 import com.apextalos.cvitfusion.common.mqtt.message.Request;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
+import com.apextalos.cvitfusion.common.mqtt.topics.TopicParser;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -51,9 +52,9 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		addSubscriptionListener(l);
 		
 		// build the payload
+		logger.debug("Requesting uuid: " + request.getUuid());
 		String requestPayload;
 		try {
-			logger.debug("Requesting id: " + request.getUuid());
 			requestPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
 		} catch (JsonProcessingException e) {
 			logger.error("Engine config request write failure" + e.getMessage());
@@ -63,5 +64,17 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		// make the request
 		String requestTopic = TopicBuilder.requestConfig(engineID);
 		publish(requestTopic, requestPayload, false);
+	}
+	
+	public void requestConfigComplete(String responseTopic) {
+		String engineID = TopicParser.getEngineID(responseTopic);
+		if(engineID.isBlank()) {
+			logger.error("Unable to complete the request because the engine ID could not be found");
+			return;
+		}
+		
+		EngineConfigSubscriptionExListener l = new EngineConfigSubscriptionExListener(null, engineID, null);
+		unsubscribe(l.topic());
+		removeSubscriptionListener(l);
 	}
 }

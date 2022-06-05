@@ -78,6 +78,9 @@ public abstract class MqttTransceiver implements MqttCallback {
 	public void addSubscriptionListener(SubscriptionExListener l) {
 		subsriptionExlisteners.add(l);
 	}
+	public void removeSubscriptionListener(SubscriptionExListener s) {
+		subsriptionExlisteners.removeIf(x -> 0 == x.topic().compareToIgnoreCase(s.topic()));
+	}
 	public void incomingMessage(SubscriptionExEvent se) {
 		for (SubscriptionExListener l : subsriptionExlisteners) {
 			if (TopicParser.match(l.topic(), se.getTopic())) {
@@ -315,6 +318,21 @@ public abstract class MqttTransceiver implements MqttCallback {
 		}
 		
 		return true;
+	}
+	
+	public void unsubscribe(String topicFilter) {
+		if(topicFilter == null || topicFilter.isBlank())
+			return;
+		
+		try {
+			logger.debug("subscribing: " + topicFilter);
+			activeSubscriptions.remove(topicFilter);
+			client.unsubscribe(topicFilter);
+		} catch (MqttException e) {
+			logger.error("unsubscription failure reason " + e.getReasonCode());
+			logger.error("msg " + e.getMessage());
+			logger.error("cause " + e.getCause());
+		}
 	}
 
 	@Override

@@ -14,8 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class EngineConfigSubscriptionExListener implements SubscriptionExListener {
 
 	private static final Logger logger = LogManager.getLogger(EngineConfigSubscriptionExListener.class.getSimpleName());
-
-	protected ObjectMapper mapper = new ObjectMapper();
 	
 	private EngineConfigGuiListener guiListener;
 	private String engineID;
@@ -35,6 +33,8 @@ public class EngineConfigSubscriptionExListener implements SubscriptionExListene
 	@Override
 	public void incomingMessage(SubscriptionExEvent se) {
 		logger.debug("incoming engine config response");
+		
+		ObjectMapper mapper = new ObjectMapper();
 		
 		// convert it from json to pojo
 		ResponseEngineConfig response = null;

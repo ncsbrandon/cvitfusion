@@ -520,9 +520,11 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		}
 				
 		// we are done with this subscription
+		ccmt.requestConfigComplete(topic);
 		
 		// remove the spinner
 		
+		// show context
 		activeDesign = engineConfig;
 		fillDesignPane();
 	}

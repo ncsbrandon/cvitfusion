@@ -16,4 +16,17 @@ public class TopicParser {
 		
 		return 0 == topic1.compareToIgnoreCase(topic2);
 	}
+	
+	public static String getEngineID(String topic) {
+		if(topic.contains(TopicBuilder.RESPONDCONFIGTOPIC))
+			return topic.replace(TopicBuilder.RESPONDCONFIGTOPIC, "");
+		
+		if(topic.contains(TopicBuilder.REQUESTCONFIGTOPIC))
+			return topic.replace(TopicBuilder.REQUESTCONFIGTOPIC, "");
+		
+		if(topic.contains(TopicBuilder.ENGINESTATUSTOPIC))
+			return topic.replace(TopicBuilder.ENGINESTATUSTOPIC, "");
+		
+		return "";		
+	}
 }
