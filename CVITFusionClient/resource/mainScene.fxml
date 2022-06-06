@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="topBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="928.0" prefWidth="1127.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.apextalos.cvitfusion.client.controllers.MainSceneController">
+<BorderPane fx:id="topBorderPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.apextalos.cvitfusion.client.controllers.MainSceneController">
    <bottom>
       <BorderPane>
          <left>
@@ -91,14 +91,14 @@
                               </ButtonBar>
                            </children>
                         </VBox>
-                        <VBox fx:id="propertiesVbox" prefWidth="385.0">
+                        <VBox fx:id="propertiesVbox">
                            <children>
                               <TitledPane animated="false" collapsible="false" text="Properties">
                                  <content>
                                     <TableView fx:id="propertiesTable">
                                       <columns>
-                                        <TableColumn fx:id="propertiesColumnKey" prefWidth="75.0" text="Key" />
-                                        <TableColumn fx:id="propertiesColumnValue" prefWidth="75.0" text="Value" />
+                                        <TableColumn fx:id="propertiesColumnKey" text="Key" />
+                                        <TableColumn fx:id="propertiesColumnValue" text="Value" />
                                       </columns>
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

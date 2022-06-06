@@ -44,6 +44,7 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 	}
 	
 	public void requestConfig(String engineID, EngineConfigGuiListener guiListener) {
+		// create a new request with a new UUID
 		Request request = new Request();
 		
 		// create a subscription for the response
@@ -67,12 +68,14 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 	}
 	
 	public void requestConfigComplete(String responseTopic) {
+		// find the engine id from the request
 		String engineID = TopicParser.getEngineID(responseTopic);
 		if(engineID.isBlank()) {
 			logger.error("Unable to complete the request because the engine ID could not be found");
 			return;
 		}
 		
+		// remove the subscription by topic
 		EngineConfigSubscriptionExListener l = new EngineConfigSubscriptionExListener(null, engineID, null);
 		unsubscribe(l.topic());
 		removeSubscriptionListener(l);
