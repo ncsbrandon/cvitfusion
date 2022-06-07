@@ -54,6 +54,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -105,6 +106,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	// services
 	private ClientConfigMqttTransceiver ccmt;
 	private Timer guiUpdateTimer;
+	private ResourceLoader<Image> imageLoader = new ResourceLoader<>();
 	
 	//*********************
 	// SCENE EVENTS
@@ -249,7 +251,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			return;
 		}
 		
-		// update the engine status "last update"
+		// update the engine status "since last update"  with it's "last update" time
 		for(EngineStatusModel esm : engineStatusModelList) {
 			esm.getSinceLastUpdateProperty().set(DateTimeUtils.timeSinceLastUpdate(esm.getLastUpdate(), DateTime.now()));
 		}
@@ -291,6 +293,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	// ENGINE EVENTS
 	//*********************
 	protected void onEngineStatusSelected(EngineStatusModel newValue) {
+		newValue.getImageProperty().set(imageLoader.loadImage("refresh.png"));
 		// create a subscription, pubish a request, and callback on the repsonse
 		ccmt.requestConfig(newValue.getIdProperty().getValue(), this);
 		clearDesignPane();
@@ -390,22 +393,22 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	}
 
     @FXML
-    void onDesignButtonDisable(ActionEvent event) {
+    private void onDesignButtonDisable(ActionEvent event) {
     	logger.info("onDesignButtonDisable");
     }
 
     @FXML
-    void onDesignButtonRemove(ActionEvent event) {
+    private void onDesignButtonRemove(ActionEvent event) {
     	logger.info("onDesignButtonRemove");
     }
     
     @FXML
-    void onDesignButtonAddOutput(ActionEvent event) {
+    private void onDesignButtonAddOutput(ActionEvent event) {
     	logger.info("onDesignButtonAddOutput " + ((Type)((MenuItem)event.getSource()).getUserData()).getName());
     }
     
     @FXML
-    void onDesignButtonCreateInput(ActionEvent event) {
+    private void onDesignButtonCreateInput(ActionEvent event) {
     	logger.info("onDesignButtonCreateInput " + ((Type)((MenuItem)event.getSource()).getUserData()).getName());
     }
 	
@@ -494,15 +497,20 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		model.getListItems().add(es.toString());
 				
 		// 1 - update an existing status
-		for(EngineStatusModel esm : engineStatusModelList) {
-			if(0 == esm.getIdProperty().getValue().compareToIgnoreCase(es.getId())) {
-				esm.update(es);
-				return;
+		EngineStatusModel esm = null;
+		for(EngineStatusModel e : engineStatusModelList) {
+			if(0 == e.getIdProperty().getValue().compareToIgnoreCase(es.getId())) {
+				e.update(es);
+				esm = e;
 			}
-		}
-				
+		}		
 		// OR 2 - add a new status
-		engineStatusModelList.add(new EngineStatusModel(es));
+		if(esm == null) {
+			esm = new EngineStatusModel(es);
+			engineStatusModelList.add(esm);
+		}
+		
+		esm.getImageProperty().set(imageLoader.loadImage("accept.png"));
 	}
 	
 	@Override
