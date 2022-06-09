@@ -416,6 +416,12 @@ public class MainSceneController extends BaseController implements EngineStatusG
     @FXML
     private void onDesignButtonCreateInput(ActionEvent event) {
     	logger.info("onDesignButtonCreateInput " + ((Type)((MenuItem)event.getSource()).getUserData()).getName());
+    	
+    	Type t = (Type) ((MenuItem)event.getSource()).getUserData();
+    	Process p = new Process(88, true, t.getTypeID(), null, "", 0, null);
+    	
+    	activeDesign.getProcesses().add(p);
+    	fillDesignPane();
     }
 	
 	private void fillDesignPane() {
