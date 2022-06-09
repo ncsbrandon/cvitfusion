@@ -170,7 +170,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		}, 100, 100);
 	}
 	
-
 	@Override
 	public void begin(ConfigFile cf, Stage stage) {
 		super.begin(cf, stage);
@@ -237,7 +236,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		guiUpdateTimer.cancel();
 	}
 	
-	
 	protected void onUpdateTimer() {	
 		// if this event is coming from another thread (MQTT)
 		// run it later on the GUI thread
@@ -279,6 +277,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		SceneManager.getInstance(cf).close(stage);
 	}
 	
+	
 	//*********************
 	// STATUS BAR EVENTS
 	//*********************
@@ -291,14 +290,18 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				));
 	}
 	
+	
 	//*********************
 	// ENGINE EVENTS
 	//*********************
-	protected void onEngineStatusSelected(EngineStatusModel newValue) {
-		newValue.setBusy(true);
-		newValue.getImageProperty().set(imageLoader.loadImage("refresh.png"));
+	protected void onEngineStatusSelected(EngineStatusModel esm) {
+		// set it to the refresh arrow
+		esm.getImageProperty().set(imageLoader.loadImage("refresh.png"));
+		// make it spin
+		esm.setBusy(true);
 		// create a subscription, pubish a request, and callback on the repsonse
-		ccmt.requestConfig(newValue.getIdProperty().getValue(), this);
+		ccmt.requestConfig(esm.getIdProperty().getValue(), this);
+		// clear the selections
 		clearDesignPane();
 	}
 	
@@ -513,6 +516,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			engineStatusModelList.add(esm);
 		}
 		
+		// ok status
 		esm.getImageProperty().set(imageLoader.loadImage("accept.png"));
 	}
 	
@@ -534,6 +538,14 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		ccmt.requestConfigComplete(topic);
 		
 		// remove the spinner
+		for(EngineStatusModel esm : engineStatusListView.getItems()) {
+			if(0 == esm.getIdProperty().get().compareToIgnoreCase(engineID)) {
+				// stop spinning
+				esm.setBusy(false);
+				// ok status
+				esm.getImageProperty().set(imageLoader.loadImage("accept.png"));
+			}
+		}
 		
 		// show context
 		activeDesign = engineConfig;

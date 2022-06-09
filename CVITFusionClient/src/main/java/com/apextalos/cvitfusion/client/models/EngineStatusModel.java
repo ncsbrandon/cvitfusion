@@ -76,6 +76,10 @@ public class EngineStatusModel {
 	}
 	
 	public void setBusy(boolean busy) {
+		if(this.busy == true && busy == false) {
+			spinProperty.set(0);
+		}
+		
 		this.busy = busy;
 	}
 }
