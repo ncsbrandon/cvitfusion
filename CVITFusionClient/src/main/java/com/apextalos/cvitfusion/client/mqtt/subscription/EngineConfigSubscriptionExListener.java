@@ -53,7 +53,7 @@ public class EngineConfigSubscriptionExListener implements SubscriptionExListene
 		
 		// pass to the GUI
 		if (guiListener != null) {
-			guiListener.onEngineConfig(se.getTopic(), se.getPayload(), response.getData());
+			guiListener.onEngineConfig(engineID, se.getTopic(), se.getPayload(), response.getData());
 		}
 	}
 }

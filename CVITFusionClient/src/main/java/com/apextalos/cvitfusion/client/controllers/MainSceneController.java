@@ -254,6 +254,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		// update the engine status "since last update"  with it's "last update" time
 		for(EngineStatusModel esm : engineStatusModelList) {
 			esm.getSinceLastUpdateProperty().set(DateTimeUtils.timeSinceLastUpdate(esm.getLastUpdate(), DateTime.now()));
+			if(esm.getBusy())
+				esm.getSpinProperty().set(esm.getSpinProperty().get() + 15);
 		}
 		
 		updateMessageStats();
@@ -293,6 +295,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	// ENGINE EVENTS
 	//*********************
 	protected void onEngineStatusSelected(EngineStatusModel newValue) {
+		newValue.setBusy(true);
 		newValue.getImageProperty().set(imageLoader.loadImage("refresh.png"));
 		// create a subscription, pubish a request, and callback on the repsonse
 		ccmt.requestConfig(newValue.getIdProperty().getValue(), this);
@@ -514,14 +517,14 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	}
 	
 	@Override
-	public void onEngineConfig(String topic, String payload, OperationalFlow engineConfig) {
+	public void onEngineConfig(String engineID, String topic, String payload, OperationalFlow engineConfig) {
 		// if this event is coming from another thread (MQTT)
 		// run it later on the GUI thread
 		if (!Platform.isFxApplicationThread()) {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					onEngineConfig(topic, payload, engineConfig);
+					onEngineConfig(engineID, topic, payload, engineConfig);
 				}
 			});
 			return;

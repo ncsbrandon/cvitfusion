@@ -43,7 +43,7 @@ public class EngineStatusListViewCell extends ListCell<EngineStatusModel> {
 		idLabel.textProperty().bind(engineStatus.getIdProperty());
 		sinceLabel.textProperty().bind(engineStatus.getSinceLastUpdateProperty());
 		statusImage.imageProperty().bind(engineStatus.getImageProperty());
-		
+		statusImage.rotateProperty().bind(engineStatus.getSpinProperty());
 		//if (engineStatus.getMode().equals(EngineStatus.Mode.ERROR)) {
 		//	modeImage.setImage(errorImage);
 		//} else if (engineStatus.getMode().equals(EngineStatus.Mode.RUNNING)) {
