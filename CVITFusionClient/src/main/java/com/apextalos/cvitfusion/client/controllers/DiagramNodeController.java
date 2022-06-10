@@ -44,7 +44,7 @@ public class DiagramNodeController extends BaseController {
 		name.textProperty().bind(model.getNameProperty());
 		name.textFillProperty().bind(model.getFontPaintProperty());
 		id.textProperty().bind(model.getIDProperty());
-		enabled.setSelected(model.getEnabledProperty().get());
+		enabled.selectedProperty().bind(model.getEnabledProperty());
 		body.fillProperty().bind(model.getFillPaintProperty());
 		connectOut.fillProperty().bind(model.getFillPaintProperty());
 		connectIn.fillProperty().bind(model.getFillPaintProperty());

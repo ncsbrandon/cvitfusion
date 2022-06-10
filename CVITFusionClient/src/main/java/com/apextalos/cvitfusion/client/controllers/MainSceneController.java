@@ -317,7 +317,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		mouseEvent.consume();
 		onActionPerformed(null, EventType.DESELECTED);
 	}
-
+	
 	@Override
 	public void onActionPerformed(Object o, EventType et) {
 		if (et == EventType.SELECTED && o instanceof Line) {
@@ -354,7 +354,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		line.setEffect(null);
 		onNoSelection();
 	}
-
+	
 	private void onProcessSelection(DiagramNodeControl dnc) {
 		dnc.getController().select(true);
 		designSelection = dnc;
@@ -404,26 +404,38 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		designButtonDisable.setVisible(false);
 		designButtonRemove.setVisible(false);
 	}
+	
+	@FXML
+	private void onDesignButtonDisable(ActionEvent event) {
+		logger.info("onDesignButtonDisable");
 
-    @FXML
-    private void onDesignButtonDisable(ActionEvent event) {
-    	logger.info("onDesignButtonDisable");
-    	
-    	Process process = (Process) designSelection.getUserData();
-    	
-    	process.setEnabled(!process.isEnabled());
-    	fillDesignPane();
-    }
+		Process process = (Process) designSelection.getUserData();
 
-    @FXML
-    private void onDesignButtonRemove(ActionEvent event) {
-    	logger.info("onDesignButtonRemove");
-    	
-    	Process process = (Process) designSelection.getUserData();
-    	
-    	activeDesign.removeProcess(process);
-    	fillDesignPane();
-    }
+		// toggle the enabled status
+		process.setEnabled(!process.isEnabled());
+		
+		// update the design
+		fillDesignPane();
+		
+		// update the disable/enable button
+		designButtonDisable.setText(process.isEnabled() ? "Disable" : "Enable");
+	}
+	
+	@FXML
+	private void onDesignButtonRemove(ActionEvent event) {
+		logger.info("onDesignButtonRemove");
+
+		Process process = (Process) designSelection.getUserData();
+
+		// remove the process
+		activeDesign.removeProcess(process);
+		
+		// update the design
+		fillDesignPane();
+		
+		// remove selection
+		onActionPerformed(null, EventType.DESELECTED);
+	}
     
     @FXML
     private void onDesignButtonAddOutput(ActionEvent event) {
@@ -450,8 +462,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
     	activeDesign.getProcesses().add(process);
     	fillDesignPane();
     }
-	
-	private void fillDesignPane() {
+
+    private void fillDesignPane() {
 		// clear the pane
 		ObservableList<Node> children = designAnchor.getChildren();
         if(children != null && !children.isEmpty())
