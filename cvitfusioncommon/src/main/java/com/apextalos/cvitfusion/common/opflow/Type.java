@@ -9,7 +9,6 @@ public class Type {
 	private int version;
 	private String name;
 	private Properties properties;
-	private List<Integer> supportedInputs;
 	private List<Integer> supportedOutputs;
 	private boolean isTopLevel;
 
@@ -45,18 +44,6 @@ public class Type {
 		this.properties = properties;
 	}
 
-	public boolean hasSupportedInputs() {
-		return supportedInputs != null && !supportedInputs.isEmpty();
-	}
-
-	public List<Integer> getSupportedInputs() {
-		return supportedInputs;
-	}
-
-	public void setSupportedInputs(List<Integer> supportedInputs) {
-		this.supportedInputs = supportedInputs;
-	}
-
 	public boolean hasSupportedOutputs() {
 		return supportedOutputs != null && !supportedOutputs.isEmpty();
 	}
@@ -81,13 +68,12 @@ public class Type {
 	}
 	
 	public Type(int typeID, int version, String name, Properties properties, 
-			List<Integer> supportedInputs, List<Integer> supportedOutputs, boolean isTopLevel) {
+			List<Integer> supportedOutputs, boolean isTopLevel) {
 		super();
 		this.typeID = typeID;
 		this.version = version;
 		this.name = name;
 		this.properties = properties;
-		this.supportedInputs = supportedInputs;
 		this.supportedOutputs = supportedOutputs;
 		this.isTopLevel = isTopLevel;
 	}

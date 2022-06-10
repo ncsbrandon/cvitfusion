@@ -20,7 +20,6 @@ import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExListener;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.apextalos.cvitfusion.common.opflow.Color;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
-import com.apextalos.cvitfusion.common.opflow.Process;
 import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
@@ -151,94 +150,114 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 		*/
 		
 		// INPUTS----------------------
-		activeDesign.getTypes().add(new Type(1, 1, "Lidar", new Properties(), null, new ArrayList<>() {
+		activeDesign.getTypes().add(new Type(1, 1, "Lidar", new Properties(), new ArrayList<>() {
 			{
-				add(Integer.valueOf(2));
-				add(Integer.valueOf(5));
-				add(Integer.valueOf(7));
+				add(Integer.valueOf(11));
+				add(Integer.valueOf(12));
+				add(Integer.valueOf(13));
+				add(Integer.valueOf(14));
+				add(Integer.valueOf(15));
 			}
 		}, true));
-		activeDesign.getTypes().add(new Type(4, 1, "Camera", new Properties(), null, new ArrayList<>() {
+		activeDesign.getTypes().add(new Type(2, 1, "Camera", new Properties(), new ArrayList<>() {
 			{
-				add(Integer.valueOf(2));
-				add(Integer.valueOf(5));
-				add(Integer.valueOf(7));
+				add(Integer.valueOf(11));
+				add(Integer.valueOf(12));
+				add(Integer.valueOf(13));
 			}
 		}, true));
-
+		activeDesign.getTypes().add(new Type(3, 1, "Radar", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(14));
+				add(Integer.valueOf(15));
+			}
+		}, true));
+		activeDesign.getTypes().add(new Type(4, 1, "BSM", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(11));
+				add(Integer.valueOf(12));
+				add(Integer.valueOf(13));
+				add(Integer.valueOf(14));
+				add(Integer.valueOf(15));
+			}
+		}, true));
+		
 		// LOGICS-------------------------
-		activeDesign.getTypes().add(new Type(2, 1, "WWVD", new Properties(), new ArrayList<>() {
+		activeDesign.getTypes().add(new Type(11, 1, "WWVD", new Properties(), new ArrayList<>() {
 			{
-				add(Integer.valueOf(1));
-				add(Integer.valueOf(4));
-			}
-		}, new ArrayList<>() {
-			{
-				add(Integer.valueOf(3));
-				add(Integer.valueOf(6));
-				add(Integer.valueOf(8));
+				add(Integer.valueOf(100));
+				add(Integer.valueOf(101));
+				add(Integer.valueOf(102));
 			}
 		}, false));
-		activeDesign.getTypes().add(new Type(5, 1, "Curve Speed", new Properties(), new ArrayList<>() {
+		activeDesign.getTypes().add(new Type(12, 1, "Curve Speed", new Properties(), new ArrayList<>() {
 			{
-				add(Integer.valueOf(1));
-				add(Integer.valueOf(4));
-			}
-		}, new ArrayList<>() {
-			{
-				add(Integer.valueOf(3));
-				add(Integer.valueOf(6));
-				add(Integer.valueOf(8));
+				add(Integer.valueOf(101));
+				add(Integer.valueOf(102));
+				add(Integer.valueOf(103));
 			}
 		}, false));
-		activeDesign.getTypes().add(new Type(7, 1, "Queue Detection", new Properties(), new ArrayList<>() {
+		activeDesign.getTypes().add(new Type(13, 1, "Queue Detection", new Properties(), new ArrayList<>() {
 			{
-				add(Integer.valueOf(1));
-				add(Integer.valueOf(4));
+				add(Integer.valueOf(102));
+				add(Integer.valueOf(103));
+				add(Integer.valueOf(104));
 			}
-		}, new ArrayList<>() {
+		}, false));
+		activeDesign.getTypes().add(new Type(14, 1, "VRU", new Properties(), new ArrayList<>() {
 			{
-				add(Integer.valueOf(3));
-				add(Integer.valueOf(6));
-				add(Integer.valueOf(8));
+				add(Integer.valueOf(103));
+				add(Integer.valueOf(104));
+				add(Integer.valueOf(105));
+			}
+		}, false));
+		activeDesign.getTypes().add(new Type(15, 1, "Stopbar", new Properties(), new ArrayList<>() {
+			{
+				add(Integer.valueOf(105));
+				add(Integer.valueOf(106));
+				add(Integer.valueOf(107));
 			}
 		}, false));
 
 		// OUTPUTS -------------
-		activeDesign.getTypes().add(new Type(3, 1, "Email", new Properties(), new ArrayList<>() {
-			{
-				add(Integer.valueOf(2));
-			}
-		}, null, false));
-		activeDesign.getTypes().add(new Type(6, 1, "Flashing Beacon", new Properties(), new ArrayList<>() {
-			{
-				add(Integer.valueOf(2));
-			}
-		}, null, false));
-		activeDesign.getTypes().add(new Type(8, 1, "Digital Output", new Properties(), new ArrayList<>() {
-			{
-				add(Integer.valueOf(2));
-			}
-		}, null, false));
+		activeDesign.getTypes().add(new Type(100, 1, "Email", new Properties(), null, false));
+		activeDesign.getTypes().add(new Type(101, 1, "Flashing Beacon", new Properties(), null, false));
+		activeDesign.getTypes().add(new Type(102, 1, "Digital Output", new Properties(), null, false));
+		activeDesign.getTypes().add(new Type(103, 1, "GPIO", new Properties(), null, false));
+		activeDesign.getTypes().add(new Type(104, 1, "RSU", new Properties(), null, false));
+		activeDesign.getTypes().add(new Type(105, 1, "VMS", new Properties(), null, false));
+		activeDesign.getTypes().add(new Type(106, 1, "SDLC", new Properties(), null, false));
+		activeDesign.getTypes().add(new Type(107, 1, "MQTT", new Properties(), null, false));
 
 		// https://coolors.co/233d4d-915e3d-fe7f2d-fda53a-fcca46-cfc664-a1c181-619b8a
-		activeDesign.getStyles().add(new Style(1, 1, new Color(0x23, 0x3D, 0x4D, 1), new Color(255, 255, 255, 1))); // Charcoal
-		activeDesign.getStyles().add(new Style(2, 1, new Color(0x91, 0x5E, 0x3D, 1), new Color(255, 255, 255, 1))); // Coyote Brown
-		activeDesign.getStyles().add(new Style(3, 1, new Color(0xFE, 0x7F, 0x2D, 1), new Color(255, 255, 255, 1))); // Pumpkin
-		activeDesign.getStyles().add(new Style(4, 1, new Color(0xFD, 0xA5, 0x3A, 1), new Color(0, 0, 0, 1))); // Yellow Orange
-		activeDesign.getStyles().add(new Style(5, 1, new Color(0xFC, 0xCA, 0x46, 1), new Color(0, 0, 0, 1))); // Sunglow
-		activeDesign.getStyles().add(new Style(6, 1, new Color(0xCF, 0xC6, 0x64, 1), new Color(0, 0, 0, 1))); // Straw
-		activeDesign.getStyles().add(new Style(7, 1, new Color(0xA1, 0xC1, 0x81, 1), new Color(0, 0, 0, 1))); // Olivine
-		activeDesign.getStyles().add(new Style(8, 1, new Color(0x61, 0x9B, 0x8A, 1), new Color(0, 0, 0, 1))); // Polished Pine
+		activeDesign.getStyles().add(new Style(1, 1, new Color(0x23, 0x3D, 0x4D, 1), new Color(255, 255, 255, 1))); // Charcoal w/ White
+		activeDesign.getStyles().add(new Style(2, 1, new Color(0x91, 0x5E, 0x3D, 1), new Color(255, 255, 255, 1))); // Coyote Brown w/ White
+		activeDesign.getStyles().add(new Style(3, 1, new Color(0xFE, 0x7F, 0x2D, 1), new Color(255, 255, 255, 1))); // Pumpkin w/ White
+		activeDesign.getStyles().add(new Style(4, 1, new Color(0xFD, 0xA5, 0x3A, 1), new Color(0, 0, 0, 1))); // Yellow Orange w/ Black
+		activeDesign.getStyles().add(new Style(5, 1, new Color(0xFC, 0xCA, 0x46, 1), new Color(0, 0, 0, 1))); // Sunglow w/ Black
+		activeDesign.getStyles().add(new Style(6, 1, new Color(0xCF, 0xC6, 0x64, 1), new Color(0, 0, 0, 1))); // Straw w/ Black
+		activeDesign.getStyles().add(new Style(7, 1, new Color(0xA1, 0xC1, 0x81, 1), new Color(0, 0, 0, 1))); // Olivine w/ Black
+		activeDesign.getStyles().add(new Style(8, 1, new Color(0x61, 0x9B, 0x8A, 1), new Color(0, 0, 0, 1))); // Polished Pine w/ Black
 
-		activeDesign.getTypeStyle().put(1, 1);
-		activeDesign.getTypeStyle().put(2, 2);
-		activeDesign.getTypeStyle().put(3, 3);
-		activeDesign.getTypeStyle().put(4, 4);
-		activeDesign.getTypeStyle().put(5, 5);
-		activeDesign.getTypeStyle().put(6, 6);
-		activeDesign.getTypeStyle().put(7, 7);
-		activeDesign.getTypeStyle().put(8, 8);
+		activeDesign.getTypeStyleMap().put(1, 1);
+		activeDesign.getTypeStyleMap().put(2, 2);
+		activeDesign.getTypeStyleMap().put(3, 1);
+		activeDesign.getTypeStyleMap().put(4, 2);
+		
+		activeDesign.getTypeStyleMap().put(11, 3);
+		activeDesign.getTypeStyleMap().put(12, 4);
+		activeDesign.getTypeStyleMap().put(13, 5);
+		activeDesign.getTypeStyleMap().put(14, 3);
+		activeDesign.getTypeStyleMap().put(15, 4);
+
+		activeDesign.getTypeStyleMap().put(100, 6);
+		activeDesign.getTypeStyleMap().put(101, 7);
+		activeDesign.getTypeStyleMap().put(102, 8);
+		activeDesign.getTypeStyleMap().put(103, 6);
+		activeDesign.getTypeStyleMap().put(104, 7);
+		activeDesign.getTypeStyleMap().put(105, 8);
+		activeDesign.getTypeStyleMap().put(106, 6);
+		activeDesign.getTypeStyleMap().put(107, 7);
 		
 		return activeDesign;
 	}

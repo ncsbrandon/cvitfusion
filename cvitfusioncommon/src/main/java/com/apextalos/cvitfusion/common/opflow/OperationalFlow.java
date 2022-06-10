@@ -11,7 +11,7 @@ public class OperationalFlow {
 	private List<Process> processes;
 	private List<Type> types;
 	private List<Style> styles;
-	private Map<Integer, Integer> typeStyle;
+	private Map<Integer, Integer> typeStyleMap;
 
 	public List<Process> getProcesses() {
 		return processes;
@@ -37,23 +37,23 @@ public class OperationalFlow {
 		this.styles = styles;
 	}
 
-	public Map<Integer, Integer> getTypeStyle() {
-		return typeStyle;
+	public Map<Integer, Integer> getTypeStyleMap() {
+		return typeStyleMap;
 	}
 
-	public void setTypeStyle(Map<Integer, Integer> typeStyle) {
-		this.typeStyle = typeStyle;
+	public void setTypeStyleMap(Map<Integer, Integer> typeStyleMap) {
+		this.typeStyleMap = typeStyleMap;
 	}
 
 	public OperationalFlow() {
 	}
 	
-	public OperationalFlow(List<Process> processes, List<Type> types, List<Style> styles, Map<Integer, Integer> typeStyle) {
+	public OperationalFlow(List<Process> processes, List<Type> types, List<Style> styles, Map<Integer, Integer> typeStyleMap) {
 		super();
 		this.processes = processes;
 		this.types = types;
 		this.styles = styles;
-		this.typeStyle = typeStyle;
+		this.typeStyleMap = typeStyleMap;
 	}
 
 	@JsonIgnore
@@ -92,12 +92,17 @@ public class OperationalFlow {
 	
 	@JsonIgnore
 	public boolean removeProcessRecur(List<Process> processes, Process process) {
+		if(process == null)
+			return false;
+		
 		if(processes.removeIf(x -> x.equals(process)))
 			return true;
 		
 		for (Process procIter : processes) {
-			if(removeProcessRecur(procIter.getChildren(), process))
-				return true;
+			if(procIter.getChildren() != null) {
+				if(removeProcessRecur(procIter.getChildren(), process))
+					return true;
+			}
 		}
 		
 		return false;
@@ -133,9 +138,9 @@ public class OperationalFlow {
 
 	@JsonIgnore
 	public Style lookupStyleForType(int typeID) {
-		if (!typeStyle.containsKey(typeID))
+		if (!typeStyleMap.containsKey(typeID))
 			return null;
 
-		return lookupStyle(typeStyle.get(typeID));
+		return lookupStyle(typeStyleMap.get(typeID));
 	}
 }

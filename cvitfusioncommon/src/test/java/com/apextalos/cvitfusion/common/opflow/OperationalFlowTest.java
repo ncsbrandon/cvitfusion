@@ -45,32 +45,24 @@ public class OperationalFlowTest {
 		
 		of.getProcesses().add(n1);
 		
-		of.getTypes().add(new Type(1, 1, "Input", new Properties(), null, new ArrayList<>() {
+		of.getTypes().add(new Type(1, 1, "Input", new Properties(), new ArrayList<>() {
 			{
 			add(Integer.valueOf(2));
 			}
 		}, true));
 		of.getTypes().add(new Type(2, 1, "Logic", new Properties(), new ArrayList<>() {
 			{
-			add(Integer.valueOf(1));
-			}
-		}, new ArrayList<>() {
-			{
 			add(Integer.valueOf(3));
 			}
 		}, false));
-		of.getTypes().add(new Type(3, 1, "Output", new Properties(), new ArrayList<>() {
-			{
-			add(Integer.valueOf(2));
-			}
-		}, null, false));
+		of.getTypes().add(new Type(3, 1, "Output", new Properties(), null, false));
 		
 		of.getStyles().add(new Style(1, 1, new Color(100, 100, 100, .20), new Color(100, 100, 100, 20)));
 		of.getStyles().add(new Style(2, 1, new Color(100, 100, 100, .20), new Color(100, 100, 100, 20)));
 		of.getStyles().add(new Style(3, 1, new Color(100, 100, 100, .20), new Color(100, 100, 100, 20)));
 		
-		of.getTypeStyle().put(1, 1);
-		of.getTypeStyle().put(2, 2);
+		of.getTypeStyleMap().put(1, 1);
+		of.getTypeStyleMap().put(2, 2);
 		
 		return of;
 	}

@@ -262,7 +262,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	}
 	
 	
-	
 	//*********************
 	// MENU EVENTS
 	//*********************
@@ -429,12 +428,12 @@ public class MainSceneController extends BaseController implements EngineStatusG
 
 		// remove the process
 		activeDesign.removeProcess(process);
-		
-		// update the design
-		fillDesignPane();
-		
+
 		// remove selection
 		onActionPerformed(null, EventType.DESELECTED);
+
+		// update the design
+		fillDesignPane();
 	}
 	
 	@FXML
@@ -451,8 +450,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			parentProcess.getChildren().add(childProcess);
 		fillDesignPane();
 	}
-    
-    
+	
 	@FXML
 	private void onDesignButtonCreateInput(ActionEvent event) {
 		logger.info("onDesignButtonCreateInput " + ((Type) ((MenuItem) event.getSource()).getUserData()).getName());
@@ -464,7 +462,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		fillDesignPane();
 	}
 	
-
+	
 	private void fillDesignPane() {
 		// clear the pane
 		ObservableList<Node> children = designAnchor.getChildren();
@@ -488,6 +486,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			}
 		}
 	}
+		
 	
 	private void clearDesignPane() {
 		// not active design
@@ -501,7 +500,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		// clear the create input button
 		designButtonCreateInput.getItems().clear();
 	}
-	
 	
 	
 	// *********************

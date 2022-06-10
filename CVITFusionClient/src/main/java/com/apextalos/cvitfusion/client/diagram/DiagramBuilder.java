@@ -113,7 +113,7 @@ public class DiagramBuilder {
 		model.setFillColor(s.getFill());
 		model.setFontColor(s.getFont());
 		Type t = opflow.lookupType(process.getTypeID());
-		model.setHasInput(t.hasSupportedInputs());
+		model.setHasInput(!t.getIsTopLevel());
 		model.setHasOutput(t.hasSupportedOutputs());
 		model.setName(t.getName());
 		r.addActionListener(listener);
