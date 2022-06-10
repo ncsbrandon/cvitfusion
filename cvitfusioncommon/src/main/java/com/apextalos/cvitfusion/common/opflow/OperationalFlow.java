@@ -86,6 +86,24 @@ public class OperationalFlow {
 	}
 	
 	@JsonIgnore
+	public boolean removeProcess(Process process) {
+		return removeProcessRecur(processes, process);
+	}
+	
+	@JsonIgnore
+	public boolean removeProcessRecur(List<Process> processes, Process process) {
+		if(processes.removeIf(x -> x.equals(process)))
+			return true;
+		
+		for (Process procIter : processes) {
+			if(removeProcessRecur(procIter.getChildren(), process))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	@JsonIgnore
 	public Type lookupType(int id) {
 		for (Type t : types) {
 			if (t.getTypeID() == id)

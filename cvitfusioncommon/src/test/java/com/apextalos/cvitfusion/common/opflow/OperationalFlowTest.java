@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.logging.log4j.Level;
@@ -97,5 +98,36 @@ public class OperationalFlowTest {
 			e.printStackTrace();
 		}
 		assertNotNull(of2);
+	}
+	
+	@Test
+	public void removeTest() {
+		OperationalFlow of1 = sample1();
+		dumpProcs(of1.getProcesses(), 0);
+		
+		Process n111 = of1.lookupProcess(111);
+		of1.removeProces(n111);
+		dumpProcs(of1.getProcesses(), 0);
+		
+		Process n11 = of1.lookupProcess(11);
+		of1.removeProcess(n11);
+		dumpProcs(of1.getProcesses(), 0);
+		
+		Process n1 = of1.lookupProcess(1);
+		of1.removeProcess(n1);
+		dumpProcs(of1.getProcesses(), 0);
+	}
+	
+	private void dumpProcs(List<Process> procs, int indent) {
+		procs.forEach(x -> dumpProc(x, indent));
+	}
+	
+	private void dumpProc(Process proc, int indent) {
+		for(int i=0; i<indent; i++)
+			System.out.print("    ");
+		
+		System.out.println(String.format("%d: e[%b] c[%b] t[%d] ", proc.getProcessID(), proc.isEnabled(), proc.hasChildren(), proc.getTypeID()));
+		
+		dumpProcs(proc.getChildren(), indent++);
 	}
 }

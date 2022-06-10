@@ -407,11 +407,21 @@ public class MainSceneController extends BaseController implements EngineStatusG
     @FXML
     private void onDesignButtonDisable(ActionEvent event) {
     	logger.info("onDesignButtonDisable");
+    	
+    	Process process = (Process) designSelection.getUserData();
+    	
+    	process.setEnabled(!process.isEnabled());
+    	fillDesignPane();
     }
 
     @FXML
     private void onDesignButtonRemove(ActionEvent event) {
     	logger.info("onDesignButtonRemove");
+    	
+    	Process process = (Process) designSelection.getUserData();
+    	
+    	activeDesign.removeProcess(process);
+    	fillDesignPane();
     }
     
     @FXML
@@ -450,7 +460,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		designButtonCreateInput.getItems().clear();
 		
 		// create input button
-		designButtonCreateInput.getItems().clear();
 		List<Type> topLevelTypes = activeDesign.getTopLevelTypes();
 		if(topLevelTypes != null && !topLevelTypes.isEmpty()) {
 			for(Type topLevelType : topLevelTypes) {
