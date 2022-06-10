@@ -436,49 +436,51 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		// remove selection
 		onActionPerformed(null, EventType.DESELECTED);
 	}
-    
-    @FXML
-    private void onDesignButtonAddOutput(ActionEvent event) {
-    	logger.info("onDesignButtonAddOutput " + ((Type)((MenuItem)event.getSource()).getUserData()).getName());
-    	
-    	Process parentProcess = (Process) designSelection.getUserData();	    	
-    	Type childType = (Type) ((MenuItem)event.getSource()).getUserData();
-    	Process childProcess = new Process(parentProcess.nextChildID(), true, childType.getTypeID(), null, "", 0, new Properties());
-    			
-    	if(parentProcess.getChildren() == null)
-    		parentProcess.setChildren(new ArrayList<>(List.of(childProcess)));
-    	else
-    		parentProcess.getChildren().add(childProcess);
-    	fillDesignPane();
-    }
-    
-    @FXML
-    private void onDesignButtonCreateInput(ActionEvent event) {
-    	logger.info("onDesignButtonCreateInput " + ((Type)((MenuItem)event.getSource()).getUserData()).getName());
-    	
-    	Type type = (Type) ((MenuItem)event.getSource()).getUserData();
-    	Process process = new Process(activeDesign.getProcesses().size() + 1, true, type.getTypeID(), null, "", 0, null);
-    	
-    	activeDesign.getProcesses().add(process);
-    	fillDesignPane();
-    }
+	
+	@FXML
+	private void onDesignButtonAddOutput(ActionEvent event) {
+		logger.info("onDesignButtonAddOutput " + ((Type) ((MenuItem) event.getSource()).getUserData()).getName());
 
-    private void fillDesignPane() {
+		Process parentProcess = (Process) designSelection.getUserData();
+		Type childType = (Type) ((MenuItem) event.getSource()).getUserData();
+		Process childProcess = new Process(parentProcess.nextChildID(), true, childType.getTypeID(), null, "", 0, new Properties());
+
+		if (parentProcess.getChildren() == null)
+			parentProcess.setChildren(new ArrayList<>(List.of(childProcess)));
+		else
+			parentProcess.getChildren().add(childProcess);
+		fillDesignPane();
+	}
+    
+    
+	@FXML
+	private void onDesignButtonCreateInput(ActionEvent event) {
+		logger.info("onDesignButtonCreateInput " + ((Type) ((MenuItem) event.getSource()).getUserData()).getName());
+
+		Type type = (Type) ((MenuItem) event.getSource()).getUserData();
+		Process process = new Process(activeDesign.getProcesses().size() + 1, true, type.getTypeID(), null, "", 0, null);
+
+		activeDesign.getProcesses().add(process);
+		fillDesignPane();
+	}
+	
+
+	private void fillDesignPane() {
 		// clear the pane
 		ObservableList<Node> children = designAnchor.getChildren();
-        if(children != null && !children.isEmpty())
-        	designAnchor.getChildren().clear();
-        
+		if (children != null && !children.isEmpty())
+			designAnchor.getChildren().clear();
+
 		// layout the design and add it to the pane
 		designAnchor.getChildren().addAll(db.layout(activeDesign, this));
-		
+
 		// clear the create input button
 		designButtonCreateInput.getItems().clear();
-		
+
 		// create input button
 		List<Type> topLevelTypes = activeDesign.getTopLevelTypes();
-		if(topLevelTypes != null && !topLevelTypes.isEmpty()) {
-			for(Type topLevelType : topLevelTypes) {
+		if (topLevelTypes != null && !topLevelTypes.isEmpty()) {
+			for (Type topLevelType : topLevelTypes) {
 				MenuItem mi = new MenuItem(topLevelType.getName());
 				mi.setUserData(topLevelType);
 				mi.setOnAction(e -> onDesignButtonCreateInput(e));
@@ -490,13 +492,13 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	private void clearDesignPane() {
 		// not active design
 		activeDesign = null;
-		
+
 		// clear the pane
 		ObservableList<Node> children = designAnchor.getChildren();
-        if(children != null && !children.isEmpty())
-        	designAnchor.getChildren().clear();
-        
-        // clear the create input button
+		if (children != null && !children.isEmpty())
+			designAnchor.getChildren().clear();
+
+		// clear the create input button
 		designButtonCreateInput.getItems().clear();
 	}
 	
