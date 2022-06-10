@@ -111,6 +111,7 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 	public OperationalFlow sample1() {
 		OperationalFlow activeDesign = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
 
+		/*
 		Process n11100 = new Process(11100, true, 3, null, "", 4317, new Properties());
 		Process n11200 = new Process(11200, true, 6, null, "", 4317, new Properties());
 		Process n12100 = new Process(12100, true, 8, null, "", 4317, new Properties());
@@ -147,7 +148,8 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 			}
 		}, "", 69, new Properties());
 		activeDesign.getProcesses().add(n200);
-
+		*/
+		
 		// INPUTS----------------------
 		activeDesign.getTypes().add(new Type(1, 1, "Lidar", new Properties(), null, new ArrayList<>() {
 			{

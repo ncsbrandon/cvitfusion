@@ -1,6 +1,7 @@
 package com.apextalos.cvitfusion.client.controllers;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -432,7 +433,10 @@ public class MainSceneController extends BaseController implements EngineStatusG
     	Type childType = (Type) ((MenuItem)event.getSource()).getUserData();
     	Process childProcess = new Process(parentProcess.nextChildID(), true, childType.getTypeID(), null, "", 0, new Properties());
     			
-    	parentProcess.getChildren().add(childProcess);
+    	if(parentProcess.getChildren() == null)
+    		parentProcess.setChildren(new ArrayList<>(List.of(childProcess)));
+    	else
+    		parentProcess.getChildren().add(childProcess);
     	fillDesignPane();
     }
     

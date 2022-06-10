@@ -88,6 +88,10 @@ public class Process {
 	}
 	
 	public int nextChildID() {
-		return getProcessID() * 10 + getChildren().size() + 1;
+		int childCount = 0;
+		if (children != null)
+			childCount = children.size();
+
+		return processID * 10 + childCount + 1;
 	}
 }

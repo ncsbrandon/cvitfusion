@@ -35,12 +35,12 @@ public class OperationalFlowTest {
 				new ArrayList<>(),
 				new HashMap<>());
 		
-		Process n111 = new Process(111, true, 1, null, "", 4317, new Properties());
-		Process n112 = new Process(112, true, 1, null, "", 4317, new Properties());
-		Process n121 = new Process(121, true, 1, null, "", 4317, new Properties());
-		Process n122 = new Process(122, true, 1, null, "", 4317, new Properties());
-		Process n12 = new Process(12, true, 1, new ArrayList<>() {{add(n121); add(n122);}}, "", 420, new Properties());
-		Process n11 = new Process(11, true, 1, new ArrayList<>() {{add(n111); add(n112);}}, "", 420, new Properties());
+		Process n111 = new Process(111, true, 3, null, "", 4317, new Properties());
+		Process n112 = new Process(112, true, 3, null, "", 4317, new Properties());
+		Process n121 = new Process(121, true, 3, null, "", 4317, new Properties());
+		Process n122 = new Process(122, true, 3, null, "", 4317, new Properties());
+		Process n12 = new Process(12, true, 2, new ArrayList<>() {{add(n121); add(n122);}}, "", 420, new Properties());
+		Process n11 = new Process(11, true, 2, new ArrayList<>() {{add(n111); add(n112);}}, "", 420, new Properties());
 		Process n1 = new Process(1, true, 1, new ArrayList<>() {{add(n11); add(n12);}}, "", 69,  new Properties());
 		
 		of.getProcesses().add(n1);
@@ -75,7 +75,7 @@ public class OperationalFlowTest {
 		return of;
 	}
 	
-	@Test
+	//@Test
 	public void testToJSON() {
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -101,20 +101,29 @@ public class OperationalFlowTest {
 	}
 	
 	@Test
-	public void removeTest() {
+	public void processLookupRemoveTest() {
 		OperationalFlow of1 = sample1();
+		System.out.println("1------");
 		dumpProcs(of1.getProcesses(), 0);
 		
 		Process n111 = of1.lookupProcess(111);
-		of1.removeProces(n111);
+		of1.removeProcess(n111);
+		System.out.println("2------");
 		dumpProcs(of1.getProcesses(), 0);
 		
 		Process n11 = of1.lookupProcess(11);
 		of1.removeProcess(n11);
+		System.out.println("3------");
+		dumpProcs(of1.getProcesses(), 0);
+		
+		Process n12 = of1.lookupProcess(12);
+		of1.removeProcess(n12);
+		System.out.println("4------");
 		dumpProcs(of1.getProcesses(), 0);
 		
 		Process n1 = of1.lookupProcess(1);
 		of1.removeProcess(n1);
+		System.out.println("5------");
 		dumpProcs(of1.getProcesses(), 0);
 	}
 	
@@ -126,8 +135,10 @@ public class OperationalFlowTest {
 		for(int i=0; i<indent; i++)
 			System.out.print("    ");
 		
-		System.out.println(String.format("%d: e[%b] c[%b] t[%d] ", proc.getProcessID(), proc.isEnabled(), proc.hasChildren(), proc.getTypeID()));
+		System.out.println(String.format("ID %d: en[%b] children[%b] type[%d] ", proc.getProcessID(), proc.isEnabled(), proc.hasChildren(), proc.getTypeID()));
 		
-		dumpProcs(proc.getChildren(), indent++);
+		List<Process> procs = proc.getChildren();
+		if(procs != null)
+			dumpProcs(proc.getChildren(), indent+1);
 	}
 }
