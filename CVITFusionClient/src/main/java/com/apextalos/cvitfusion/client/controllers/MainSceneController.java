@@ -418,6 +418,13 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		
 		// update the disable/enable button
 		designButtonDisable.setText(process.isEnabled() ? "Disable" : "Enable");
+		
+		// automatically re-select it
+		DiagramNodeControl dnc = findDiagramNodeControl(process);
+		if(dnc != null) {
+			onActionPerformed(null, EventType.DESELECTED);
+			onProcessSelection(dnc);
+		}
 	}
 	
 	@FXML
@@ -523,6 +530,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		// clear the create input button
 		designButtonCreateInput.getItems().clear();
 	}
+	
 	
 	private DiagramNodeControl findDiagramNodeControl(Process process) {
 		// this is a reverse lookup from the Node to the control representing it
