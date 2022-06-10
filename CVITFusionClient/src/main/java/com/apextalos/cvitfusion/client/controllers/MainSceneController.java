@@ -444,12 +444,23 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		Type childType = (Type) ((MenuItem) event.getSource()).getUserData();
 		Process childProcess = new Process(parentProcess.nextChildID(), true, childType.getTypeID(), null, "", 0, new Properties());
 
+		// add it to the children
 		if (parentProcess.getChildren() == null)
 			parentProcess.setChildren(new ArrayList<>(List.of(childProcess)));
 		else
 			parentProcess.getChildren().add(childProcess);
+		
+		// update the design
 		fillDesignPane();
+		
+		// automatically select it
+		DiagramNodeControl dnc = findDiagramNodeControl(childProcess);
+		if(dnc != null) {
+			onActionPerformed(null, EventType.DESELECTED);
+			onProcessSelection(dnc);
+		}
 	}
+	
 	
 	@FXML
 	private void onDesignButtonCreateInput(ActionEvent event) {
@@ -458,9 +469,20 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		Type type = (Type) ((MenuItem) event.getSource()).getUserData();
 		Process process = new Process(activeDesign.getProcesses().size() + 1, true, type.getTypeID(), null, "", 0, null);
 
+		// add it to the top level
 		activeDesign.getProcesses().add(process);
+		
+		// update the design
 		fillDesignPane();
+		
+		// automatically select it
+		DiagramNodeControl dnc = findDiagramNodeControl(process);
+		if(dnc != null) {
+			onActionPerformed(null, EventType.DESELECTED);
+			onProcessSelection(dnc);
+		}
 	}
+	
 	
 	
 	private void fillDesignPane() {
@@ -486,6 +508,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			}
 		}
 	}
+	
 		
 	
 	private void clearDesignPane() {
@@ -499,6 +522,20 @@ public class MainSceneController extends BaseController implements EngineStatusG
 
 		// clear the create input button
 		designButtonCreateInput.getItems().clear();
+	}
+	
+	private DiagramNodeControl findDiagramNodeControl(Process process) {
+		// this is a reverse lookup from the Node to the control representing it
+		ObservableList<Node> children = designAnchor.getChildren();
+		if (children == null || children.isEmpty())
+			return null;
+		
+		for(Node n : children) {
+			if(n.getUserData() == process)
+				return (DiagramNodeControl) n;
+		}
+			
+		return null;
 	}
 	
 	
@@ -538,7 +575,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			mqttStatusLabel.setText(e.getMessage());
 		}
 	}
-	
 		
 	@Override
 	public void onEngineStatus(String topic, String payload, EngineStatus es) {
