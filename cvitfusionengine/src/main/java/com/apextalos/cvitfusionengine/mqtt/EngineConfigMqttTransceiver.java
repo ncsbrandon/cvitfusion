@@ -111,42 +111,42 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 	public OperationalFlow sample1() {
 		OperationalFlow activeDesign = new OperationalFlow(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashMap<>());
 
-		Process n111 = new Process(111, true, 3, null, "", 4317, new Properties());
-		Process n112 = new Process(112, true, 6, null, "", 4317, new Properties());
-		Process n121 = new Process(121, true, 8, null, "", 4317, new Properties());
-		Process n122 = new Process(122, true, 3, null, "", 4317, new Properties());
-		Process n12 = new Process(12, true, 2, new ArrayList<>() {
+		Process n11100 = new Process(11100, true, 3, null, "", 4317, new Properties());
+		Process n11200 = new Process(11200, true, 6, null, "", 4317, new Properties());
+		Process n12100 = new Process(12100, true, 8, null, "", 4317, new Properties());
+		Process n12200 = new Process(12200, true, 3, null, "", 4317, new Properties());
+		Process n1200 = new Process(1200, true, 2, new ArrayList<>() {
 			{
-				add(n121);
-				add(n122);
+				add(n12100);
+				add(n12200);
 			}
 		}, "", 420, new Properties());
-		Process n11 = new Process(11, true, 5, new ArrayList<>() {
+		Process n1100 = new Process(1100, true, 5, new ArrayList<>() {
 			{
-				add(n111);
-				add(n112);
+				add(n11100);
+				add(n11200);
 			}
 		}, "", 420, new Properties());
-		Process n1 = new Process(1, true, 1, new ArrayList<>() {
+		Process n100 = new Process(100, true, 1, new ArrayList<>() {
 			{
-				add(n11);
-				add(n12);
+				add(n1100);
+				add(n1200);
 			}
 		}, "", 69, new Properties());
-		activeDesign.getProcesses().add(n1);
+		activeDesign.getProcesses().add(n100);
 
-		Process n211 = new Process(211, true, 6, null, "", 4317, new Properties());
-		Process n21 = new Process(21, true, 7, new ArrayList<>() {
+		Process n21100 = new Process(21100, true, 6, null, "", 4317, new Properties());
+		Process n2100 = new Process(2100, true, 7, new ArrayList<>() {
 			{
-				add(n211);
+				add(n21100);
 			}
 		}, "", 420, new Properties());
-		Process n2 = new Process(2, true, 4, new ArrayList<>() {
+		Process n200 = new Process(200, true, 4, new ArrayList<>() {
 			{
-				add(n21);
+				add(n2100);
 			}
 		}, "", 69, new Properties());
-		activeDesign.getProcesses().add(n2);
+		activeDesign.getProcesses().add(n200);
 
 		// INPUTS----------------------
 		activeDesign.getTypes().add(new Type(1, 1, "Lidar", new Properties(), null, new ArrayList<>() {

@@ -86,4 +86,8 @@ public class Process {
 		this.status = status;
 		this.properties = properties;
 	}
+	
+	public int nextChildID() {
+		return getProcessID() * 10 + getChildren().size() + 1;
+	}
 }

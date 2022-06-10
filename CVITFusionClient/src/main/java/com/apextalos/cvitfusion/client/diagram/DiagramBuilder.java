@@ -104,6 +104,7 @@ public class DiagramBuilder {
 		}
 		r.setLayoutX(x);
 		r.setLayoutY(thisPos.getY());
+		r.setUserData(process);
 		DiagramNodeModel model = r.getController().getModel();
 
 		model.setID(String.valueOf(process.getProcessID()));

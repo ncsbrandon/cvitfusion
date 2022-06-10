@@ -2,6 +2,7 @@ package com.apextalos.cvitfusion.client.controllers;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -369,6 +370,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		model.getTableItems().add(new KeyValuePairModel("Notes", process.getNotes()));
 		model.getTableItems().add(new KeyValuePairModel("Enabled", String.valueOf(process.isEnabled())));
 		
+		// add output button
 		designButtonAddOutput.setVisible(type.hasSupportedOutputs());
 		designButtonAddOutput.getItems().clear();
 		if(type.hasSupportedOutputs()) {
@@ -380,8 +382,12 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				designButtonAddOutput.getItems().add(mi);
 			}
 		}
+		
+		// disable/enable button
 		designButtonDisable.setVisible(true);
 		designButtonDisable.setText(process.isEnabled() ? "Disable" : "Enable");
+		
+		// remove button
 		designButtonRemove.setVisible(true);
 	}
 	
@@ -411,23 +417,39 @@ public class MainSceneController extends BaseController implements EngineStatusG
     @FXML
     private void onDesignButtonAddOutput(ActionEvent event) {
     	logger.info("onDesignButtonAddOutput " + ((Type)((MenuItem)event.getSource()).getUserData()).getName());
+    	
+    	Process parentProcess = (Process) designSelection.getUserData();	    	
+    	Type childType = (Type) ((MenuItem)event.getSource()).getUserData();
+    	Process childProcess = new Process(parentProcess.nextChildID(), true, childType.getTypeID(), null, "", 0, new Properties());
+    			
+    	parentProcess.getChildren().add(childProcess);
+    	fillDesignPane();
     }
     
     @FXML
     private void onDesignButtonCreateInput(ActionEvent event) {
     	logger.info("onDesignButtonCreateInput " + ((Type)((MenuItem)event.getSource()).getUserData()).getName());
     	
-    	Type t = (Type) ((MenuItem)event.getSource()).getUserData();
-    	Process p = new Process(88, true, t.getTypeID(), null, "", 0, null);
+    	Type type = (Type) ((MenuItem)event.getSource()).getUserData();
+    	Process process = new Process(activeDesign.getProcesses().size() + 1, true, type.getTypeID(), null, "", 0, null);
     	
-    	activeDesign.getProcesses().add(p);
+    	activeDesign.getProcesses().add(process);
     	fillDesignPane();
     }
 	
 	private void fillDesignPane() {
+		// clear the pane
+		ObservableList<Node> children = designAnchor.getChildren();
+        if(children != null && !children.isEmpty())
+        	designAnchor.getChildren().clear();
+        
 		// layout the design and add it to the pane
 		designAnchor.getChildren().addAll(db.layout(activeDesign, this));
 		
+		// clear the create input button
+		designButtonCreateInput.getItems().clear();
+		
+		// create input button
 		designButtonCreateInput.getItems().clear();
 		List<Type> topLevelTypes = activeDesign.getTopLevelTypes();
 		if(topLevelTypes != null && !topLevelTypes.isEmpty()) {
@@ -441,13 +463,16 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	}
 	
 	private void clearDesignPane() {
+		// not active design
 		activeDesign = null;
 		
+		// clear the pane
 		ObservableList<Node> children = designAnchor.getChildren();
         if(children != null && !children.isEmpty())
         	designAnchor.getChildren().clear();
         
-        designButtonCreateInput.getItems().clear();
+        // clear the create input button
+		designButtonCreateInput.getItems().clear();
 	}
 	
 	
