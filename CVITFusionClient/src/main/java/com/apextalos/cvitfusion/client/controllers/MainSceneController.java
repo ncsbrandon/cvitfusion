@@ -504,11 +504,10 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	
 	
 	
-	
-	//*********************
+	// *********************
 	// MQTT EVENTS
-	//*********************
-	private void onConnectionChanged(ConnectionEvent e) {	
+	// *********************
+	private void onConnectionChanged(ConnectionEvent e) {
 		// if this event is coming from another thread (MQTT)
 		// run it later on the GUI thread
 		if (!Platform.isFxApplicationThread()) {
@@ -520,28 +519,28 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			});
 			return;
 		}
-		
+
 		/*
-		model.deposit(100);
-		model.getListItems().add("deposit");
-		model.getTableItems().clear();
-		model.getTableItems().add(new KeyValuePairModel("last", "deposit"));
-		model.getTableItems().add(new KeyValuePairModel("ts", DateTime.now().toString()));
-		*/
-		
-		if(e.getChange() == Change.CONNECTING) {
+		 * model.deposit(100); model.getListItems().add("deposit");
+		 * model.getTableItems().clear(); model.getTableItems().add(new
+		 * KeyValuePairModel("last", "deposit")); model.getTableItems().add(new
+		 * KeyValuePairModel("ts", DateTime.now().toString()));
+		 */
+
+		if (e.getChange() == Change.CONNECTING) {
 			clearDesignPane();
 			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.ORANGE);
 			mqttStatusLabel.setText(e.getMessage());
-		} else if(e.getChange() == Change.CONNECTSUCCESS) {
+		} else if (e.getChange() == Change.CONNECTSUCCESS) {
 			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.BLACK);
 			mqttStatusLabel.setText(e.getMessage());
-		} else if (e.getChange() == Change.CONNECTFAILURE || e.getChange() == Change.DISCONNECT) {	
+		} else if (e.getChange() == Change.CONNECTFAILURE || e.getChange() == Change.DISCONNECT) {
 			clearDesignPane();
 			mqttStatusLabel.setTextFill(javafx.scene.paint.Color.RED);
 			mqttStatusLabel.setText(e.getMessage());
 		}
 	}
+	
 		
 	@Override
 	public void onEngineStatus(String topic, String payload, EngineStatus es) {
@@ -556,27 +555,28 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			});
 			return;
 		}
-						
+
 		// print in the status
 		model.getListItems().add(es.toString());
-				
+
 		// 1 - update an existing status
 		EngineStatusModel esm = null;
-		for(EngineStatusModel e : engineStatusModelList) {
-			if(0 == e.getIdProperty().getValue().compareToIgnoreCase(es.getId())) {
+		for (EngineStatusModel e : engineStatusModelList) {
+			if (0 == e.getIdProperty().getValue().compareToIgnoreCase(es.getId())) {
 				e.update(es);
 				esm = e;
 			}
-		}		
+		}
 		// OR 2 - add a new status
-		if(esm == null) {
+		if (esm == null) {
 			esm = new EngineStatusModel(es);
 			engineStatusModelList.add(esm);
 		}
-		
+
 		// ok status
 		esm.getImageProperty().set(imageLoader.loadImage("accept.png"));
 	}
+	
 	
 	@Override
 	public void onEngineConfig(String engineID, String topic, String payload, OperationalFlow engineConfig) {
@@ -591,20 +591,20 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			});
 			return;
 		}
-				
+
 		// we are done with this subscription
 		ccmt.requestConfigComplete(topic);
-		
+
 		// remove the spinner
-		for(EngineStatusModel esm : engineStatusListView.getItems()) {
-			if(0 == esm.getIdProperty().get().compareToIgnoreCase(engineID)) {
+		for (EngineStatusModel esm : engineStatusListView.getItems()) {
+			if (0 == esm.getIdProperty().get().compareToIgnoreCase(engineID)) {
 				// stop spinning
 				esm.setBusy(false);
 				// ok status
 				esm.getImageProperty().set(imageLoader.loadImage("accept.png"));
 			}
 		}
-		
+
 		// show context
 		activeDesign = engineConfig;
 		fillDesignPane();
