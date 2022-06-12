@@ -201,7 +201,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		if(cf.hasKey(ConfigItems.MAIN_SP112_DIV_POS_CONFIG))
 			sp112.setDividerPosition(0, cf.getDouble(ConfigItems.MAIN_SP112_DIV_POS_CONFIG, -1));
 		
-		onNoSelection();
+		noDesignSelection();
+		noProperties();
+		clearDesignPane();
 		
 		// start MQTT
 		ccmt = new ClientConfigMqttTransceiver(cf);
@@ -352,7 +354,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	
 	private void onLineDeselection(Line line) {
 		line.setEffect(null);
-		onNoSelection();
+		noDesignSelection();
 	}
 	
 	private void onProcessSelection(DiagramNodeControl dnc) {
@@ -394,12 +396,13 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	
 	private void onProcessDeselection(DiagramNodeControl dnc) {
 		dnc.getController().select(false);
-		onNoSelection();
+		noDesignSelection();
 	}
 	
-	private void onNoSelection() {
+	private void noDesignSelection() {
 		designSelection = null;
 		model.getTableItems().clear();
+		
 		designButtonAddOutput.setVisible(false);
 		designButtonDisable.setVisible(false);
 		designButtonRemove.setVisible(false);
@@ -425,6 +428,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			onActionPerformed(null, EventType.DESELECTED);
 			onProcessSelection(dnc);
 		}
+		
+		// we have changes to save
+		designButtonSave.setDisable(false);
 	}
 	
 	@FXML private void onDesignButtonRemove(ActionEvent event) {
@@ -440,6 +446,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 
 		// update the design
 		fillDesignPane();
+		
+		// we have changes to save
+		designButtonSave.setDisable(false);
 	}
 	
 	@FXML private void onDesignButtonAddOutput(ActionEvent event) {
@@ -464,10 +473,14 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			onActionPerformed(null, EventType.DESELECTED);
 			onProcessSelection(dnc);
 		}
+		
+		// we have changes to save
+		designButtonSave.setDisable(false);
 	}
 	
 	@FXML private void onDesignButtonSave(ActionEvent event) {
-		
+		// changes are saved
+		designButtonSave.setDisable(true);
 	}
 	
 	@FXML private void onDesignButtonCreateInput(ActionEvent event) {
@@ -488,6 +501,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			onActionPerformed(null, EventType.DESELECTED);
 			onProcessSelection(dnc);
 		}
+		
+		// we have changes to save
+		designButtonSave.setDisable(false);
 	}
 	
 	private void fillDesignPane() {
@@ -501,7 +517,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 
 		// clear the create input button
 		designButtonCreateInput.getItems().clear();
-
+		designButtonCreateInput.setDisable(false);
+		
 		// create input button
 		List<Type> topLevelTypes = activeDesign.getTopLevelTypes();
 		if (topLevelTypes != null && !topLevelTypes.isEmpty()) {
@@ -524,7 +541,10 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			designAnchor.getChildren().clear();
 
 		// clear the create input button
+		designButtonCreateInput.setDisable(true);
 		designButtonCreateInput.getItems().clear();
+		
+		designButtonSave.setDisable(true);
 	}
 	
 	private DiagramNodeControl findDiagramNodeControl(Process process) {
@@ -546,7 +566,11 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	// PROPERTY EVENTS
 	// *********************
 	@FXML private void onPropsButtonSave(ActionEvent event) {
-		
+		propsButtonSave.setDisable(true);
+	}
+	
+	private void noProperties() {
+		propsButtonSave.setDisable(true);
 	}
 	
 	
@@ -652,5 +676,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		// show context
 		activeDesign = engineConfig;
 		fillDesignPane();
+		
 	}
 }
