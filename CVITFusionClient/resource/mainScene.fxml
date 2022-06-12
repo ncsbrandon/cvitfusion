@@ -87,6 +87,7 @@
                                     <Button fx:id="designButtonDisable" layoutX="214.0" layoutY="18.0" mnemonicParsing="false" onAction="#onDesignButtonDisable" text="Disable" />
                                     <Button fx:id="designButtonRemove" layoutX="214.0" layoutY="18.0" mnemonicParsing="false" onAction="#onDesignButtonRemove" text="Remove" />
                                     <MenuButton fx:id="designButtonCreateInput" mnemonicParsing="false" popupSide="TOP" text="Create input" />
+                                    <Button fx:id="designButtonSave" layoutX="160.0" layoutY="10.0" mnemonicParsing="false" onAction="#onDesignButtonSave" text="Save" />
                                 </buttons>
                               </ButtonBar>
                            </children>
@@ -106,6 +107,11 @@
                                     </TableView>
                                  </content>
                               </TitledPane>
+                              <ButtonBar fx:id="propsButtonBar" prefHeight="30.0" prefWidth="200.0">
+                                <buttons>
+                                  <Button fx:id="propsButtonSave" mnemonicParsing="false" onAction="#onPropsButtonSave" text="Save" />
+                                </buttons>
+                              </ButtonBar>
                            </children>
                         </VBox>
                      </items>

@@ -45,6 +45,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -90,6 +91,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
     @FXML private MenuButton designButtonCreateInput;
     @FXML private Button designButtonDisable;
     @FXML private Button designButtonRemove;
+    @FXML private Button designButtonSave;
+    @FXML private ButtonBar propsButtonBar;
+    @FXML private Button propsButtonSave;
     @FXML private VBox propertiesVbox;
     @FXML private TableView<KeyValuePairModel> propertiesTable;
     @FXML private TableColumn<Object, Object> propertiesColumnKey;
@@ -265,15 +269,13 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	//*********************
 	// MENU EVENTS
 	//*********************
-	@FXML
-	protected void onActionDisconnectMenu(ActionEvent event) {
+	@FXML protected void onActionDisconnectMenu(ActionEvent event) {
 		// go back to connections
 		Stage stage = (Stage)topBorderPane.getScene().getWindow();
 		SceneManager.getInstance(cf).showConnections(stage);
 	}
 	
-	@FXML
-	protected void onActionCloseMenu(ActionEvent event) {
+	@FXML protected void onActionCloseMenu(ActionEvent event) {
 		Stage stage = (Stage)topBorderPane.getScene().getWindow();
 		SceneManager.getInstance(cf).close(stage);
 	}
@@ -310,8 +312,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	//*********************
 	// DESIGN PANE EVENTS
 	//*********************
-	@FXML
-	protected void onDesignPaneMouseClicked(MouseEvent mouseEvent) {
+	@FXML protected void onDesignPaneMouseClicked(MouseEvent mouseEvent) {
 		logger.debug("onDesignPaneMouseClicked");
 		mouseEvent.consume();
 		onActionPerformed(null, EventType.DESELECTED);
@@ -404,8 +405,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		designButtonRemove.setVisible(false);
 	}
 	
-	@FXML
-	private void onDesignButtonDisable(ActionEvent event) {
+	@FXML private void onDesignButtonDisable(ActionEvent event) {
 		logger.info("onDesignButtonDisable");
 
 		Process process = (Process) designSelection.getUserData();
@@ -427,8 +427,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		}
 	}
 	
-	@FXML
-	private void onDesignButtonRemove(ActionEvent event) {
+	@FXML private void onDesignButtonRemove(ActionEvent event) {
 		logger.info("onDesignButtonRemove");
 
 		Process process = (Process) designSelection.getUserData();
@@ -443,8 +442,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		fillDesignPane();
 	}
 	
-	@FXML
-	private void onDesignButtonAddOutput(ActionEvent event) {
+	@FXML private void onDesignButtonAddOutput(ActionEvent event) {
 		logger.info("onDesignButtonAddOutput " + ((Type) ((MenuItem) event.getSource()).getUserData()).getName());
 
 		Process parentProcess = (Process) designSelection.getUserData();
@@ -468,9 +466,11 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		}
 	}
 	
+	@FXML private void onDesignButtonSave(ActionEvent event) {
+		
+	}
 	
-	@FXML
-	private void onDesignButtonCreateInput(ActionEvent event) {
+	@FXML private void onDesignButtonCreateInput(ActionEvent event) {
 		logger.info("onDesignButtonCreateInput " + ((Type) ((MenuItem) event.getSource()).getUserData()).getName());
 
 		Type type = (Type) ((MenuItem) event.getSource()).getUserData();
@@ -489,8 +489,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			onProcessSelection(dnc);
 		}
 	}
-	
-	
 	
 	private void fillDesignPane() {
 		// clear the pane
@@ -516,8 +514,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		}
 	}
 	
-		
-	
 	private void clearDesignPane() {
 		// not active design
 		activeDesign = null;
@@ -531,7 +527,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		designButtonCreateInput.getItems().clear();
 	}
 	
-	
 	private DiagramNodeControl findDiagramNodeControl(Process process) {
 		// this is a reverse lookup from the Node to the control representing it
 		ObservableList<Node> children = designAnchor.getChildren();
@@ -544,6 +539,14 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		}
 			
 		return null;
+	}
+	
+	
+	// *********************
+	// PROPERTY EVENTS
+	// *********************
+	@FXML private void onPropsButtonSave(ActionEvent event) {
+		
 	}
 	
 	
@@ -618,7 +621,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		// ok status
 		esm.getImageProperty().set(imageLoader.loadImage("accept.png"));
 	}
-	
 	
 	@Override
 	public void onEngineConfig(String engineID, String topic, String payload, OperationalFlow engineConfig) {

@@ -1,5 +1,6 @@
 package com.apextalos.cvitfusion.common.opflow;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
@@ -117,6 +118,8 @@ public class OperationalFlowTest {
 		of1.removeProcess(n1);
 		System.out.println("5------");
 		dumpProcs(of1.getProcesses(), 0);
+		
+		assertEquals(0, of1.getProcesses().size());
 	}
 	
 	private void dumpProcs(List<Process> procs, int indent) {
