@@ -15,7 +15,7 @@ public class ConfigFile {
 
 	private static final Logger logger = LogManager.getLogger(ConfigFile.class.getSimpleName());
 
-	private final ObjectMapper mapper = new ObjectMapper();
+	private static final ObjectMapper mapper = new ObjectMapper();
 
 	// The derived class makes sure the keys are returned
 	// in alphabetical order. This way the configuration file

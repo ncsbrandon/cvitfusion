@@ -14,7 +14,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 	private static Logger logger = LogManager.getLogger(ConfigMqttTransceiver.class.getSimpleName());
 
 	protected ConfigFile cf;
-	protected ObjectMapper mapper = new ObjectMapper();
+	protected static final ObjectMapper mapper = new ObjectMapper();
 	private SimpleThread statusTask;
 
 	protected ConfigMqttTransceiver(ConfigFile cf) {

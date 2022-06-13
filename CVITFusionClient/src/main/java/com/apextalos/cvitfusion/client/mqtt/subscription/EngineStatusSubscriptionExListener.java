@@ -14,7 +14,7 @@ public class EngineStatusSubscriptionExListener implements SubscriptionExListene
 
 	private static final Logger logger = LogManager.getLogger(EngineStatusSubscriptionExListener.class.getSimpleName());
 
-	protected ObjectMapper mapper = new ObjectMapper();
+	private static final ObjectMapper mapper = new ObjectMapper();
 	
 	private EngineStatusGuiListener guiListener = null;
 	

@@ -15,6 +15,8 @@ public class EngineConfigResultSubscriptionExListener implements SubscriptionExL
 
 	private static final Logger logger = LogManager.getLogger(EngineConfigResultSubscriptionExListener.class.getSimpleName());
 	
+	private static final ObjectMapper mapper = new ObjectMapper();
+	
 	private EngineConfigResultGuiListener guiListener;
 	private String engineID;
 	private EngineRequest request;
@@ -33,8 +35,6 @@ public class EngineConfigResultSubscriptionExListener implements SubscriptionExL
 	@Override
 	public void incomingMessage(SubscriptionExEvent se) {
 		logger.debug("incoming engine config result");
-		
-		ObjectMapper mapper = new ObjectMapper();
 		
 		// convert it from json to pojo
 		EngineConfigResult result = null;

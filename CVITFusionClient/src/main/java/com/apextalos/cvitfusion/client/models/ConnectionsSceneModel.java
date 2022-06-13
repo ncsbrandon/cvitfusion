@@ -3,11 +3,16 @@ package com.apextalos.cvitfusion.client.models;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ConnectionsSceneModel {
+
+	private static Logger logger = LogManager.getLogger(ConnectionsSceneModel.class.getSimpleName());
 
 	private static final ObjectMapper mapper = new ObjectMapper();
 	
@@ -25,7 +30,7 @@ public class ConnectionsSceneModel {
 			sessionsMap = mapper.readValue(json, new TypeReference<Map<String, Connection>>(){});
 			return true;
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+			logger.error("Failure decoding sessions list" + e.getMessage());
 		}
 		return false;
 	}
@@ -34,7 +39,7 @@ public class ConnectionsSceneModel {
 		try {
 			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(sessionsMap);
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+			logger.error("Failure encoding sessions list" + e.getMessage());
 		}
 		return "";
 	}

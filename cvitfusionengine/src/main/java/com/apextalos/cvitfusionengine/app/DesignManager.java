@@ -23,7 +23,7 @@ public class DesignManager {
 
 	private static Logger logger = LogManager.getLogger(DesignManager.class.getSimpleName());
 
-	public ObjectMapper mapper = new ObjectMapper();
+	public static final ObjectMapper mapper = new ObjectMapper();
 	
 	private static DesignManager singleInstance = null;
 
@@ -35,7 +35,7 @@ public class DesignManager {
 	}
 
 	private DesignManager() {
-
+		// must use singleton
 	}
 	
 	public boolean setProcesses(List<Process> processes, ConfigFile cf) {
@@ -225,43 +225,4 @@ public class DesignManager {
 	public boolean validate() {
 		return true;
 	}
-	
-	/*
-		Process n11100 = new Process(11100, true, 3, null, "", 4317, new Properties());
-		Process n11200 = new Process(11200, true, 6, null, "", 4317, new Properties());
-		Process n12100 = new Process(12100, true, 8, null, "", 4317, new Properties());
-		Process n12200 = new Process(12200, true, 3, null, "", 4317, new Properties());
-		Process n1200 = new Process(1200, true, 2, new ArrayList<>() {
-			{
-				add(n12100);
-				add(n12200);
-			}
-		}, "", 420, new Properties());
-		Process n1100 = new Process(1100, true, 5, new ArrayList<>() {
-			{
-				add(n11100);
-				add(n11200);
-			}
-		}, "", 420, new Properties());
-		Process n100 = new Process(100, true, 1, new ArrayList<>() {
-			{
-				add(n1100);
-				add(n1200);
-			}
-		}, "", 69, new Properties());
-		activeDesign.getProcesses().add(n100);
-
-		Process n21100 = new Process(21100, true, 6, null, "", 4317, new Properties());
-		Process n2100 = new Process(2100, true, 7, new ArrayList<>() {
-			{
-				add(n21100);
-			}
-		}, "", 420, new Properties());
-		Process n200 = new Process(200, true, 4, new ArrayList<>() {
-			{
-				add(n2100);
-			}
-		}, "", 69, new Properties());
-		activeDesign.getProcesses().add(n200);
-	*/
 }

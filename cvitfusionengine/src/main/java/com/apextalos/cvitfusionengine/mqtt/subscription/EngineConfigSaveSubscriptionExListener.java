@@ -17,7 +17,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EngineConfigSaveSubscriptionExListener implements SubscriptionExListener {
 
-private static final Logger logger = LogManager.getLogger(EngineConfigSaveSubscriptionExListener.class.getSimpleName());
+	private static final Logger logger = LogManager.getLogger(EngineConfigSaveSubscriptionExListener.class.getSimpleName());
+	
+	private static final ObjectMapper mapper = new ObjectMapper();
 	
 	private ConfigFile cf;
 	private MqttTransceiver mt;
@@ -35,8 +37,6 @@ private static final Logger logger = LogManager.getLogger(EngineConfigSaveSubscr
 	@Override
 	public void incomingMessage(SubscriptionExEvent se) {
 		logger.debug("incoming engine config save");
-		
-		ObjectMapper mapper = new ObjectMapper();
 		
 		// convert it from json to pojo
 		EngineSaveRequest request = null;
