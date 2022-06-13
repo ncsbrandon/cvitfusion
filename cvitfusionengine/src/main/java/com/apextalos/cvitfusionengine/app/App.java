@@ -18,6 +18,7 @@ import com.apextalos.cvitfusion.common.license.Feature;
 import com.apextalos.cvitfusion.common.license.FeatureManager;
 import com.apextalos.cvitfusion.common.license.License;
 import com.apextalos.cvitfusion.common.license.LicenseManager;
+import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusionengine.mqtt.EngineConfigMqttTransceiver;
@@ -163,6 +164,21 @@ public class App {
 		for(Entry<Feature, String> featureValue : licenseKey.getVisibleFeatures().entrySet()) {
     		logger.info(featureValue.getKey().toString() + ": " + featureValue.getValue());
     	}
+		
+		DesignManager dm = DesignManager.getInstance();
+		OperationalFlow design = new OperationalFlow(
+			dm.getProcesses(cf),
+			dm.getTypes(),
+			dm.getStyles(),
+			dm.getTypeStyleMap()
+		);
+		
+		String validationFailure = design.validate();
+		if(!validationFailure.isBlank()) {
+			return false;
+		} else {
+			logger.info("No design validation issues found");
+		}
 			
 		// main transceiver
 		cmt = new EngineConfigMqttTransceiver(cf);

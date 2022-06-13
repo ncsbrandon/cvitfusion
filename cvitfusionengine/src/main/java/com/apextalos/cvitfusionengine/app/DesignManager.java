@@ -221,8 +221,4 @@ public class DesignManager {
 		
 		return typeStyles;
 	}
-	
-	public boolean validate() {
-		return true;
-	}
 }
