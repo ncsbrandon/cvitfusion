@@ -304,7 +304,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		esm.getImageProperty().set(imageLoader.loadImage("refresh.png"));
 		// make it spin
 		esm.setBusy(true);
-		// create a subscription, pubish a request, and callback on the repsonse
+		// create a subscription, publish a request, and callback on the response
 		ccmt.requestConfig(esm.getIdProperty().getValue(), this);
 		// clear the selections
 		clearDesignPane();
@@ -479,8 +479,16 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	}
 	
 	@FXML private void onDesignButtonSave(ActionEvent event) {
-		// changes are saved
-		designButtonSave.setDisable(true);
+		EngineStatusModel esm = engineStatusListView.getSelectionModel().getSelectedItem();
+		if(esm == null)
+			return;
+		
+		// set it to the refresh arrow
+		esm.getImageProperty().set(imageLoader.loadImage("save.png"));
+		// make it spin
+		esm.setBusy(true);
+		// create a subscription, publish a request, and callback on the response
+		ccmt.saveConfig(esm.getIdProperty().getValue(), this);
 	}
 	
 	@FXML private void onDesignButtonCreateInput(ActionEvent event) {

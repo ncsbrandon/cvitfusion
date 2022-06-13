@@ -80,4 +80,28 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		unsubscribe(l.topic());
 		removeSubscriptionListener(l);
 	}
+	
+	public void saveConfig(String engineID, EngineConfigGuiListener guiListener) {
+		// create a new request with a new UUID
+		Request request = new Request();
+		
+		// create a subscription for the response
+		EngineConfigSubscriptionExListener l = new EngineConfigSubscriptionExListener(guiListener, engineID, request);
+		subscribe(l.topic());
+		addSubscriptionListener(l);
+		
+		// build the payload
+		logger.debug("Requesting uuid: " + request.getUuid());
+		String requestPayload;
+		try {
+			requestPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
+		} catch (JsonProcessingException e) {
+			logger.error("Engine config request write failure" + e.getMessage());
+			return;
+		}
+		
+		// make the request
+		String requestTopic = TopicBuilder.requestConfig(engineID);
+		publish(requestTopic, requestPayload, false);
+	}
 }
