@@ -11,6 +11,7 @@ import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExListener;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
+import com.apextalos.cvitfusionengine.app.DesignManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -46,12 +47,11 @@ private static final Logger logger = LogManager.getLogger(EngineConfigSaveSubscr
 			return;
 		}
 
-		// update the configuration
-		
+		DesignManager dm = DesignManager.getInstance();
 		
 		// now build a response
 		EngineConfigResult result = new EngineConfigResult(request.getUuid());
-		result.setSuccess(true);
+		result.setSuccess(dm.setProcesses(request.getData().getProcesses(), cf));
 	
 		String resultPayload;
 		try {
@@ -67,5 +67,4 @@ private static final Logger logger = LogManager.getLogger(EngineConfigSaveSubscr
 		// publish it
 		mt.publish(resultTopic, resultPayload, false);
 	}
-
 }

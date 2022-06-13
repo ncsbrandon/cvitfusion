@@ -308,6 +308,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		// create a subscription, publish a request, and callback on the response
 		ccmt.requestConfig(esm.getIdProperty().getValue(), this);
 		// clear the selections
+		noDesignSelection();
+		noProperties();
 		clearDesignPane();
 	}
 	
