@@ -22,7 +22,7 @@ import com.apextalos.cvitfusion.client.models.EngineStatusModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.client.models.MainSceneModel;
 import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
-import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigGuiListener;
+import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigRequestGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusGuiListener;
 import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
@@ -66,7 +66,7 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class MainSceneController extends BaseController implements EngineStatusGuiListener, EngineConfigGuiListener {
+public class MainSceneController extends BaseController implements EngineStatusGuiListener, EngineConfigRequestGuiListener {
 
 	private static final Logger logger = LogManager.getLogger(MainSceneController.class.getSimpleName());
 
@@ -488,7 +488,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		// make it spin
 		esm.setBusy(true);
 		// create a subscription, publish a request, and callback on the response
-		ccmt.saveConfig(esm.getIdProperty().getValue(), this);
+		ccmt.saveConfig(esm.getIdProperty().getValue(), activeDesign, this);
 	}
 	
 	@FXML private void onDesignButtonCreateInput(ActionEvent event) {

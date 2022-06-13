@@ -3,14 +3,15 @@ package com.apextalos.cvitfusion.client.mqtt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigGuiListener;
-import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigSubscriptionExListener;
+import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigRequestGuiListener;
+import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigRequestSubscriptionExListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusSubscriptionExListener;
 import com.apextalos.cvitfusion.common.mqtt.ConfigMqttTransceiver;
 import com.apextalos.cvitfusion.common.mqtt.message.Request;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicParser;
+import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -43,12 +44,12 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		return null;
 	}
 	
-	public void requestConfig(String engineID, EngineConfigGuiListener guiListener) {
+	public void requestConfig(String engineID, EngineConfigRequestGuiListener guiListener) {
 		// create a new request with a new UUID
 		Request request = new Request();
 		
 		// create a subscription for the response
-		EngineConfigSubscriptionExListener l = new EngineConfigSubscriptionExListener(guiListener, engineID, request);
+		EngineConfigRequestSubscriptionExListener l = new EngineConfigRequestSubscriptionExListener(guiListener, engineID, request);
 		subscribe(l.topic());
 		addSubscriptionListener(l);
 		
@@ -76,17 +77,17 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		}
 		
 		// remove the subscription by topic
-		EngineConfigSubscriptionExListener l = new EngineConfigSubscriptionExListener(null, engineID, null);
+		EngineConfigRequestSubscriptionExListener l = new EngineConfigRequestSubscriptionExListener(null, engineID, null);
 		unsubscribe(l.topic());
 		removeSubscriptionListener(l);
 	}
 	
-	public void saveConfig(String engineID, EngineConfigGuiListener guiListener) {
+	public void saveConfig(String engineID, OperationalFlow of, EngineConfigRequestGuiListener guiListener) {
 		// create a new request with a new UUID
 		Request request = new Request();
 		
 		// create a subscription for the response
-		EngineConfigSubscriptionExListener l = new EngineConfigSubscriptionExListener(guiListener, engineID, request);
+		EngineConfigRequestSubscriptionExListener l = new EngineConfigRequestSubscriptionExListener(guiListener, engineID, request);
 		subscribe(l.topic());
 		addSubscriptionListener(l);
 		

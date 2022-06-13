@@ -11,15 +11,15 @@ import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class EngineConfigSubscriptionExListener implements SubscriptionExListener {
+public class EngineConfigRequestSubscriptionExListener implements SubscriptionExListener {
 
-	private static final Logger logger = LogManager.getLogger(EngineConfigSubscriptionExListener.class.getSimpleName());
+	private static final Logger logger = LogManager.getLogger(EngineConfigRequestSubscriptionExListener.class.getSimpleName());
 	
-	private EngineConfigGuiListener guiListener;
+	private EngineConfigRequestGuiListener guiListener;
 	private String engineID;
 	private Request request;
 	
-	public EngineConfigSubscriptionExListener(EngineConfigGuiListener guiListener, String engineID, Request request) {
+	public EngineConfigRequestSubscriptionExListener(EngineConfigRequestGuiListener guiListener, String engineID, Request request) {
 		this.guiListener = guiListener;
 		this.engineID = engineID;
 		this.request = request;
