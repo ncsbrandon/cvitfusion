@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.joda.time.DateTime;
 
-public class Request {
+public class EngineRequest {
 	
 	private String uuid;
 	private String at;
@@ -25,20 +25,17 @@ public class Request {
 		this.at = at;
 	}
 
-	public Request() {
-		super();
+	public EngineRequest() {
 		this.uuid = UUID.randomUUID().toString();
 		this.at = DateTime.now().toString();
 	}
 	
-	public Request(String uuid) {
-		super();
+	public EngineRequest(String uuid) {
 		this.uuid = uuid;
 		this.at = DateTime.now().toString();
 	}
 	
-	public Request(String uuid, DateTime at) {
-		super();
+	public EngineRequest(String uuid, DateTime at) {
 		this.uuid = uuid;
 		this.at = at.toString();
 	}

@@ -24,6 +24,12 @@ public class TopicParser {
 		if(topic.contains(TopicBuilder.REQUESTCONFIGTOPIC))
 			return topic.replace(TopicBuilder.REQUESTCONFIGTOPIC, "");
 		
+		if(topic.contains(TopicBuilder.SAVECONFIGTOPIC))
+			return topic.replace(TopicBuilder.SAVECONFIGTOPIC, "");
+		
+		if(topic.contains(TopicBuilder.RESULTCONFIGTOPIC))
+			return topic.replace(TopicBuilder.RESULTCONFIGTOPIC, "");
+		
 		if(topic.contains(TopicBuilder.ENGINESTATUSTOPIC))
 			return topic.replace(TopicBuilder.ENGINESTATUSTOPIC, "");
 		

@@ -5,11 +5,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResponseGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResponseSubscriptionExListener;
+import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResultGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResultSubscriptionExListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusSubscriptionExListener;
 import com.apextalos.cvitfusion.common.mqtt.ConfigMqttTransceiver;
-import com.apextalos.cvitfusion.common.mqtt.message.Request;
+import com.apextalos.cvitfusion.common.mqtt.message.EngineRequest;
+import com.apextalos.cvitfusion.common.mqtt.message.EngineSaveRequest;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicParser;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
@@ -47,7 +49,7 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 	
 	public void requestConfig(String engineID, EngineConfigResponseGuiListener guiListener) {
 		// create a new request with a new UUID
-		Request request = new Request();
+		EngineRequest request = new EngineRequest();
 		
 		// create a subscription for the response
 		EngineConfigResponseSubscriptionExListener l = new EngineConfigResponseSubscriptionExListener(guiListener, engineID, request);
@@ -83,9 +85,9 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		removeSubscriptionListener(l);
 	}
 	
-	public void saveConfig(String engineID, OperationalFlow of, EngineConfigResponseGuiListener guiListener) {
+	public void saveConfig(String engineID, OperationalFlow of, EngineConfigResultGuiListener guiListener) {
 		// create a new request with a new UUID
-		Request request = new Request();
+		EngineSaveRequest request = new EngineSaveRequest(of);
 		
 		// create a subscription for the response
 		EngineConfigResultSubscriptionExListener l = new EngineConfigResultSubscriptionExListener(guiListener, engineID, request);
@@ -94,16 +96,30 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		
 		// build the payload
 		logger.debug("Requesting uuid: " + request.getUuid());
-		String requestPayload;
+		String savePayload;
 		try {
-			requestPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
+			savePayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
 		} catch (JsonProcessingException e) {
 			logger.error("Engine config request write failure" + e.getMessage());
 			return;
 		}
 		
 		// make the request
-		String requestTopic = TopicBuilder.requestConfig(engineID);
-		publish(requestTopic, requestPayload, false);
+		String saveTopic = TopicBuilder.saveConfig(engineID);
+		publish(saveTopic, savePayload, false);
+	}
+	
+	public void saveConfigComplete(String resultTopic) {
+		// find the engine id from the request
+		String engineID = TopicParser.getEngineID(resultTopic);
+		if(engineID.isBlank()) {
+			logger.error("Unable to complete the save because the engine ID could not be found");
+			return;
+		}
+		
+		// remove the subscription by topic
+		EngineConfigResultSubscriptionExListener l = new EngineConfigResultSubscriptionExListener(null, engineID, null);
+		unsubscribe(l.topic());
+		removeSubscriptionListener(l);
 	}
 }

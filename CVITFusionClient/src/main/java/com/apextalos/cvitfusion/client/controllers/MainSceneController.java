@@ -23,6 +23,7 @@ import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.client.models.MainSceneModel;
 import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResponseGuiListener;
+import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResultGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusGuiListener;
 import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
@@ -66,7 +67,7 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class MainSceneController extends BaseController implements EngineStatusGuiListener, EngineConfigResponseGuiListener {
+public class MainSceneController extends BaseController implements EngineStatusGuiListener, EngineConfigResponseGuiListener, EngineConfigResultGuiListener {
 
 	private static final Logger logger = LogManager.getLogger(MainSceneController.class.getSimpleName());
 
@@ -685,5 +686,33 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		activeDesign = engineConfig;
 		fillDesignPane();
 		
+	}
+
+	@Override
+	public void onEngineConfigSave(String engineID, String topic, String payload, boolean result) {
+		// if this event is coming from another thread (MQTT)
+		// run it later on the GUI thread
+		if (!Platform.isFxApplicationThread()) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					onEngineConfigSave(engineID, topic, payload, result);
+				}
+			});
+			return;
+		}
+
+		// we are done with this subscription
+		ccmt.saveConfigComplete(topic);
+		
+		// remove the spinner
+		for (EngineStatusModel esm : engineStatusListView.getItems()) {
+			if (0 == esm.getIdProperty().get().compareToIgnoreCase(engineID)) {
+				// stop spinning
+				esm.setBusy(false);
+				// ok status
+				esm.getImageProperty().set(imageLoader.loadImage("accept.png"));
+			}
+		}
 	}
 }

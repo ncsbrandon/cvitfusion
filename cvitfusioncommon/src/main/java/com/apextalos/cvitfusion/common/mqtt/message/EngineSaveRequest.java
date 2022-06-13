@@ -1,10 +1,8 @@
 package com.apextalos.cvitfusion.common.mqtt.message;
 
-import org.joda.time.DateTime;
-
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 
-public class EngineConfigResponse extends EngineRequest {
+public class EngineSaveRequest extends EngineRequest {
 
 	private OperationalFlow data;
 
@@ -15,17 +13,17 @@ public class EngineConfigResponse extends EngineRequest {
 	public void setData(OperationalFlow data) {
 		this.data = data;
 	}
-
-	public EngineConfigResponse() {
+	
+	public EngineSaveRequest() {
 		super();
 	}
-
-	public EngineConfigResponse(String uuid) {
+	
+	public EngineSaveRequest(String uuid) {
 		super(uuid);
 	}
-
-	public EngineConfigResponse(String uuid, DateTime at, OperationalFlow data) {
-		super(uuid, at);
+	
+	public EngineSaveRequest(OperationalFlow data) {
+		super();
 		this.data = data;
 	}
 }

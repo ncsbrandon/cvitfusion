@@ -2,7 +2,7 @@ package com.apextalos.cvitfusion.common.mqtt.message;
 
 import org.joda.time.DateTime;
 
-public class EngineConfigResult extends Request {
+public class EngineConfigResult extends EngineRequest {
 
 	private boolean success;
 	

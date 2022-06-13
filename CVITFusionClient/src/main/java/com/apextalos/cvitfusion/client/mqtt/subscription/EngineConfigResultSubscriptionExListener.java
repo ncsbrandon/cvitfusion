@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.common.mqtt.message.EngineConfigResult;
-import com.apextalos.cvitfusion.common.mqtt.message.Request;
+import com.apextalos.cvitfusion.common.mqtt.message.EngineRequest;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExListener;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
@@ -17,9 +17,9 @@ public class EngineConfigResultSubscriptionExListener implements SubscriptionExL
 	
 	private EngineConfigResultGuiListener guiListener;
 	private String engineID;
-	private Request request;
+	private EngineRequest request;
 	
-	public EngineConfigResultSubscriptionExListener(EngineConfigResultGuiListener guiListener, String engineID, Request request) {
+	public EngineConfigResultSubscriptionExListener(EngineConfigResultGuiListener guiListener, String engineID, EngineRequest request) {
 		this.guiListener = guiListener;
 		this.engineID = engineID;
 		this.request = request;
