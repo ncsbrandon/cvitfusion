@@ -4,6 +4,8 @@ public class TopicBuilder {
 	
 	public static final String REQUESTCONFIGTOPIC = "/apextalos/cvitfusion/requestconfig/";
 	public static final String RESPONDCONFIGTOPIC = "/apextalos/cvitfusion/respondconfig/";
+	public static final String SAVECONFIGTOPIC = "/apextalos/cvitfusion/saveconfig/";
+	public static final String RESULTCONFIGTOPIC = "/apextalos/cvitfusion/resultconfig/";
 	public static final String ENGINESTATUSTOPIC = "/apextalos/cvitfusion/enginestatus/";
 	
 	private TopicBuilder() {
@@ -16,6 +18,14 @@ public class TopicBuilder {
 
 	public static String respondConfig(String engineID) {
 		return String.format("%s%s", RESPONDCONFIGTOPIC, engineID);
+	}
+	
+	public static String saveConfig(String engineID) {
+		return String.format("%s%s", SAVECONFIGTOPIC, engineID);
+	}
+
+	public static String resultConfig(String engineID) {
+		return String.format("%s%s", RESULTCONFIGTOPIC, engineID);
 	}
 
 	public static String engineStatus(String engineID) {

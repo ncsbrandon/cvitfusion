@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 
-public class ResponseEngineConfig extends Request {
+public class EngineConfigResponse extends Request {
 
 	private OperationalFlow data;
 
@@ -16,15 +16,15 @@ public class ResponseEngineConfig extends Request {
 		this.data = data;
 	}
 
-	public ResponseEngineConfig() {
+	public EngineConfigResponse() {
 		super();
 	}
 
-	public ResponseEngineConfig(String uuid) {
+	public EngineConfigResponse(String uuid) {
 		super(uuid);
 	}
 
-	public ResponseEngineConfig(String uuid, DateTime at, OperationalFlow data) {
+	public EngineConfigResponse(String uuid, DateTime at, OperationalFlow data) {
 		super(uuid, at);
 		this.data = data;
 	}

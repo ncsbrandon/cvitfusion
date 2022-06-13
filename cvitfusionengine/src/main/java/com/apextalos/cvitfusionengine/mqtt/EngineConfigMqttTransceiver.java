@@ -14,7 +14,7 @@ import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus.LogLevel;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus.Mode;
 import com.apextalos.cvitfusion.common.mqtt.message.Request;
-import com.apextalos.cvitfusion.common.mqtt.message.ResponseEngineConfig;
+import com.apextalos.cvitfusion.common.mqtt.message.EngineConfigResponse;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExListener;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
@@ -59,7 +59,7 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 				}
 				
 				// now build a response
-				ResponseEngineConfig response = new ResponseEngineConfig(request.getUuid());
+				EngineConfigResponse response = new EngineConfigResponse(request.getUuid());
 				response.setData(sample1());
 				
 				String responsePayload;

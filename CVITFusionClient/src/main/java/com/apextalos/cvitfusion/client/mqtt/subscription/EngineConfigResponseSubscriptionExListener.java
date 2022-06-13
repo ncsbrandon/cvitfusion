@@ -4,22 +4,22 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.common.mqtt.message.Request;
-import com.apextalos.cvitfusion.common.mqtt.message.ResponseEngineConfig;
+import com.apextalos.cvitfusion.common.mqtt.message.EngineConfigResponse;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExListener;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class EngineConfigRequestSubscriptionExListener implements SubscriptionExListener {
+public class EngineConfigResponseSubscriptionExListener implements SubscriptionExListener {
 
-	private static final Logger logger = LogManager.getLogger(EngineConfigRequestSubscriptionExListener.class.getSimpleName());
+	private static final Logger logger = LogManager.getLogger(EngineConfigResponseSubscriptionExListener.class.getSimpleName());
 	
-	private EngineConfigRequestGuiListener guiListener;
+	private EngineConfigResponseGuiListener guiListener;
 	private String engineID;
 	private Request request;
 	
-	public EngineConfigRequestSubscriptionExListener(EngineConfigRequestGuiListener guiListener, String engineID, Request request) {
+	public EngineConfigResponseSubscriptionExListener(EngineConfigResponseGuiListener guiListener, String engineID, Request request) {
 		this.guiListener = guiListener;
 		this.engineID = engineID;
 		this.request = request;
@@ -37,9 +37,9 @@ public class EngineConfigRequestSubscriptionExListener implements SubscriptionEx
 		ObjectMapper mapper = new ObjectMapper();
 		
 		// convert it from json to pojo
-		ResponseEngineConfig response = null;
+		EngineConfigResponse response = null;
 		try {
-			response = mapper.readValue(se.getPayload(), ResponseEngineConfig.class);
+			response = mapper.readValue(se.getPayload(), EngineConfigResponse.class);
 		} catch (JsonProcessingException e) {
 			logger.error("Engine config response parsing failure: " + e.getMessage());
 			return;
@@ -53,7 +53,7 @@ public class EngineConfigRequestSubscriptionExListener implements SubscriptionEx
 		
 		// pass to the GUI
 		if (guiListener != null) {
-			guiListener.onEngineConfig(engineID, se.getTopic(), se.getPayload(), response.getData());
+			guiListener.onEngineConfigRequest(engineID, se.getTopic(), se.getPayload(), response.getData());
 		}
 	}
 }

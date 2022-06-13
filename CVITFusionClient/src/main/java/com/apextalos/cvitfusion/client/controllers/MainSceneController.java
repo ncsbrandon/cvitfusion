@@ -22,7 +22,7 @@ import com.apextalos.cvitfusion.client.models.EngineStatusModel;
 import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
 import com.apextalos.cvitfusion.client.models.MainSceneModel;
 import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
-import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigRequestGuiListener;
+import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResponseGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusGuiListener;
 import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
@@ -66,7 +66,7 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class MainSceneController extends BaseController implements EngineStatusGuiListener, EngineConfigRequestGuiListener {
+public class MainSceneController extends BaseController implements EngineStatusGuiListener, EngineConfigResponseGuiListener {
 
 	private static final Logger logger = LogManager.getLogger(MainSceneController.class.getSimpleName());
 
@@ -655,14 +655,14 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	}
 	
 	@Override
-	public void onEngineConfig(String engineID, String topic, String payload, OperationalFlow engineConfig) {
+	public void onEngineConfigRequest(String engineID, String topic, String payload, OperationalFlow engineConfig) {
 		// if this event is coming from another thread (MQTT)
 		// run it later on the GUI thread
 		if (!Platform.isFxApplicationThread()) {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					onEngineConfig(engineID, topic, payload, engineConfig);
+					onEngineConfigRequest(engineID, topic, payload, engineConfig);
 				}
 			});
 			return;
