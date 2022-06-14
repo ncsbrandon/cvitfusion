@@ -165,6 +165,7 @@ public class App {
     		logger.info(featureValue.getKey().toString() + ": " + featureValue.getValue());
     	}
 		
+		// load the design
 		DesignManager dm = DesignManager.getInstance();
 		OperationalFlow design = new OperationalFlow(
 			dm.getProcesses(cf),
@@ -173,12 +174,12 @@ public class App {
 			dm.getTypeStyleMap()
 		);
 		
+		// validate it before we proceed
 		String validationFailure = design.validate();
 		if(!validationFailure.isBlank()) {
 			return false;
-		} else {
-			logger.info("No design validation issues found");
 		}
+		logger.info("No design validation issues found");
 			
 		// main transceiver
 		cmt = new EngineConfigMqttTransceiver(cf);

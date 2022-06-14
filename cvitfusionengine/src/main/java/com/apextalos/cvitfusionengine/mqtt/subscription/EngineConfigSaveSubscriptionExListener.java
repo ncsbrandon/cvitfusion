@@ -47,7 +47,12 @@ public class EngineConfigSaveSubscriptionExListener implements SubscriptionExLis
 			return;
 		}
 
+		// decode and set in the config
 		DesignManager dm = DesignManager.getInstance();
+		dm.setProcesses(request.getData().getProcesses(), cf);
+		
+		// write to disk
+		cf.save();
 		
 		// now build a response
 		EngineConfigResult result = new EngineConfigResult(request.getUuid());

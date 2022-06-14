@@ -716,5 +716,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				esm.getImageProperty().set(imageLoader.loadImage("accept.png"));
 			}
 		}
+		
+		// no changes to save
+		designButtonSave.setDisable(true);
 	}
 }

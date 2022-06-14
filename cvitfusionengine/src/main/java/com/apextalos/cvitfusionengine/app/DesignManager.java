@@ -110,11 +110,7 @@ public class DesignManager {
 		}, true));
 		types.add(new Type(5, 1, "OHV Laser", new Properties(), new ArrayList<>() {
 			{
-				add(Integer.valueOf(11));
-				add(Integer.valueOf(12));
-				add(Integer.valueOf(13));
-				add(Integer.valueOf(14));
-				add(Integer.valueOf(15));
+				add(Integer.valueOf(16));
 			}
 		}, true));
 		

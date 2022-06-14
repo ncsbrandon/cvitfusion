@@ -152,7 +152,7 @@ public class OperationalFlow {
 			for(Type type2 : getTypes()) {
 				if(type1 != type2 && type1.getTypeID() == type2.getTypeID()) {
 					// duplicate ID found
-					return String.format("Duplicate types with ID [%d]", type1.getTypeID());
+					return String.format("Duplicate Type ID [%d]", type1.getTypeID());
 				}
 			}
 		}
@@ -171,7 +171,7 @@ public class OperationalFlow {
 				for(Integer outputID : outputIDs) {
 					Type type2 = lookupType(outputID);
 					if(type2 == null) {
-						return String.format("Unable to locate the supported output ID [%d] for type [%d][%s]", outputID, type1.getTypeID(), type1.getName());
+						return String.format("Unable to locate the supported output Type ID [%d] for Type [%d] ID [%s]", outputID, type1.getTypeID(), type1.getName());
 					}
 				}				
 			}			
@@ -183,7 +183,7 @@ public class OperationalFlow {
 			for(Style style2 : getStyles()) {
 				if(style1 != style2 && style1.getStyleID() == style2.getStyleID()) {
 					// duplicate ID found
-					return String.format("Duplicate styles with ID [%d]", style1.getStyleID());
+					return String.format("Duplicate Style ID [%d]", style1.getStyleID());
 				}
 			}
 		}
@@ -207,7 +207,7 @@ public class OperationalFlow {
 		// check that every type has a style
 		for(Type type1 : getTypes()) {
 			if(null == lookupStyleForType(type1.getTypeID()))
-				return String.format("Unable to locate a style for type ID [%d]", type1.getTypeID());
+				return String.format("Unable to locate a Style for Type ID [%d]", type1.getTypeID());
 		}
 		
 		// let's validate that process ID is unique
@@ -216,14 +216,15 @@ public class OperationalFlow {
 			for(Process process2 : getProcesses()) {
 				if(process1 != process2 && process1.getProcessID() == process2.getProcessID()) {
 					// duplicate ID found
-					return String.format("Duplicate process with ID [%d]", process1.getProcessID());
+					return String.format("Duplicate Process ID [%d]", process1.getProcessID());
 				}
 			}
 		}
 		
+		// check that every process has a type
 		for(Process process1 : getProcesses()) {
 			if(null == lookupType(process1.getTypeID()))
-				return String.format("Unable to locate a type for process ID [%d]", process1.getProcessID());
+				return String.format("Unable to locate a Type for Process ID [%d]", process1.getProcessID());
 		}
 		
 		return "";

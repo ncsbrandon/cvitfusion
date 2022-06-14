@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox fx:id="vboxParent" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane>
@@ -18,7 +17,7 @@
             </Label>
          </left>
          <right>
-            <ImageView fx:id="statusImage" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+            <ImageView fx:id="statusImage" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
          </right>
       </BorderPane>
       <BorderPane>
