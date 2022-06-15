@@ -3,6 +3,7 @@ package com.apextalos.cvitfusionengine.mqtt.subscription;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.common.design.DesignManager;
 import com.apextalos.cvitfusion.common.mqtt.MqttTransceiver;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineConfigResult;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineSaveRequest;
@@ -11,7 +12,6 @@ import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExListener;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
-import com.apextalos.cvitfusionengine.app.DesignManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -165,6 +165,7 @@ public class OperationalFlow {
 		}
 		
 		// all supported outputs exist
+		/*
 		for(Type type1 : getTypes()) {
 			if(type1.hasSupportedOutputs()) {
 				List<Integer> outputIDs = type1.getSupportedOutputs();
@@ -176,6 +177,7 @@ public class OperationalFlow {
 				}				
 			}			
 		}
+		*/
 		
 		// let's validate that style ID is unique
 		// not optimized - who cares
@@ -198,8 +200,8 @@ public class OperationalFlow {
 		
 		// check that all map entries point
 		for(Map.Entry<Integer, Integer> kvp : typeStyleMap.entrySet()) {
-			if(null == lookupType(kvp.getKey()))
-				return String.format("Unable to locate the mapped Type ID [%d]", kvp.getKey());
+			//if(null == lookupType(kvp.getKey()))
+			//	return String.format("Unable to locate the mapped Type ID [%d]", kvp.getKey());
 			if(null == lookupStyle(kvp.getValue()))
 				return String.format("Unable to locate the mapped Style ID [%d]", kvp.getValue());
 		}

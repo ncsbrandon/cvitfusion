@@ -14,6 +14,7 @@ import javax.crypto.NoSuchPaddingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.common.design.DesignManager;
 import com.apextalos.cvitfusion.common.license.Feature;
 import com.apextalos.cvitfusion.common.license.FeatureManager;
 import com.apextalos.cvitfusion.common.license.License;
@@ -169,7 +170,7 @@ public class App {
 		DesignManager dm = DesignManager.getInstance();
 		OperationalFlow design = new OperationalFlow(
 			dm.getProcesses(cf),
-			dm.getTypes(),
+			dm.getTypes(licenseKey),
 			dm.getStyles(),
 			dm.getTypeStyleMap()
 		);
@@ -177,6 +178,7 @@ public class App {
 		// validate it before we proceed
 		String validationFailure = design.validate();
 		if(!validationFailure.isBlank()) {
+			logger.error("Validation failure: " + validationFailure);
 			return false;
 		}
 		logger.info("No design validation issues found");

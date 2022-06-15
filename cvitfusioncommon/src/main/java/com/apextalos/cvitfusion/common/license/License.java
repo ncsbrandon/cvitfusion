@@ -1,11 +1,15 @@
 package com.apextalos.cvitfusion.common.license;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.apextalos.cvitfusion.common.design.DesignManager;
+import com.apextalos.cvitfusion.common.opflow.Type;
 
 public class License {
 
@@ -32,6 +36,11 @@ public class License {
 	public Map<Feature, String> getAllFeatures() {
 		FeatureManager fm = FeatureManager.getInstance();
 		
+		// plus "type" features
+    	DesignManager dm = DesignManager.getInstance();
+    	List<Type> types = dm.getTypes(null);
+    	types.forEach(type -> fm.getFeatures().add(new DesignTypeFeature(type)));
+		
 		Map<Feature, String> features = new HashMap<>();
 		for(Object propKey : props.keySet()) {
 			Feature feature = fm.getFeature(String.valueOf(propKey));
@@ -43,6 +52,11 @@ public class License {
 	
 	public Map<Feature, String> getVisibleFeatures() {
 		FeatureManager fm = FeatureManager.getInstance();
+		
+		// plus "type" features
+    	DesignManager dm = DesignManager.getInstance();
+    	List<Type> types = dm.getTypes(null);
+    	types.forEach(type -> fm.getFeatures().add(new DesignTypeFeature(type)));
 		
 		Map<Feature, String> features = new HashMap<>();
 		for(Object propKey : props.keySet()) {

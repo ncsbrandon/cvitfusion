@@ -46,8 +46,8 @@ private final Logger logger = LogManager.getLogger(LicenseTest.class.getSimpleNa
 		assertTrue(licenseManager.verifyAddress(ifname, license1));
 		
 		// add some features to the license
-		license1.setBooleanFeature(FeatureManager.FEATURE_INTLZN, true);
-		license1.setIntFeature(FeatureManager.FEATURE_SENSORS, 10);
+		license1.setBooleanFeature(FeatureManager.FEATURE_ORG, true);
+		license1.setIntFeature(FeatureManager.FEATURE_SALESORDER, 10);
 		
 		// generate a license key with features
 		String licenseKey = licenseManager.generateLicenseKey(license1);
@@ -57,8 +57,8 @@ private final Logger logger = LogManager.getLogger(LicenseTest.class.getSimpleNa
 		
 		// verify the license and features
 		assertTrue(licenseManager.verifyAddress(ifname, license2));
-		assertTrue(license2.getBooleanFeature(FeatureManager.FEATURE_INTLZN));
-		assertEquals(10, license2.getIntFeature(FeatureManager.FEATURE_SENSORS));
+		assertTrue(license2.getBooleanFeature(FeatureManager.FEATURE_ORG));
+		assertEquals(10, license2.getIntFeature(FeatureManager.FEATURE_SALESORDER));
 		
 		//logger.info("Expires: " + license.getExpirationDateAsString());
 		//logger.info("In days: " + license.getDaysTillExpire());

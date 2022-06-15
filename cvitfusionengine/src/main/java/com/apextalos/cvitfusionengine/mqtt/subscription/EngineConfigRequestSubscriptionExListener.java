@@ -3,6 +3,7 @@ package com.apextalos.cvitfusionengine.mqtt.subscription;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.common.design.DesignManager;
 import com.apextalos.cvitfusion.common.mqtt.MqttTransceiver;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineConfigResponse;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineRequest;
@@ -12,7 +13,6 @@ import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
-import com.apextalos.cvitfusionengine.app.DesignManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -47,15 +47,6 @@ public class EngineConfigRequestSubscriptionExListener implements SubscriptionEx
 			logger.error("Engine config request parsing failure: " + e.getMessage());
 			return;
 		}
-		
-		DesignManager dm = DesignManager.getInstance();
-		
-		OperationalFlow design = new OperationalFlow(
-			dm.getProcesses(cf),
-			dm.getTypes(),
-			dm.getStyles(),
-			dm.getTypeStyleMap()
-		);
 		
 		// now build a response
 		EngineConfigResponse response = new EngineConfigResponse(request.getUuid());

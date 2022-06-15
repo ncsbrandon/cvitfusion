@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -13,10 +14,13 @@ import javax.crypto.NoSuchPaddingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.common.design.DesignManager;
+import com.apextalos.cvitfusion.common.license.DesignTypeFeature;
 import com.apextalos.cvitfusion.common.license.Feature;
 import com.apextalos.cvitfusion.common.license.FeatureManager;
 import com.apextalos.cvitfusion.common.license.License;
 import com.apextalos.cvitfusion.common.license.LicenseManager;
+import com.apextalos.cvitfusion.common.opflow.Type;
 
 public class App 
 {
@@ -60,7 +64,16 @@ public class App
     	
     	// for all features (new and old)
     	FeatureManager fm = FeatureManager.getInstance();
-    	for(Feature feature : fm.getFeatures()) {
+    	
+    	// the standard app features
+    	List<Feature> features = fm.getFeatures();
+    	
+    	// plus "type" features
+    	DesignManager dm = DesignManager.getInstance();
+    	List<Type> types = dm.getTypes(null);
+    	types.forEach(type -> features.add(new DesignTypeFeature(type)));
+    	
+    	for(Feature feature : features) {
     		// print the description
     		System.out.print(feature.getDescription());
     		    		
@@ -120,6 +133,6 @@ public class App
 		}
     	
     	// print to the user
-    	logger.info("Key: %s", licenseKey);
+    	logger.info(String.format("Generated Key: %s", licenseKey));
     }
 }
