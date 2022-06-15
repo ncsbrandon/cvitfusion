@@ -184,7 +184,7 @@ public class App {
 		logger.info("No design validation issues found");
 			
 		// main transceiver
-		cmt = new EngineConfigMqttTransceiver(cf);
+		cmt = new EngineConfigMqttTransceiver(cf, design);
 		
 		// in the engine, the handlers are autonomous; they don't need listeners
 		cmt.start();

@@ -10,6 +10,7 @@ import com.apextalos.cvitfusion.common.mqtt.message.EngineSaveRequest;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExEvent;
 import com.apextalos.cvitfusion.common.mqtt.subscription.SubscriptionExListener;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
+import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,10 +24,12 @@ public class EngineConfigSaveSubscriptionExListener implements SubscriptionExLis
 	
 	private ConfigFile cf;
 	private MqttTransceiver mt;
+	private OperationalFlow design;
 	
-	public EngineConfigSaveSubscriptionExListener(ConfigFile cf, MqttTransceiver mt) {
+	public EngineConfigSaveSubscriptionExListener(ConfigFile cf, MqttTransceiver mt, OperationalFlow design) {
 		this.cf = cf;
 		this.mt = mt;
+		this.design = design;
 	}
 	
 	@Override
@@ -47,9 +50,14 @@ public class EngineConfigSaveSubscriptionExListener implements SubscriptionExLis
 			return;
 		}
 
+		design.setProcesses(request.getData().getProcesses());
+		design.setStyles(request.getData().getStyles());
+		design.setTypes(request.getData().getTypes());
+		design.setTypeStyleMap(request.getData().getTypeStyleMap());
+		
 		// decode and set in the config
 		DesignManager dm = DesignManager.getInstance();
-		dm.setProcesses(request.getData().getProcesses(), cf);
+		dm.setProcesses(design.getProcesses(), cf);
 		
 		// write to disk
 		cf.save();

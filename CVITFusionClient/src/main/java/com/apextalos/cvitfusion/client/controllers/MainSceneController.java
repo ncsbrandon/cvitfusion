@@ -382,6 +382,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		if(type.hasSupportedOutputs()) {
 			for(Integer id : type.getSupportedOutputs()) {
 				Type outputType = activeDesign.lookupType(id);
+				if(outputType == null)
+					continue; // probably it wasn't licensed
 				MenuItem mi = new MenuItem(outputType.getName());
 				mi.setUserData(outputType);
 				mi.setOnAction(e -> onDesignButtonAddOutput(e));

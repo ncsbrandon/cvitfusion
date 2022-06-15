@@ -3,7 +3,6 @@ package com.apextalos.cvitfusionengine.mqtt.subscription;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.apextalos.cvitfusion.common.design.DesignManager;
 import com.apextalos.cvitfusion.common.mqtt.MqttTransceiver;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineConfigResponse;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineRequest;
@@ -24,10 +23,12 @@ public class EngineConfigRequestSubscriptionExListener implements SubscriptionEx
 	
 	private ConfigFile cf;
 	private MqttTransceiver mt;
+	private OperationalFlow design;
 	
-	public EngineConfigRequestSubscriptionExListener(ConfigFile cf, MqttTransceiver mt) {
+	public EngineConfigRequestSubscriptionExListener(ConfigFile cf, MqttTransceiver mt, OperationalFlow design) {
 		this.cf = cf;
 		this.mt = mt;
+		this.design = design;
 	}
 	
 	@Override

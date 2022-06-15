@@ -10,6 +10,7 @@ import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus.LogLevel;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus.Mode;
 import com.apextalos.cvitfusion.common.mqtt.topics.TopicBuilder;
+import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.apextalos.cvitfusionengine.app.Version;
@@ -21,8 +22,11 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 
 	private static final Logger logger = LogManager.getLogger(EngineConfigMqttTransceiver.class.getSimpleName());
 
-	public EngineConfigMqttTransceiver(ConfigFile cf) {
+	private OperationalFlow design;
+	
+	public EngineConfigMqttTransceiver(ConfigFile cf, OperationalFlow design) {
 		super(cf);
+		this.design = design;
 	}
 
 	@Override
@@ -31,13 +35,13 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 		
 		// listen for config requests
 		logger.info("creating config request listener");
-		EngineConfigRequestSubscriptionExListener request = new EngineConfigRequestSubscriptionExListener(cf, this);
+		EngineConfigRequestSubscriptionExListener request = new EngineConfigRequestSubscriptionExListener(cf, this, design);
 		subscribe(request.topic());
 		addSubscriptionListener(request);
 		
 		// listen for config saves
 		logger.info("creating config save listener");
-		EngineConfigSaveSubscriptionExListener save = new EngineConfigSaveSubscriptionExListener(cf, this);
+		EngineConfigSaveSubscriptionExListener save = new EngineConfigSaveSubscriptionExListener(cf, this, design);
 		subscribe(save.topic());
 		addSubscriptionListener(save);
 	}
