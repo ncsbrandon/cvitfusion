@@ -13,6 +13,11 @@ public class ResourceLoader<T> {
 
 	private static final Logger logger = LogManager.getLogger(ResourceLoader.class.getSimpleName());
 
+	public static final String IMAGE_SAVE = "save.png";
+	public static final String IMAGE_MISSLE = "missile.png";
+	public static final String IMAGE_REFRESH = "refresh.png";
+	public static final String IMAGE_ACCEPT = "accept.png";
+	
 	private T res = null;
 	
 	public T getResource() {
@@ -51,7 +56,7 @@ public class ResourceLoader<T> {
 		return loader;
 	}
 	
-	public Image loadImage(String name) {
+	public Image loadImageByFilename(String name) {
 		Image image = null;
 		
 		// try loading as the jar

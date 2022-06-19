@@ -302,7 +302,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	//*********************
 	protected void onEngineStatusSelected(EngineStatusModel esm) {
 		// set it to the refresh arrow
-		esm.getImageProperty().set(imageLoader.loadImage("refresh.png"));
+		esm.getImageProperty().set(imageLoader.loadImageByFilename(ResourceLoader.IMAGE_REFRESH));
 		// make it spin
 		esm.setBusy(true);
 		// create a subscription, publish a request, and callback on the response
@@ -489,7 +489,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			return;
 		
 		// set it to the refresh arrow
-		esm.getImageProperty().set(imageLoader.loadImage("save.png"));
+		esm.getImageProperty().set(imageLoader.loadImageByFilename(ResourceLoader.IMAGE_SAVE));
 		// make it spin
 		esm.setBusy(true);
 		// create a subscription, publish a request, and callback on the response
@@ -656,7 +656,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		}
 
 		// ok status
-		esm.getImageProperty().set(imageLoader.loadImage("accept.png"));
+		esm.getImageProperty().set(imageLoader.loadImageByFilename(ResourceLoader.IMAGE_ACCEPT));
+		esm.setBusy(false);
 	}
 	
 	@Override
@@ -682,7 +683,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				// stop spinning
 				esm.setBusy(false);
 				// ok status
-				esm.getImageProperty().set(imageLoader.loadImage("accept.png"));
+				esm.getImageProperty().set(imageLoader.loadImageByFilename(ResourceLoader.IMAGE_ACCEPT));
+				esm.setBusy(false);
 			}
 		}
 
@@ -715,7 +717,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				// stop spinning
 				esm.setBusy(false);
 				// ok status
-				esm.getImageProperty().set(imageLoader.loadImage("accept.png"));
+				esm.getImageProperty().set(imageLoader.loadImageByFilename("accept.png"));
+				esm.setBusy(false);
 			}
 		}
 		

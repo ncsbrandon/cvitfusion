@@ -31,7 +31,7 @@ public class Main extends Application {
 
 		// setup the stage
 		stage.setTitle("Apex Talos CVITFusion Client");
-		stage.getIcons().add(rl.loadImage("missile.png"));
+		stage.getIcons().add(rl.loadImageByFilename(ResourceLoader.IMAGE_MISSLE));
 				
 		// first show the connections dialog
 		SceneManager.getInstance(cf).showConnections(stage);	
