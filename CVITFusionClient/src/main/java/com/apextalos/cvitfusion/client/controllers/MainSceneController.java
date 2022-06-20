@@ -31,6 +31,7 @@ import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent.Change;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
+import com.apextalos.cvitfusion.common.opflow.Parameter;
 import com.apextalos.cvitfusion.common.opflow.Process;
 import com.apextalos.cvitfusion.common.opflow.ProcessLink;
 import com.apextalos.cvitfusion.common.opflow.Type;
@@ -370,11 +371,23 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		Process process = activeDesign.lookupProcess(Integer.valueOf(dncModel.getIDProperty().get()));
 		Type type = activeDesign.lookupType(process.getTypeID());
 		
+		//process.getStatus()
+		
 		model.getTableItems().clear();
 		model.getTableItems().add(new KeyValuePairModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
 		model.getTableItems().add(new KeyValuePairModel("Version", String.valueOf(type.getVersion())));
-		model.getTableItems().add(new KeyValuePairModel("Notes", process.getNotes()));
+		if(process.hasChildren())
+			model.getTableItems().add(new KeyValuePairModel("Children", String.format("%s", process.getChildren().size())));
+		else
+			model.getTableItems().add(new KeyValuePairModel("Children", "none"));
+		model.getTableItems().add(new KeyValuePairModel("Notes",   process.getNotes()));
 		model.getTableItems().add(new KeyValuePairModel("Enabled", String.valueOf(process.isEnabled())));
+		for(Parameter parameter : type.getParameters()) {
+			model.getTableItems().add(new KeyValuePairModel(
+					parameter.getDescription(),
+					process.getParameterValue(parameter.getParameterID())
+					));
+		}
 		
 		// add output button
 		designButtonAddOutput.setVisible(type.hasSupportedOutputs());
@@ -461,7 +474,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 
 		Process parentProcess = (Process) designSelection.getUserData();
 		Type childType = (Type) ((MenuItem) event.getSource()).getUserData();
-		Process childProcess = new Process(parentProcess.nextChildID(), true, childType.getTypeID(), null, "", 0, new Properties());
+		Process childProcess = new Process(parentProcess.nextChildID(), true, childType.getTypeID(), null, "", new Properties());
 
 		// add it to the children
 		if (parentProcess.getChildren() == null)
@@ -500,7 +513,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		logger.info("onDesignButtonCreateInput " + ((Type) ((MenuItem) event.getSource()).getUserData()).getName());
 
 		Type type = (Type) ((MenuItem) event.getSource()).getUserData();
-		Process process = new Process(activeDesign.getProcesses().size() + 1, true, type.getTypeID(), null, "", 0, null);
+		Process process = new Process(activeDesign.getProcesses().size() + 1, true, type.getTypeID(), null, "", null);
 
 		// add it to the top level
 		activeDesign.getProcesses().add(process);

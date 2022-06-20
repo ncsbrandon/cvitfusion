@@ -1,14 +1,13 @@
 package com.apextalos.cvitfusion.common.opflow;
 
 import java.util.List;
-import java.util.Properties;
 
 public class Type {
 
 	private int typeID;
 	private int version;
 	private String name;
-	private Properties properties;
+	private List<Parameter> parameters;
 	private List<Integer> supportedOutputs;
 	private boolean isTopLevel;
 
@@ -36,12 +35,12 @@ public class Type {
 		this.name = name;
 	}
 
-	public Properties getProperties() {
-		return properties;
+	public List<Parameter> getParameters() {
+		return parameters;
 	}
 
-	public void setProperties(Properties properties) {
-		this.properties = properties;
+	public void setParameters(List<Parameter> parameters) {
+		this.parameters = parameters;
 	}
 
 	public boolean hasSupportedOutputs() {
@@ -67,13 +66,13 @@ public class Type {
 	public Type() {
 	}
 	
-	public Type(int typeID, int version, String name, Properties properties, 
+	public Type(int typeID, int version, String name, List<Parameter> parameters, 
 			List<Integer> supportedOutputs, boolean isTopLevel) {
 		super();
 		this.typeID = typeID;
 		this.version = version;
 		this.name = name;
-		this.properties = properties;
+		this.parameters = parameters;
 		this.supportedOutputs = supportedOutputs;
 		this.isTopLevel = isTopLevel;
 	}

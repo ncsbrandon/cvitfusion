@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import com.apextalos.cvitfusion.common.license.DesignTypeFeature;
 import com.apextalos.cvitfusion.common.license.License;
 import com.apextalos.cvitfusion.common.opflow.Color;
+import com.apextalos.cvitfusion.common.opflow.Parameter;
+import com.apextalos.cvitfusion.common.opflow.Parameters;
 import com.apextalos.cvitfusion.common.opflow.Process;
 import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
@@ -78,50 +79,63 @@ public class DesignManager {
 	public List<Type> getTypes(License license) {
 		List<Type> types = new ArrayList<>();
 		
+		List<Parameter> emailParameters = new ArrayList<>() {{
+			add(Parameters.toAddress);
+			add(Parameters.fromName);
+			add(Parameters.fromAddress);
+			add(Parameters.smtpServer);
+			add(Parameters.smtpPort);
+			add(Parameters.useAuth);
+			add(Parameters.username);
+			add(Parameters.password);
+		}};
+		
+		List<Parameter> parameters = new ArrayList<>();
+		
 		// OUTPUTS -------------
-		Type typeEmail = new Type(100, 1, "Email", new Properties(), null, false);
-		Type typeFB = new Type(101, 1, "Flashing Beacon", new Properties(), null, false);
-		Type typeDO = new Type(102, 1, "Digital Output", new Properties(), null, false);
-		Type typeGPIO = new Type(103, 1, "GPIO", new Properties(), null, false);
-		Type typeRSU = new Type(104, 1, "RSU", new Properties(), null, false);
-		Type typeVMS = new Type(105, 1, "VMS", new Properties(), null, false);
-		Type typeSDLC = new Type(106, 1, "SDLC", new Properties(), null, false);
-		Type typeMQTT = new Type(107, 1, "MQTT", new Properties(), null, false);
+		Type typeEmail = new Type(100, 1, "Email", emailParameters, null, false);
+		Type typeFB = new Type(101, 1, "Flashing Beacon", parameters, null, false);
+		Type typeDO = new Type(102, 1, "Digital Output", parameters, null, false);
+		Type typeGPIO = new Type(103, 1, "GPIO", parameters, null, false);
+		Type typeRSU = new Type(104, 1, "RSU", parameters, null, false);
+		Type typeVMS = new Type(105, 1, "VMS", parameters, null, false);
+		Type typeSDLC = new Type(106, 1, "SDLC", parameters, null, false);
+		Type typeMQTT = new Type(107, 1, "MQTT", parameters, null, false);
 		
 		// LOGICS-------------------------
-		Type typeWWVD = new Type(11, 1, "WWVD", new Properties(), new ArrayList<>() {{
+		Type typeWWVD = new Type(11, 1, "WWVD", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(typeEmail.getTypeID()));
 			add(Integer.valueOf(typeFB.getTypeID()));
 			add(Integer.valueOf(typeDO.getTypeID()));
 		}}, false);
-		Type typeCS = new Type(12, 1, "Curve Speed", new Properties(), new ArrayList<>() {{
+		Type typeCS = new Type(12, 1, "Curve Speed", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(typeFB.getTypeID()));
 			add(Integer.valueOf(typeGPIO.getTypeID()));
 			add(Integer.valueOf(typeRSU.getTypeID()));
 		}}, false);
-		Type typeQD = new Type(13, 1, "Queue Detection", new Properties(), new ArrayList<>() {{
+		Type typeQD = new Type(13, 1, "Queue Detection", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(typeGPIO.getTypeID()));
 			add(Integer.valueOf(typeRSU.getTypeID()));
 			add(Integer.valueOf(typeVMS.getTypeID()));
 		}}, false);
-		Type typeVRU = new Type(14, 1, "VRU", new Properties(), new ArrayList<>() {{
+		Type typeVRU = new Type(14, 1, "VRU", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(typeRSU.getTypeID()));
 			add(Integer.valueOf(typeVMS.getTypeID()));
 			add(Integer.valueOf(typeSDLC.getTypeID()));
 		}}, false);
-		Type typeStopbar = new Type(15, 1, "Stopbar", new Properties(), new ArrayList<>() {{
+		Type typeStopbar = new Type(15, 1, "Stopbar", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(typeVMS.getTypeID()));
 			add(Integer.valueOf(typeSDLC.getTypeID()));
 			add(Integer.valueOf(typeEmail.getTypeID()));
 		}}, false);
-		Type typeOHVD = new Type(16, 1, "OHV Detection", new Properties(), new ArrayList<>() {{
+		Type typeOHVD = new Type(16, 1, "OHV Detection", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(typeSDLC.getTypeID()));
 			add(Integer.valueOf(typeEmail.getTypeID()));
 			add(Integer.valueOf(typeMQTT.getTypeID()));
 		}}, false);
 		
 		// INPUTS----------------------
-		Type typeLidar = new Type(1, 1, "Lidar", new Properties(), new ArrayList<>() {{
+		Type typeLidar = new Type(1, 1, "Lidar", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(typeWWVD.getTypeID()));
 			add(Integer.valueOf(typeCS.getTypeID()));
 			add(Integer.valueOf(typeQD.getTypeID()));
@@ -129,7 +143,7 @@ public class DesignManager {
 			add(Integer.valueOf(typeStopbar.getTypeID()));
 			add(Integer.valueOf(typeOHVD.getTypeID()));
 		}}, true);
-		Type typeCamera = new Type(2, 1, "Camera", new Properties(), new ArrayList<>() {{
+		Type typeCamera = new Type(2, 1, "Camera", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(typeWWVD.getTypeID()));
 			add(Integer.valueOf(typeCS.getTypeID()));
 			add(Integer.valueOf(typeQD.getTypeID()));
@@ -137,7 +151,7 @@ public class DesignManager {
 			add(Integer.valueOf(typeStopbar.getTypeID()));
 			add(Integer.valueOf(typeOHVD.getTypeID()));
 		}}, true);
-		Type typeRadar = new Type(3, 1, "Radar", new Properties(), new ArrayList<>() {{
+		Type typeRadar = new Type(3, 1, "Radar", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(typeWWVD.getTypeID()));
 			add(Integer.valueOf(typeCS.getTypeID()));
 			add(Integer.valueOf(typeQD.getTypeID()));
@@ -145,7 +159,7 @@ public class DesignManager {
 			add(Integer.valueOf(typeStopbar.getTypeID()));
 			add(Integer.valueOf(typeOHVD.getTypeID()));
 		}}, true);
-		Type typeBSM = new Type(4, 1, "BSM", new Properties(), new ArrayList<>() {{
+		Type typeBSM = new Type(4, 1, "BSM", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(typeWWVD.getTypeID()));
 			add(Integer.valueOf(typeCS.getTypeID()));
 			add(Integer.valueOf(typeQD.getTypeID()));
@@ -153,7 +167,7 @@ public class DesignManager {
 			add(Integer.valueOf(typeStopbar.getTypeID()));
 			add(Integer.valueOf(typeOHVD.getTypeID()));
 		}}, true);
-		Type typeOHVLaser = new Type(5, 1, "OHV Laser", new Properties(), new ArrayList<>() {{
+		Type typeOHVLaser = new Type(5, 1, "OHV Laser", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(typeWWVD.getTypeID()));
 			add(Integer.valueOf(typeCS.getTypeID()));
 			add(Integer.valueOf(typeQD.getTypeID()));

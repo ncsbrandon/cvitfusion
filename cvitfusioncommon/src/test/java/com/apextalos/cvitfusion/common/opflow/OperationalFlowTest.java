@@ -36,27 +36,29 @@ public class OperationalFlowTest {
 				new ArrayList<>(),
 				new HashMap<>());
 		
-		Process n111 = new Process(111, true, 3, null, "", 4317, new Properties());
-		Process n112 = new Process(112, true, 3, null, "", 4317, new Properties());
-		Process n121 = new Process(121, true, 3, null, "", 4317, new Properties());
-		Process n122 = new Process(122, true, 3, null, "", 4317, new Properties());
-		Process n12 = new Process(12, true, 2, new ArrayList<>() {{add(n121); add(n122);}}, "", 420, new Properties());
-		Process n11 = new Process(11, true, 2, new ArrayList<>() {{add(n111); add(n112);}}, "", 420, new Properties());
-		Process n1 = new Process(1, true, 1, new ArrayList<>() {{add(n11); add(n12);}}, "", 69,  new Properties());
+		Process n111 = new Process(111, true, 3, null, "", new Properties());
+		Process n112 = new Process(112, true, 3, null, "", new Properties());
+		Process n121 = new Process(121, true, 3, null, "", new Properties());
+		Process n122 = new Process(122, true, 3, null, "", new Properties());
+		Process n12 = new Process(12, true, 2, new ArrayList<>() {{add(n121); add(n122);}}, "", new Properties());
+		Process n11 = new Process(11, true, 2, new ArrayList<>() {{add(n111); add(n112);}}, "", new Properties());
+		Process n1 = new Process(1, true, 1, new ArrayList<>() {{add(n11); add(n12);}}, "", new Properties());
 		
 		of.getProcesses().add(n1);
 		
-		of.getTypes().add(new Type(1, 1, "Input", new Properties(), new ArrayList<>() {
+		List<Parameter> parameters = new ArrayList<>();
+		
+		of.getTypes().add(new Type(1, 1, "Input", parameters, new ArrayList<>() {
 			{
 			add(Integer.valueOf(2));
 			}
 		}, true));
-		of.getTypes().add(new Type(2, 1, "Logic", new Properties(), new ArrayList<>() {
+		of.getTypes().add(new Type(2, 1, "Logic", parameters, new ArrayList<>() {
 			{
 			add(Integer.valueOf(3));
 			}
 		}, false));
-		of.getTypes().add(new Type(3, 1, "Output", new Properties(), null, false));
+		of.getTypes().add(new Type(3, 1, "Output", parameters, null, false));
 		
 		of.getStyles().add(new Style(1, 1, new Color(100, 100, 100, .20), new Color(100, 100, 100, 20)));
 		of.getStyles().add(new Style(2, 1, new Color(100, 100, 100, .20), new Color(100, 100, 100, 20)));

@@ -10,7 +10,7 @@ public class Process {
 	private int typeID;
 	private List<Process> children;
 	private String notes;
-	private int status;
+	//private int status;
 	private Properties properties;
 
 	public int getProcessID() {
@@ -57,13 +57,13 @@ public class Process {
 		this.notes = notes;
 	}
 
-	public int getStatus() {
-		return status;
-	}
+	//public int getStatus() {
+	//	return status;
+	//}
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+	//public void setStatus(int status) {
+	//	this.status = status;
+	//}
 
 	public Properties getProperties() {
 		return properties;
@@ -76,14 +76,14 @@ public class Process {
 	public Process() {
 	}
 	
-	public Process(int processID, boolean enabled, int typeID, List<Process> children, String notes, int status, Properties properties) {
+	public Process(int processID, boolean enabled, int typeID, List<Process> children, String notes, Properties properties) {
 		super();
 		this.processID = processID;
 		this.enabled = enabled;
 		this.typeID = typeID;
 		this.children = children;
 		this.notes = notes;
-		this.status = status;
+		//this.status = status;
 		this.properties = properties;
 	}
 	
@@ -93,5 +93,9 @@ public class Process {
 			childCount = children.size();
 
 		return processID * 10 + childCount + 1;
+	}
+	
+	public String getParameterValue(String parameterID) {
+		return properties.getProperty(parameterID);
 	}
 }
