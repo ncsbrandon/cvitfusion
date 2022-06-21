@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Parameter {
 
-	enum Form {
+	public enum Form {
 		INTEGER,
 		DECIMAL,
 		STRING,

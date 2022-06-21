@@ -107,6 +107,7 @@
                                     </TableView>
                                  </content>
                               </TitledPane>
+                              <VBox fx:id="parameterEditVBox" />
                               <ButtonBar fx:id="parametersButtonBar" prefHeight="30.0" prefWidth="200.0">
                                 <buttons>
                                   <Button fx:id="parametersButtonSave" mnemonicParsing="false" onAction="#onParametersButtonSave" text="Save" />

@@ -19,8 +19,8 @@ import com.apextalos.cvitfusion.client.controls.EngineStatusListViewCell;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.client.models.EngineStatusModel;
-import com.apextalos.cvitfusion.client.models.ParameterModel;
 import com.apextalos.cvitfusion.client.models.MainSceneModel;
+import com.apextalos.cvitfusion.client.models.ParameterModel;
 import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResponseGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResultGuiListener;
@@ -32,6 +32,7 @@ import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionListener;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
 import com.apextalos.cvitfusion.common.opflow.OperationalFlow;
 import com.apextalos.cvitfusion.common.opflow.Parameter;
+import com.apextalos.cvitfusion.common.opflow.Parameter.Form;
 import com.apextalos.cvitfusion.common.opflow.Process;
 import com.apextalos.cvitfusion.common.opflow.ProcessLink;
 import com.apextalos.cvitfusion.common.opflow.Type;
@@ -45,6 +46,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -63,6 +65,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
@@ -96,6 +99,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
     @FXML private Button designButtonSave;
     @FXML private ButtonBar parametersButtonBar;
     @FXML private Button parametersButtonSave;
+    @FXML private VBox parameterEditVBox;
     @FXML private VBox propertiesVbox;
     @FXML private TableView<ParameterModel> parametersTable;
     @FXML private TableColumn<Object, Object> parametersColumnKey;
@@ -115,6 +119,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	private ClientConfigMqttTransceiver ccmt;
 	private Timer guiUpdateTimer;
 	private ResourceLoader<Image> imageLoader = new ResourceLoader<>();
+	private ResourceLoader<Pane> paneLoader = new ResourceLoader<>();
 	
 	//*********************
 	// SCENE EVENTS
@@ -598,7 +603,49 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	// PARAMETER EVENTS
 	// *********************
 	private void onParameterSelected(ParameterModel newValue) {
+		parameterEditVBox.getChildren().clear();
 		
+		// selection removed or read-only
+		if(newValue == null || newValue.getParameter() == null)
+			return;
+		
+		if(newValue.getParameter().getForm() == Form.STRINGLIST) {
+			FXMLLoader parameterChoiceLoader = paneLoader.createLoader("parameterChoice.fxml", null);
+			ParameterChoiceController parameterChoiceController = parameterChoiceLoader.getController();
+			Pane parameterChoicePane = paneLoader.getResource();
+			parameterChoiceController.setParameter(newValue.getParameter());
+			parameterEditVBox.getChildren().add(parameterChoicePane);
+		} else if(newValue.getParameter().getForm() == Form.BOOLEAN) {
+			FXMLLoader parameterBooleanLoader = paneLoader.createLoader("parameterBoolean.fxml", null);
+			ParameterBooleanController parameterBooleanController = parameterBooleanLoader.getController();
+			Pane parameterBooleanPane = paneLoader.getResource();
+			parameterBooleanController.setParameter(newValue.getParameter());
+			parameterEditVBox.getChildren().add(parameterBooleanPane);
+		} else if(newValue.getParameter().getForm() == Form.STRING) {
+			FXMLLoader parameterStringLoader = paneLoader.createLoader("parameterString.fxml", null);
+			ParameterStringController parameterStringController = parameterStringLoader.getController();
+			Pane parameterStringPane = paneLoader.getResource();
+			parameterStringController.setParameter(newValue.getParameter());
+			parameterEditVBox.getChildren().add(parameterStringPane);
+		} else if(newValue.getParameter().getForm() == Form.INTEGER) {
+			FXMLLoader parameterIntegerLoader = paneLoader.createLoader("parameterInteger.fxml", null);
+			ParameterIntegerController parameterIntegerController = parameterIntegerLoader.getController();
+			Pane parameterIntegerPane = paneLoader.getResource();
+			parameterIntegerController.setParameter(newValue.getParameter());
+			parameterEditVBox.getChildren().add(parameterIntegerPane);
+		} else if(newValue.getParameter().getForm() == Form.DECIMAL) {
+			FXMLLoader parameterDecimalLoader = paneLoader.createLoader("parameterDecimal.fxml", null);
+			ParameterDecimalController parameterDecimalController = parameterDecimalLoader.getController();
+			Pane parameterDecimalPane = paneLoader.getResource();
+			parameterDecimalController.setParameter(newValue.getParameter());
+			parameterEditVBox.getChildren().add(parameterDecimalPane);
+		} else if(newValue.getParameter().getForm() == Form.EMAIL) {
+			FXMLLoader parameterEmailLoader = paneLoader.createLoader("parameterEmail.fxml", null);
+			ParameterEmailController parameterEmailController = parameterEmailLoader.getController();
+			Pane parameterEmailPane = paneLoader.getResource();
+			parameterEmailController.setParameter(newValue.getParameter());
+			parameterEditVBox.getChildren().add(parameterEmailPane);
+		}
 	}
 	
 	@FXML private void onParametersButtonSave(ActionEvent event) {
@@ -607,6 +654,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	
 	private void noParameters() {
 		parametersButtonSave.setDisable(true);
+		parameterEditVBox.getChildren().clear();
 	}
 	
 	
