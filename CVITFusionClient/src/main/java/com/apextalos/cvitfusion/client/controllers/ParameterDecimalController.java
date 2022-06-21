@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import com.apextalos.cvitfusion.common.opflow.Parameter;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -18,6 +19,11 @@ public class ParameterDecimalController extends ParameterBaseController {
 	void updateParameter(Parameter parameter) {
 		descLabel.setText(parameter.getDescription());
 	}
+	
+	@FXML
+    void onValueTextfield(ActionEvent event) {
+		valueChanged(valueTextfield.getText());
+    }
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

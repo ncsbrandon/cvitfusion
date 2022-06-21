@@ -20,8 +20,8 @@ public class ParameterChoiceController extends ParameterBaseController {
 		descLabel.setText(parameter.getDescription());
 	}
     
-    @FXML void onValuesCombo(ActionEvent event) {
-    	
+    @FXML void onValueCombobox(ActionEvent event) {
+    	valueChanged((String) valueCombobox.getSelectionModel().getSelectedItem());
     }
 
 	@Override

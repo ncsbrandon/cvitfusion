@@ -396,7 +396,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		for(Parameter parameter : type.getParameters()) {
 			model.getTableItems().add(new ParameterModel(
 					parameter,
-					process.getParameterValue(parameter.getParameterID())
+					type,
+					process,
+					process.getPropertyValue(parameter.getParameterID())
 					));
 		}
 		
@@ -613,37 +615,37 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			FXMLLoader parameterChoiceLoader = paneLoader.createLoader("parameterChoice.fxml", null);
 			ParameterChoiceController parameterChoiceController = parameterChoiceLoader.getController();
 			Pane parameterChoicePane = paneLoader.getResource();
-			parameterChoiceController.setParameter(newValue.getParameter());
+			parameterChoiceController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterChoicePane);
 		} else if(newValue.getParameter().getForm() == Form.BOOLEAN) {
 			FXMLLoader parameterBooleanLoader = paneLoader.createLoader("parameterBoolean.fxml", null);
 			ParameterBooleanController parameterBooleanController = parameterBooleanLoader.getController();
 			Pane parameterBooleanPane = paneLoader.getResource();
-			parameterBooleanController.setParameter(newValue.getParameter());
+			parameterBooleanController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterBooleanPane);
 		} else if(newValue.getParameter().getForm() == Form.STRING) {
 			FXMLLoader parameterStringLoader = paneLoader.createLoader("parameterString.fxml", null);
 			ParameterStringController parameterStringController = parameterStringLoader.getController();
 			Pane parameterStringPane = paneLoader.getResource();
-			parameterStringController.setParameter(newValue.getParameter());
+			parameterStringController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterStringPane);
 		} else if(newValue.getParameter().getForm() == Form.INTEGER) {
 			FXMLLoader parameterIntegerLoader = paneLoader.createLoader("parameterInteger.fxml", null);
 			ParameterIntegerController parameterIntegerController = parameterIntegerLoader.getController();
 			Pane parameterIntegerPane = paneLoader.getResource();
-			parameterIntegerController.setParameter(newValue.getParameter());
+			parameterIntegerController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterIntegerPane);
 		} else if(newValue.getParameter().getForm() == Form.DECIMAL) {
 			FXMLLoader parameterDecimalLoader = paneLoader.createLoader("parameterDecimal.fxml", null);
 			ParameterDecimalController parameterDecimalController = parameterDecimalLoader.getController();
 			Pane parameterDecimalPane = paneLoader.getResource();
-			parameterDecimalController.setParameter(newValue.getParameter());
+			parameterDecimalController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterDecimalPane);
 		} else if(newValue.getParameter().getForm() == Form.EMAIL) {
 			FXMLLoader parameterEmailLoader = paneLoader.createLoader("parameterEmail.fxml", null);
 			ParameterEmailController parameterEmailController = parameterEmailLoader.getController();
 			Pane parameterEmailPane = paneLoader.getResource();
-			parameterEmailController.setParameter(newValue.getParameter());
+			parameterEmailController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterEmailPane);
 		}
 	}

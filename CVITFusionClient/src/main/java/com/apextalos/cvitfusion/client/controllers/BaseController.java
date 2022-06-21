@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public abstract class BaseController implements Initializable, ActionListener {
 
 	public enum EventType {
-		SELECTED, DESELECTED, ENABLED, DISABLED
+		SELECTED, DESELECTED, ENABLED, DISABLED, VALUECHANGED
 	}
 
 	protected ConfigFile cf = null;

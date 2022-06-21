@@ -3,6 +3,8 @@ package com.apextalos.cvitfusion.common.opflow;
 import java.util.List;
 import java.util.Properties;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Process {
 
 	private int processID;
@@ -95,7 +97,13 @@ public class Process {
 		return processID * 10 + childCount + 1;
 	}
 	
-	public String getParameterValue(String parameterID) {
+	@JsonIgnore
+	public String getPropertyValue(String parameterID) {
 		return properties.getProperty(parameterID);
+	}
+	
+	@JsonIgnore
+	public void setPropertyValue(String parameterID, String value) {
+		properties.setProperty(parameterID, value);
 	}
 }
