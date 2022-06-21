@@ -96,10 +96,10 @@
                            <children>
                               <TitledPane animated="false" collapsible="false" text="Properties">
                                  <content>
-                                    <TableView fx:id="propertiesTable">
+                                    <TableView fx:id="parametersTable">
                                       <columns>
-                                        <TableColumn fx:id="propertiesColumnKey" text="Key" />
-                                        <TableColumn fx:id="propertiesColumnValue" text="Value" />
+                                        <TableColumn fx:id="parametersColumnKey" text="Key" />
+                                        <TableColumn fx:id="parametersColumnValue" text="Value" />
                                       </columns>
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -107,9 +107,9 @@
                                     </TableView>
                                  </content>
                               </TitledPane>
-                              <ButtonBar fx:id="propsButtonBar" prefHeight="30.0" prefWidth="200.0">
+                              <ButtonBar fx:id="parametersButtonBar" prefHeight="30.0" prefWidth="200.0">
                                 <buttons>
-                                  <Button fx:id="propsButtonSave" mnemonicParsing="false" onAction="#onPropsButtonSave" text="Save" />
+                                  <Button fx:id="parametersButtonSave" mnemonicParsing="false" onAction="#onParametersButtonSave" text="Save" />
                                 </buttons>
                               </ButtonBar>
                            </children>

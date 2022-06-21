@@ -8,7 +8,7 @@ public class MainSceneModel {
 
 	private final DoubleProperty accountBalance;
 	private final ObservableList<String> listItems;
-	private final ObservableList<KeyValuePairModel> tableItems;
+	private final ObservableList<ParameterModel> tableItems;
 
 	public MainSceneModel(Double accountBalance) {
 		this.accountBalance = new SimpleDoubleProperty(accountBalance);
@@ -20,7 +20,7 @@ public class MainSceneModel {
 		return listItems;
 	}
 
-	public ObservableList<KeyValuePairModel> getTableItems() {
+	public ObservableList<ParameterModel> getTableItems() {
 		return tableItems;
 	}
 

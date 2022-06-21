@@ -19,7 +19,7 @@ import com.apextalos.cvitfusion.client.controls.EngineStatusListViewCell;
 import com.apextalos.cvitfusion.client.diagram.DiagramBuilder;
 import com.apextalos.cvitfusion.client.models.DiagramNodeModel;
 import com.apextalos.cvitfusion.client.models.EngineStatusModel;
-import com.apextalos.cvitfusion.client.models.KeyValuePairModel;
+import com.apextalos.cvitfusion.client.models.ParameterModel;
 import com.apextalos.cvitfusion.client.models.MainSceneModel;
 import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResponseGuiListener;
@@ -94,12 +94,12 @@ public class MainSceneController extends BaseController implements EngineStatusG
     @FXML private Button designButtonDisable;
     @FXML private Button designButtonRemove;
     @FXML private Button designButtonSave;
-    @FXML private ButtonBar propsButtonBar;
-    @FXML private Button propsButtonSave;
+    @FXML private ButtonBar parametersButtonBar;
+    @FXML private Button parametersButtonSave;
     @FXML private VBox propertiesVbox;
-    @FXML private TableView<KeyValuePairModel> propertiesTable;
-    @FXML private TableColumn<Object, Object> propertiesColumnKey;
-    @FXML private TableColumn<Object, Object> propertiesColumnValue;
+    @FXML private TableView<ParameterModel> parametersTable;
+    @FXML private TableColumn<Object, Object> parametersColumnKey;
+    @FXML private TableColumn<Object, Object> parametersColumnValue;
     @FXML private ListView<String> statusListView;
     @FXML private Label mqttStatusLabel;
     @FXML private Label versionInfo;
@@ -128,21 +128,27 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		statusListView.setItems(model.getListItems());
 		
 		// properties view
-		propertiesColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
-		propertiesColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
-		propertiesTable.setItems(model.getTableItems());
+		parametersColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
+		parametersColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
+		parametersTable.setItems(model.getTableItems());
+		parametersTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ParameterModel>() {
+			@Override
+			public void changed(ObservableValue<? extends ParameterModel> observable, ParameterModel oldValue, ParameterModel newValue) {
+				onParameterSelected(newValue);				
+			}
+		});
 
 		// version view
 		versionInfo.setText(String.format("%s.%s", Version.getInstance().getVersion(), Version.getInstance().getBuild()));
 
 		// engine status view
-		engineStatusListView.setItems(engineStatusModelList);
 		engineStatusListView.setCellFactory(new Callback<ListView<EngineStatusModel>, ListCell<EngineStatusModel>>() {
 		    @Override
 		    public ListCell<EngineStatusModel> call(ListView<EngineStatusModel> engineStatusListView) {
 		        return new EngineStatusListViewCell();
 		    }
 		});
+		engineStatusListView.setItems(engineStatusModelList);
 		engineStatusListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<EngineStatusModel>() {
 			@Override
 			public void changed(ObservableValue<? extends EngineStatusModel> observable, EngineStatusModel oldValue, EngineStatusModel newValue) {
@@ -165,7 +171,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 
 		// bind heights to create window fill
 		engineStatusListView.prefHeightProperty().bind(enginesVbox.heightProperty());
-		propertiesTable.prefHeightProperty().bind(propertiesVbox.heightProperty());
+		parametersTable.prefHeightProperty().bind(propertiesVbox.heightProperty());
 		designScroll.prefHeightProperty().bind(designVbox.heightProperty());
 		designAnchor.prefHeightProperty().bind(designScroll.heightProperty());
 		
@@ -204,7 +210,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			sp112.setDividerPosition(0, cf.getDouble(ConfigItems.MAIN_SP112_DIV_POS_CONFIG, -1));
 		
 		noDesignSelection();
-		noProperties();
+		noParameters();
 		clearDesignPane();
 		
 		// start MQTT
@@ -310,7 +316,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		ccmt.requestConfig(esm.getIdProperty().getValue(), this);
 		// clear the selections
 		noDesignSelection();
-		noProperties();
+		noParameters();
 		clearDesignPane();
 	}
 	
@@ -352,8 +358,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		Type childType = activeDesign.lookupType(childProcess.getTypeID());
 		
 		model.getTableItems().clear();
-		model.getTableItems().add(new KeyValuePairModel("From", String.format("%s %d", parentType.getName(), parentProcess.getProcessID())));
-		model.getTableItems().add(new KeyValuePairModel("To", String.format("%s %d", childType.getName(), childProcess.getProcessID())));
+		model.getTableItems().add(new ParameterModel("From", String.format("%s %d", parentType.getName(), parentProcess.getProcessID())));
+		model.getTableItems().add(new ParameterModel("To", String.format("%s %d", childType.getName(), childProcess.getProcessID())));
 	}
 	
 	private void onLineDeselection(Line line) {
@@ -374,17 +380,17 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		//process.getStatus()
 		
 		model.getTableItems().clear();
-		model.getTableItems().add(new KeyValuePairModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
-		model.getTableItems().add(new KeyValuePairModel("Version", String.valueOf(type.getVersion())));
+		model.getTableItems().add(new ParameterModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
+		model.getTableItems().add(new ParameterModel("Version", String.valueOf(type.getVersion())));
 		if(process.hasChildren())
-			model.getTableItems().add(new KeyValuePairModel("Children", String.format("%s", process.getChildren().size())));
+			model.getTableItems().add(new ParameterModel("Children", String.format("%s", process.getChildren().size())));
 		else
-			model.getTableItems().add(new KeyValuePairModel("Children", "none"));
-		model.getTableItems().add(new KeyValuePairModel("Notes",   process.getNotes()));
-		model.getTableItems().add(new KeyValuePairModel("Enabled", String.valueOf(process.isEnabled())));
+			model.getTableItems().add(new ParameterModel("Children", "none"));
+		model.getTableItems().add(new ParameterModel("Notes",   process.getNotes()));
+		model.getTableItems().add(new ParameterModel("Enabled", String.valueOf(process.isEnabled())));
 		for(Parameter parameter : type.getParameters()) {
-			model.getTableItems().add(new KeyValuePairModel(
-					parameter.getDescription(),
+			model.getTableItems().add(new ParameterModel(
+					parameter,
 					process.getParameterValue(parameter.getParameterID())
 					));
 		}
@@ -589,14 +595,18 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	
 	
 	// *********************
-	// PROPERTY EVENTS
+	// PARAMETER EVENTS
 	// *********************
-	@FXML private void onPropsButtonSave(ActionEvent event) {
-		propsButtonSave.setDisable(true);
+	private void onParameterSelected(ParameterModel newValue) {
+		
 	}
 	
-	private void noProperties() {
-		propsButtonSave.setDisable(true);
+	@FXML private void onParametersButtonSave(ActionEvent event) {
+		parametersButtonSave.setDisable(true);
+	}
+	
+	private void noParameters() {
+		parametersButtonSave.setDisable(true);
 	}
 	
 	
