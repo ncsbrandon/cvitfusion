@@ -49,7 +49,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -97,8 +96,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
     @FXML private Button designButtonDisable;
     @FXML private Button designButtonRemove;
     @FXML private Button designButtonSave;
-    @FXML private ButtonBar parametersButtonBar;
-    @FXML private Button parametersButtonSave;
     @FXML private VBox parameterEditVBox;
     @FXML private VBox propertiesVbox;
     @FXML private TableView<ParameterModel> parametersTable;
@@ -624,7 +621,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				@Override
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
-					
+					designButtonSave.setDisable(false);
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.BOOLEAN) {
@@ -638,7 +635,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				@Override
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
-					
+					designButtonSave.setDisable(false);
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.STRING) {
@@ -652,7 +649,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				@Override
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
-					
+					designButtonSave.setDisable(false);
 				}
 			});
 			
@@ -667,7 +664,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				@Override
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
-					
+					designButtonSave.setDisable(false);
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.DECIMAL) {
@@ -681,7 +678,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				@Override
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
-					
+					designButtonSave.setDisable(false);
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.EMAIL) {
@@ -695,18 +692,15 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				@Override
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
-					
+					designButtonSave.setDisable(false);
 				}
 			});
 		}
 	}
 	
-	@FXML private void onParametersButtonSave(ActionEvent event) {
-		parametersButtonSave.setDisable(true);
-	}
+
 	
 	private void noParameters() {
-		parametersButtonSave.setDisable(true);
 		parameterEditVBox.getChildren().clear();
 	}
 	

@@ -12,28 +12,29 @@ import javafx.scene.control.Label;
 
 public class ParameterBooleanController extends ParameterBaseController {
 
-	@FXML private Label descLabel;
-	@FXML private CheckBox valueCheckbox;
-	    
+	@FXML
+	private CheckBox valueCheckbox;
+  
 	@Override
 	void updateParameter(Parameter parameter) {
-		descLabel.setText(parameter.getDescription());
+		valueCheckbox.setText(parameter.getDescription());
+	}
+	
+	@Override
+	void updateValue(String value) {
+		valueCheckbox.setSelected(Boolean.parseBoolean(value));
 	}
 	
 	@FXML
     void onValueCheckbox(ActionEvent event) {
-		valueChanged(String.valueOf(valueCheckbox.isSelected()));
+    	valueChanged(String.valueOf(valueCheckbox.isSelected()));
     }
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onActionPerformed(Object o, EventType et) {
-		// TODO Auto-generated method stub
-		
 	}
 }

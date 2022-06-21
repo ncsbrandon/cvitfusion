@@ -20,6 +20,11 @@ public class ParameterStringController extends ParameterBaseController {
 		descLabel.setText(parameter.getDescription());
 	}
 	
+	@Override
+	void updateValue(String value) {
+		valueTextfield.setText(value);
+	}
+	
 	@FXML
     void onValueTextfield(ActionEvent event) {
 		valueChanged(valueTextfield.getText());
@@ -27,7 +32,6 @@ public class ParameterStringController extends ParameterBaseController {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
 	}
 
 	@Override
