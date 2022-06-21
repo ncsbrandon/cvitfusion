@@ -382,25 +382,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		Process process = activeDesign.lookupProcess(Integer.valueOf(dncModel.getIDProperty().get()));
 		Type type = activeDesign.lookupType(process.getTypeID());
 		
-		//process.getStatus()
-		
-		model.getTableItems().clear();
-		model.getTableItems().add(new ParameterModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
-		model.getTableItems().add(new ParameterModel("Version", String.valueOf(type.getVersion())));
-		if(process.hasChildren())
-			model.getTableItems().add(new ParameterModel("Children", String.format("%s", process.getChildren().size())));
-		else
-			model.getTableItems().add(new ParameterModel("Children", "none"));
-		model.getTableItems().add(new ParameterModel("Notes",   process.getNotes()));
-		model.getTableItems().add(new ParameterModel("Enabled", String.valueOf(process.isEnabled())));
-		for(Parameter parameter : type.getParameters()) {
-			model.getTableItems().add(new ParameterModel(
-					parameter,
-					type,
-					process,
-					process.getPropertyValue(parameter.getParameterID())
-					));
-		}
+		fillParameterTable(process, type);		
 		
 		// add output button
 		designButtonAddOutput.setVisible(type.hasSupportedOutputs());
@@ -423,6 +405,26 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		
 		// remove button
 		designButtonRemove.setVisible(true);
+	}
+	
+	private void fillParameterTable(Process process, Type type) {
+		model.getTableItems().clear();
+		model.getTableItems().add(new ParameterModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
+		model.getTableItems().add(new ParameterModel("Version", String.valueOf(type.getVersion())));
+		if(process.hasChildren())
+			model.getTableItems().add(new ParameterModel("Children", String.format("%s", process.getChildren().size())));
+		else
+			model.getTableItems().add(new ParameterModel("Children", "none"));
+		model.getTableItems().add(new ParameterModel("Notes",   process.getNotes()));
+		model.getTableItems().add(new ParameterModel("Enabled", String.valueOf(process.isEnabled())));
+		for(Parameter parameter : type.getParameters()) {
+			model.getTableItems().add(new ParameterModel(
+					parameter,
+					type,
+					process,
+					process.getPropertyValue(parameter.getParameterID())
+					));
+		}
 	}
 	
 	private void onProcessDeselection(DiagramNodeControl dnc) {
@@ -617,36 +619,85 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			Pane parameterChoicePane = paneLoader.getResource();
 			parameterChoiceController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterChoicePane);
+			
+			parameterChoiceController.addActionListener(new ActionListener() {
+				@Override
+				public void onActionPerformed(Object o, EventType et) {
+					parametersTable.refresh();
+					
+				}
+			});
 		} else if(newValue.getParameter().getForm() == Form.BOOLEAN) {
 			FXMLLoader parameterBooleanLoader = paneLoader.createLoader("parameterBoolean.fxml", null);
 			ParameterBooleanController parameterBooleanController = parameterBooleanLoader.getController();
 			Pane parameterBooleanPane = paneLoader.getResource();
 			parameterBooleanController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterBooleanPane);
+			
+			parameterBooleanController.addActionListener(new ActionListener() {
+				@Override
+				public void onActionPerformed(Object o, EventType et) {
+					parametersTable.refresh();
+					
+				}
+			});
 		} else if(newValue.getParameter().getForm() == Form.STRING) {
 			FXMLLoader parameterStringLoader = paneLoader.createLoader("parameterString.fxml", null);
 			ParameterStringController parameterStringController = parameterStringLoader.getController();
 			Pane parameterStringPane = paneLoader.getResource();
 			parameterStringController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterStringPane);
+			
+			parameterStringController.addActionListener(new ActionListener() {
+				@Override
+				public void onActionPerformed(Object o, EventType et) {
+					parametersTable.refresh();
+					
+				}
+			});
+			
 		} else if(newValue.getParameter().getForm() == Form.INTEGER) {
 			FXMLLoader parameterIntegerLoader = paneLoader.createLoader("parameterInteger.fxml", null);
 			ParameterIntegerController parameterIntegerController = parameterIntegerLoader.getController();
 			Pane parameterIntegerPane = paneLoader.getResource();
 			parameterIntegerController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterIntegerPane);
+			
+			parameterIntegerController.addActionListener(new ActionListener() {
+				@Override
+				public void onActionPerformed(Object o, EventType et) {
+					parametersTable.refresh();
+					
+				}
+			});
 		} else if(newValue.getParameter().getForm() == Form.DECIMAL) {
 			FXMLLoader parameterDecimalLoader = paneLoader.createLoader("parameterDecimal.fxml", null);
 			ParameterDecimalController parameterDecimalController = parameterDecimalLoader.getController();
 			Pane parameterDecimalPane = paneLoader.getResource();
 			parameterDecimalController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterDecimalPane);
+			
+			parameterDecimalController.addActionListener(new ActionListener() {
+				@Override
+				public void onActionPerformed(Object o, EventType et) {
+					parametersTable.refresh();
+					
+				}
+			});
 		} else if(newValue.getParameter().getForm() == Form.EMAIL) {
 			FXMLLoader parameterEmailLoader = paneLoader.createLoader("parameterEmail.fxml", null);
 			ParameterEmailController parameterEmailController = parameterEmailLoader.getController();
 			Pane parameterEmailPane = paneLoader.getResource();
 			parameterEmailController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterEmailPane);
+			
+			parameterEmailController.addActionListener(new ActionListener() {
+				@Override
+				public void onActionPerformed(Object o, EventType et) {
+					parametersTable.refresh();
+					
+				}
+			});
 		}
 	}
 	

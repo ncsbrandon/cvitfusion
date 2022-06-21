@@ -3,11 +3,7 @@ package com.apextalos.cvitfusion.client.controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.apextalos.cvitfusion.common.opflow.Parameter;
-import com.apextalos.cvitfusion.common.opflow.Process;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +21,7 @@ public class ParameterStringController extends ParameterBaseController {
 	}
 	
 	@FXML
-    void onValueTextField(ActionEvent event) {
+    void onValueTextfield(ActionEvent event) {
 		valueChanged(valueTextfield.getText());
     }
 	

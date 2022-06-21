@@ -22,5 +22,7 @@ public abstract class ParameterBaseController extends BaseController {
 		Process process = parameterModel.getProcess();
 		Parameter parameter = parameterModel.getParameter();
 		process.setPropertyValue(parameter.getParameterID(), value);
+		parameterModel.setValue(value);
+		actionPerformed(parameterModel, EventType.VALUECHANGED);
 	}
 }
