@@ -8,7 +8,6 @@ import com.apextalos.cvitfusion.common.opflow.Parameter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 
 public class ParameterBooleanController extends ParameterBaseController {
 
