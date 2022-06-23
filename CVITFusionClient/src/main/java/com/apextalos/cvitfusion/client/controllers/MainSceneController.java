@@ -57,6 +57,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
@@ -132,6 +133,22 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		// properties view
 		parametersColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
 		parametersColumnValue.setCellValueFactory(new PropertyValueFactory<>("value"));
+		parametersTable.setRowFactory(new Callback<TableView<ParameterModel>, TableRow<ParameterModel>>() {
+			@Override
+			public TableRow<ParameterModel> call(TableView<ParameterModel> param) {
+				return new TableRow<ParameterModel>() {
+					@Override
+					protected void updateItem(ParameterModel item, boolean empty) {
+						super.updateItem(item, empty);
+						if(item != null && item.isChanged()) {
+							setStyle("-fx-font-weight: bold");
+						} else {
+							setStyle("");
+						}
+					}
+				};
+			}
+		});
 		parametersTable.setItems(model.getTableItems());
 		parametersTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ParameterModel>() {
 			@Override
@@ -622,6 +639,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
 					designButtonSave.setDisable(false);
+					// update the design
+					fillDesignPane();
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.BOOLEAN) {
@@ -697,8 +716,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			});
 		}
 	}
-	
-
 	
 	private void noParameters() {
 		parameterEditVBox.getChildren().clear();
@@ -839,6 +856,10 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				esm.setBusy(false);
 			}
 		}
+
+		activeDesign.clearChanges();
+		// update the design
+		fillDesignPane();
 		
 		// no changes to save
 		designButtonSave.setDisable(true);

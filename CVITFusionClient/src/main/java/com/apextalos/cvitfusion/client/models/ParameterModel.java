@@ -40,6 +40,11 @@ public class ParameterModel {
 
 	public void setValue(String value) {
 		this.value.set(value);
+		
+		if(process == null || parameter == null)
+			return;
+		
+		process.putChangedProperty(parameter.getParameterID());
 	}
 	
 	public Parameter getParameter() {
@@ -52,5 +57,12 @@ public class ParameterModel {
 	
 	public Type getType() {
 		return type;
+	}
+	
+	public boolean isChanged() {
+		if(process == null || parameter == null)
+			return false;
+		
+		return process.isChangedProperty(parameter.getParameterID());
 	}
 }

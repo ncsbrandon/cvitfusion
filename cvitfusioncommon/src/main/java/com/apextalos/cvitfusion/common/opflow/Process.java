@@ -1,5 +1,6 @@
 package com.apextalos.cvitfusion.common.opflow;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -14,6 +15,7 @@ public class Process {
 	private String notes;
 	//private int status;
 	private Properties properties;
+	private List<String> changedProperties = new ArrayList<>();
 
 	public int getProcessID() {
 		return processID;
@@ -105,5 +107,26 @@ public class Process {
 	@JsonIgnore
 	public void setPropertyValue(String parameterID, String value) {
 		properties.setProperty(parameterID, value);
+	}
+	
+	@JsonIgnore
+	public boolean isChangedProperty(String parameterID) {
+		return changedProperties.contains(parameterID);
+	}
+	
+	@JsonIgnore
+	public void putChangedProperty(String parameterID) {
+		if(!changedProperties.contains(parameterID))
+			changedProperties.add(parameterID);
+	}
+	
+	@JsonIgnore
+	public boolean hasChangedProperties() {
+		return !changedProperties.isEmpty();
+	}
+	
+	@JsonIgnore
+	public void clearChangedProperties() {
+		changedProperties.clear();
 	}
 }

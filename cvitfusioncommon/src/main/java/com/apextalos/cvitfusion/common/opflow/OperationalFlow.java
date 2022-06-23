@@ -231,4 +231,25 @@ public class OperationalFlow {
 		
 		return "";
 	}
+	
+	@JsonIgnore
+	public void clearChanges() {
+		clearChangesRecur(processes);
+	}
+	
+	@JsonIgnore
+	private boolean clearChangesRecur(List<Process> processes) {
+				
+		for (Process procIter : processes) {
+			
+			procIter.clearChangedProperties();
+			
+			if(procIter.getChildren() != null) {
+				if(clearChangesRecur(procIter.getChildren()))
+					return true;
+			}
+		}
+		
+		return false;
+	}
 }

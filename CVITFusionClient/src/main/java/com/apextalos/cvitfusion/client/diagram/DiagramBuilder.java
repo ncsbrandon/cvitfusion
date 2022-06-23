@@ -115,7 +115,7 @@ public class DiagramBuilder {
 		Type t = opflow.lookupType(process.getTypeID());
 		model.setHasInput(!t.getIsTopLevel());
 		model.setHasOutput(t.hasSupportedOutputs());
-		model.setName(t.getName());
+		model.setName((process.hasChangedProperties() ? "*" : "") + t.getName() + (process.hasChangedProperties() ? "*" : ""));
 		r.addActionListener(listener);
 		dncs.add(r);
 
