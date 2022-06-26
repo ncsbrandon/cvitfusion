@@ -25,8 +25,7 @@ public class ParameterIntegerController extends ParameterBaseController {
 		valueTextfield.setText(value);
 	}
 	
-	@FXML
-    void onValueTextfield(ActionEvent event) {
+	@FXML void onValueTextfield(ActionEvent event) {
 		valueChanged(valueTextfield.getText());
     }
 	

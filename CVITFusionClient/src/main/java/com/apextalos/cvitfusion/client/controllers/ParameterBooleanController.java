@@ -11,8 +11,7 @@ import javafx.scene.control.CheckBox;
 
 public class ParameterBooleanController extends ParameterBaseController {
 
-	@FXML
-	private CheckBox valueCheckbox;
+	@FXML private CheckBox valueCheckbox;
   
 	@Override
 	void updateParameter(Parameter parameter) {
@@ -24,8 +23,7 @@ public class ParameterBooleanController extends ParameterBaseController {
 		valueCheckbox.setSelected(Boolean.parseBoolean(value));
 	}
 	
-	@FXML
-    void onValueCheckbox(ActionEvent event) {
+	@FXML void onValueCheckbox(ActionEvent event) {
     	valueChanged(String.valueOf(valueCheckbox.isSelected()));
     }
 	

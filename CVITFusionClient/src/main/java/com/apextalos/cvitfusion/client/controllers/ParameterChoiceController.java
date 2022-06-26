@@ -28,7 +28,7 @@ public class ParameterChoiceController extends ParameterBaseController {
 	}
     
     @FXML void onValueCombobox(ActionEvent event) {
-    	valueChanged((String) valueCombobox.getSelectionModel().getSelectedItem());
+    	valueChanged(valueCombobox.getSelectionModel().getSelectedItem());
     }
 
 	@Override

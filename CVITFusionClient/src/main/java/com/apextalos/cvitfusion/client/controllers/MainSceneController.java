@@ -639,7 +639,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
 					designButtonSave.setDisable(false);
-					// update the design
 					fillDesignPane();
 				}
 			});
@@ -655,6 +654,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
 					designButtonSave.setDisable(false);
+					fillDesignPane();
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.STRING) {
@@ -669,6 +669,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
 					designButtonSave.setDisable(false);
+					fillDesignPane();
 				}
 			});
 			
@@ -684,6 +685,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
 					designButtonSave.setDisable(false);
+					fillDesignPane();
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.DECIMAL) {
@@ -698,6 +700,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
 					designButtonSave.setDisable(false);
+					fillDesignPane();
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.EMAIL) {
@@ -712,6 +715,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				public void onActionPerformed(Object o, EventType et) {
 					parametersTable.refresh();
 					designButtonSave.setDisable(false);
+					fillDesignPane();
 				}
 			});
 		}
@@ -857,9 +861,11 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			}
 		}
 
+		// clear changes from the design
 		activeDesign.clearChanges();
-		// update the design
 		fillDesignPane();
+		
+		parametersTable.refresh();
 		
 		// no changes to save
 		designButtonSave.setDisable(true);
