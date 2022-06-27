@@ -124,8 +124,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		// create model
 		model = new MainSceneModel(1000d);
 
-		// status view
-		statusListView.setItems(model.getListItems());
+		// node status view
+		statusListView.setItems(model.getStatusListItems());
 		
 		// properties view
 		parametersColumnKey.setCellValueFactory(new PropertyValueFactory<>("key"));
@@ -146,7 +146,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				};
 			}
 		});
-		parametersTable.setItems(model.getTableItems());
+		parametersTable.setItems(model.getParameterListItems());
 		parametersTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ParameterModel>() {
 			@Override
 			public void changed(ObservableValue<? extends ParameterModel> observable, ParameterModel oldValue, ParameterModel newValue) {
@@ -171,7 +171,22 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				onEngineStatusSelected(newValue);
 			}
 		});
-
+		engineStatusListView.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if(newValue)
+					fillStatusList(engineStatusListView.getSelectionModel().getSelectedItem());
+			}
+		});
+		/*
+		engineStatusListView.getFocusModel().focusedItemProperty().addListener(new ChangeListener<EngineStatusModel>() {
+			@Override
+			public void changed(ObservableValue<? extends EngineStatusModel> observable, EngineStatusModel oldValue, EngineStatusModel newValue) {
+				fillStatusList(newValue);
+			}
+		});
+		*/
+		
 		// bind heights to create window fill
 		engineStatusListView.prefHeightProperty().bind(enginesVbox.heightProperty());
 		parametersTable.prefHeightProperty().bind(propertiesVbox.heightProperty());
@@ -321,6 +336,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		noDesignSelection();
 		noParameters();
 		clearDesignPane();
+		fillStatusList(esm);
 	}
 	
 	
@@ -360,9 +376,11 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		Process childProcess = pc.getChildProcess();
 		Type childType = activeDesign.lookupType(childProcess.getTypeID());
 		
-		model.getTableItems().clear();
-		model.getTableItems().add(new ParameterModel("From", String.format("%s %d", parentType.getName(), parentProcess.getProcessID())));
-		model.getTableItems().add(new ParameterModel("To", String.format("%s %d", childType.getName(), childProcess.getProcessID())));
+		model.getParameterListItems().clear();
+		model.getParameterListItems().add(new ParameterModel("From", String.format("%s %d", parentType.getName(), parentProcess.getProcessID())));
+		model.getParameterListItems().add(new ParameterModel("To", String.format("%s %d", childType.getName(), childProcess.getProcessID())));
+		
+		model.getStatusListItems().clear();
 	}
 	
 	private void onLineDeselection(Line line) {
@@ -380,7 +398,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		Process process = activeDesign.lookupProcess(Integer.valueOf(dncModel.getIDProperty().get()));
 		Type type = activeDesign.lookupType(process.getTypeID());
 		
-		fillParameterTable(process, type);		
+		fillParameterTable(process, type);
+		fillStatusList(process, type);
 		
 		// add output button
 		designButtonAddOutput.setVisible(type.hasSupportedOutputs());
@@ -407,24 +426,35 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	
 	private void fillParameterTable(Process process, Type type) {
 		// read-only
-		model.getTableItems().clear();
-		model.getTableItems().add(new ParameterModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
-		model.getTableItems().add(new ParameterModel("Version", String.valueOf(type.getVersion())));
+		model.getParameterListItems().clear();
+		model.getParameterListItems().add(new ParameterModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
+		model.getParameterListItems().add(new ParameterModel("Version", String.valueOf(type.getVersion())));
 		if(process.hasChildren())
-			model.getTableItems().add(new ParameterModel("# Children", String.format("%s", process.getChildren().size())));
+			model.getParameterListItems().add(new ParameterModel("# Children", String.format("%s", process.getChildren().size())));
 		else
-			model.getTableItems().add(new ParameterModel("Children", "none"));
-		model.getTableItems().add(new ParameterModel("Enabled", String.valueOf(process.isEnabled())));
+			model.getParameterListItems().add(new ParameterModel("Children", "none"));
+		model.getParameterListItems().add(new ParameterModel("Enabled", String.valueOf(process.isEnabled())));
 		
 		// changeable parameters
 		for(Parameter parameter : type.getParameters()) {
-			model.getTableItems().add(new ParameterModel(
+			model.getParameterListItems().add(new ParameterModel(
 					parameter,
 					type,
 					process,
 					process.getPropertyValue(parameter.getParameterID())
 					));
 		}
+	}
+	
+	private void fillStatusList(Process process, Type type) {
+		model.getStatusListItems().clear();
+		model.getStatusListItems().add(process.toString());
+		model.getStatusListItems().add(type.toString());
+	}
+	
+	private void fillStatusList(EngineStatusModel esm) {
+		model.getStatusListItems().clear();
+		model.getStatusListItems().add(esm.toString());
 	}
 	
 	private void onProcessDeselection(DiagramNodeControl dnc) {
@@ -434,7 +464,8 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	
 	private void noDesignSelection() {
 		designSelection = null;
-		model.getTableItems().clear();
+		model.getParameterListItems().clear();
+		model.getStatusListItems().clear();
 		
 		designButtonAddOutput.setVisible(false);
 		designButtonDisable.setVisible(false);
@@ -764,7 +795,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		}
 
 		// print in the status
-		model.getListItems().add(es.toString());
+		model.getStatusListItems().add(es.toString());
 
 		// 1 - update an existing status
 		EngineStatusModel esm = null;

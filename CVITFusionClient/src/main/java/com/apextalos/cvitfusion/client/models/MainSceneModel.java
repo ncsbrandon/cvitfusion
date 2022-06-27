@@ -1,38 +1,25 @@
 package com.apextalos.cvitfusion.client.models;
 
-import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class MainSceneModel {
 
-	private final DoubleProperty accountBalance;
-	private final ObservableList<String> listItems;
-	private final ObservableList<ParameterModel> tableItems;
+	//private final DoubleProperty accountBalance;
+	private final ObservableList<String> statusItems;
+	private final ObservableList<ParameterModel> parameterItems;
 
 	public MainSceneModel(Double accountBalance) {
-		this.accountBalance = new SimpleDoubleProperty(accountBalance);
-		this.listItems = FXCollections.observableArrayList();
-		this.tableItems = FXCollections.observableArrayList();
+		//this.accountBalance = new SimpleDoubleProperty(accountBalance);
+		this.statusItems = FXCollections.observableArrayList();
+		this.parameterItems = FXCollections.observableArrayList();
 	}
 
-	public ObservableList<String> getListItems() {
-		return listItems;
+	public ObservableList<String> getStatusListItems() {
+		return statusItems;
 	}
 
-	public ObservableList<ParameterModel> getTableItems() {
-		return tableItems;
-	}
-
-	public DoubleProperty getAccountBalanceProperty() {
-		return accountBalance;
-	}
-
-	public void deposit(double amount) {
-		accountBalance.set(accountBalance.get() + amount);
-	}
-
-	public void withdraw(double amount) {
-		accountBalance.set(accountBalance.get() - amount);
+	public ObservableList<ParameterModel> getParameterListItems() {
+		return parameterItems;
 	}
 }
