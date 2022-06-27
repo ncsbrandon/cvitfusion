@@ -1,5 +1,6 @@
 package com.apextalos.cvitfusion.client.controls;
 
+import com.apextalos.cvitfusion.client.controllers.FXMLResource;
 import com.apextalos.cvitfusion.client.controllers.ResourceLoader;
 import com.apextalos.cvitfusion.client.models.EngineStatusModel;
 
@@ -14,8 +15,8 @@ public class EngineStatusListViewCell extends ListCell<EngineStatusModel> {
 
 	//private static final Logger logger = LogManager.getLogger(EngineStatusListViewCell.class.getSimpleName());
 
-	private ResourceLoader<Object> rl = new ResourceLoader<>();
-	private FXMLLoader loader;
+	private ResourceLoader rl = new ResourceLoader();
+	private FXMLLoader loader = null;
 	
 	// View
 	@FXML private VBox vboxParent;
@@ -35,7 +36,8 @@ public class EngineStatusListViewCell extends ListCell<EngineStatusModel> {
 		}
 			
 		if (loader == null) {
-			loader = rl.createLoader("engineStatusListViewCell.fxml", this);
+			FXMLResource fr = rl.createLoader("engineStatusListViewCell.fxml", this);
+			loader = fr.getLoader();
 		}	
 
 

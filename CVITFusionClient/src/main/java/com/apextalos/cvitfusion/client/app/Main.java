@@ -10,7 +10,6 @@ import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
 import javafx.application.Application;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -18,7 +17,7 @@ public class Main extends Application {
 	private static final Logger logger = LogManager.getLogger(Main.class.getSimpleName());
 
 	private ConfigFile cf;
-	private ResourceLoader<Image> rl = new ResourceLoader<>();
+	private ResourceLoader rl = new ResourceLoader();
 	
 	@Override
 	public void start(Stage stage) throws IOException {

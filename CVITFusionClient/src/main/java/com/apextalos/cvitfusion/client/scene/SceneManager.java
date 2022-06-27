@@ -1,6 +1,7 @@
 package com.apextalos.cvitfusion.client.scene;
 
 import com.apextalos.cvitfusion.client.controllers.BaseController;
+import com.apextalos.cvitfusion.client.controllers.FXMLResource;
 import com.apextalos.cvitfusion.client.controllers.ResourceLoader;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
@@ -23,7 +24,7 @@ public class SceneManager {
 	}
 	
 	private ConfigFile cf;
-	private ResourceLoader<Parent> rl = new ResourceLoader<>();
+	private ResourceLoader rl = new ResourceLoader();
 	private Scene sceneMain = null;
 	private BaseController controllerMain = null;
 	private Scene sceneConnections = null;
@@ -37,8 +38,9 @@ public class SceneManager {
 		close(stage);
 		
 		if(sceneConnections == null) {
-			controllerConnections = rl.createLoader("connectionsScene.fxml", null).getController();
-			sceneConnections = new Scene(rl.getResource());
+			FXMLResource fr = rl.createLoader("connectionsScene.fxml", null);
+			controllerConnections = fr.getLoader().getController();
+			sceneConnections = new Scene((Parent) fr.getResource());
 		}
 		
 		stage.setScene(sceneConnections);
@@ -60,8 +62,9 @@ public class SceneManager {
 		close(stage);
 		
 		if(sceneMain == null) {
-			controllerMain = rl.createLoader("mainScene.fxml", null).getController();
-			sceneMain = new Scene(rl.getResource());
+			FXMLResource fr = rl.createLoader("mainScene.fxml", null);
+			controllerMain = fr.getLoader().getController();
+			sceneMain = new Scene((Parent) fr.getResource());
 		}
 		
 		stage.setScene(sceneMain);

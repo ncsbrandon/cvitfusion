@@ -46,7 +46,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -61,7 +60,6 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -116,8 +114,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	// services
 	private ClientConfigMqttTransceiver ccmt;
 	private Timer guiUpdateTimer;
-	private ResourceLoader<Image> imageLoader = new ResourceLoader<>();
-	private ResourceLoader<Pane> paneLoader = new ResourceLoader<>();
+	private ResourceLoader resourceLoader = new ResourceLoader();
 	
 	//*********************
 	// SCENE EVENTS
@@ -315,7 +312,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	//*********************
 	protected void onEngineStatusSelected(EngineStatusModel esm) {
 		// set it to the refresh arrow
-		esm.getImageProperty().set(imageLoader.loadImageByFilename(ResourceLoader.IMAGE_REFRESH));
+		esm.getImageProperty().set(resourceLoader.loadImageByFilename(ResourceLoader.IMAGE_REFRESH));
 		// make it spin
 		esm.setBusy(true);
 		// create a subscription, publish a request, and callback on the response
@@ -520,7 +517,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			return;
 		
 		// set it to the refresh arrow
-		esm.getImageProperty().set(imageLoader.loadImageByFilename(ResourceLoader.IMAGE_SAVE));
+		esm.getImageProperty().set(resourceLoader.loadImageByFilename(ResourceLoader.IMAGE_SAVE));
 		// make it spin
 		esm.setBusy(true);
 		// create a subscription, publish a request, and callback on the response
@@ -617,9 +614,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			return;
 		
 		if(newValue.getParameter().getForm() == Form.STRINGLIST) {
-			FXMLLoader parameterChoiceLoader = paneLoader.createLoader("parameterChoice.fxml", null);
-			ParameterChoiceController parameterChoiceController = parameterChoiceLoader.getController();
-			Pane parameterChoicePane = paneLoader.getResource();
+			FXMLResource fr = resourceLoader.createLoader("parameterChoice.fxml", null);
+			ParameterChoiceController parameterChoiceController = fr.getLoader().getController();
+			Pane parameterChoicePane = (Pane) fr.getResource();
 			parameterChoiceController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterChoicePane);
 			
@@ -632,9 +629,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.BOOLEAN) {
-			FXMLLoader parameterBooleanLoader = paneLoader.createLoader("parameterBoolean.fxml", null);
-			ParameterBooleanController parameterBooleanController = parameterBooleanLoader.getController();
-			Pane parameterBooleanPane = paneLoader.getResource();
+			FXMLResource fr = resourceLoader.createLoader("parameterBoolean.fxml", null);
+			ParameterBooleanController parameterBooleanController = fr.getLoader().getController();
+			Pane parameterBooleanPane = (Pane) fr.getResource();
 			parameterBooleanController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterBooleanPane);
 			
@@ -647,9 +644,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.STRING) {
-			FXMLLoader parameterStringLoader = paneLoader.createLoader("parameterString.fxml", null);
-			ParameterStringController parameterStringController = parameterStringLoader.getController();
-			Pane parameterStringPane = paneLoader.getResource();
+			FXMLResource fr = resourceLoader.createLoader("parameterString.fxml", null);
+			ParameterStringController parameterStringController = fr.getLoader().getController();
+			Pane parameterStringPane = (Pane) fr.getResource();
 			parameterStringController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterStringPane);
 			
@@ -663,9 +660,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			});
 			
 		} else if(newValue.getParameter().getForm() == Form.INTEGER) {
-			FXMLLoader parameterIntegerLoader = paneLoader.createLoader("parameterInteger.fxml", null);
-			ParameterIntegerController parameterIntegerController = parameterIntegerLoader.getController();
-			Pane parameterIntegerPane = paneLoader.getResource();
+			FXMLResource fr = resourceLoader.createLoader("parameterInteger.fxml", null);
+			ParameterIntegerController parameterIntegerController = fr.getLoader().getController();
+			Pane parameterIntegerPane = (Pane) fr.getResource();
 			parameterIntegerController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterIntegerPane);
 			
@@ -678,9 +675,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.DECIMAL) {
-			FXMLLoader parameterDecimalLoader = paneLoader.createLoader("parameterDecimal.fxml", null);
-			ParameterDecimalController parameterDecimalController = parameterDecimalLoader.getController();
-			Pane parameterDecimalPane = paneLoader.getResource();
+			FXMLResource fr = resourceLoader.createLoader("parameterDecimal.fxml", null);
+			ParameterDecimalController parameterDecimalController = fr.getLoader().getController();
+			Pane parameterDecimalPane = (Pane) fr.getResource();
 			parameterDecimalController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterDecimalPane);
 			
@@ -693,9 +690,9 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				}
 			});
 		} else if(newValue.getParameter().getForm() == Form.EMAIL) {
-			FXMLLoader parameterEmailLoader = paneLoader.createLoader("parameterEmail.fxml", null);
-			ParameterEmailController parameterEmailController = parameterEmailLoader.getController();
-			Pane parameterEmailPane = paneLoader.getResource();
+			FXMLResource fr = resourceLoader.createLoader("parameterEmail.fxml", null);
+			ParameterEmailController parameterEmailController = fr.getLoader().getController();
+			Pane parameterEmailPane = (Pane) fr.getResource();
 			parameterEmailController.setParameterModel(newValue);
 			parameterEditVBox.getChildren().add(parameterEmailPane);
 			
@@ -784,7 +781,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		}
 
 		// ok status
-		esm.getImageProperty().set(imageLoader.loadImageByFilename(ResourceLoader.IMAGE_ACCEPT));
+		esm.getImageProperty().set(resourceLoader.loadImageByFilename(ResourceLoader.IMAGE_ACCEPT));
 		esm.setBusy(false);
 	}
 	
@@ -811,7 +808,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				// stop spinning
 				esm.setBusy(false);
 				// ok status
-				esm.getImageProperty().set(imageLoader.loadImageByFilename(ResourceLoader.IMAGE_ACCEPT));
+				esm.getImageProperty().set(resourceLoader.loadImageByFilename(ResourceLoader.IMAGE_ACCEPT));
 				esm.setBusy(false);
 			}
 		}
@@ -845,7 +842,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				// stop spinning
 				esm.setBusy(false);
 				// ok status
-				esm.getImageProperty().set(imageLoader.loadImageByFilename("accept.png"));
+				esm.getImageProperty().set(resourceLoader.loadImageByFilename(ResourceLoader.IMAGE_ACCEPT));
 				esm.setBusy(false);
 			}
 		}

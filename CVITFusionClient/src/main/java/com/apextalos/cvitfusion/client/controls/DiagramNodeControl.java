@@ -7,16 +7,16 @@ import java.util.List;
 import com.apextalos.cvitfusion.client.controllers.ActionListener;
 import com.apextalos.cvitfusion.client.controllers.BaseController.EventType;
 import com.apextalos.cvitfusion.client.controllers.DiagramNodeController;
+import com.apextalos.cvitfusion.client.controllers.FXMLResource;
 import com.apextalos.cvitfusion.client.controllers.ResourceLoader;
 
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 
 public class DiagramNodeControl extends AnchorPane implements ActionListener {
 
 	// private static final Logger logger = LogManager.getLogger(DiagramNodeControl.class.getSimpleName());
 
-	private ResourceLoader<Node> rl = new ResourceLoader<>();
+	private ResourceLoader rl = new ResourceLoader();
 	private DiagramNodeController controller;
 
 	public DiagramNodeController getController() {
@@ -29,10 +29,9 @@ public class DiagramNodeControl extends AnchorPane implements ActionListener {
 		controller = new DiagramNodeController();
 		controller.addActionListener(this);
 
-		rl.createLoader("diagramNode.fxml", controller);
-		Node node = rl.getResource();
+		FXMLResource res = rl.createLoader("diagramNode.fxml", controller);
 
-		this.getChildren().add(node);
+		this.getChildren().add(res.getResource());
 	}
 
 	@Override
