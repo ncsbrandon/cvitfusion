@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 
 public class ParameterIntegerController extends ParameterBaseController {
 
@@ -18,6 +19,7 @@ public class ParameterIntegerController extends ParameterBaseController {
 	@Override
 	void updateParameter(Parameter parameter) {
 		descLabel.setText(parameter.getDescription());
+		valueTextfield.setTooltip(new Tooltip(parameter.getTooltip()));
 	}
 	
 	@Override

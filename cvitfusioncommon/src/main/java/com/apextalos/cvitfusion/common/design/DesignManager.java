@@ -80,6 +80,7 @@ public class DesignManager {
 		List<Type> types = new ArrayList<>();
 		
 		List<Parameter> emailParameters = new ArrayList<>() {{
+			add(Parameters.notes);
 			add(Parameters.toAddress);
 			add(Parameters.fromName);
 			add(Parameters.fromAddress);

@@ -8,6 +8,7 @@ import com.apextalos.cvitfusion.common.opflow.Parameter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Tooltip;
 
 public class ParameterBooleanController extends ParameterBaseController {
 
@@ -16,6 +17,7 @@ public class ParameterBooleanController extends ParameterBaseController {
 	@Override
 	void updateParameter(Parameter parameter) {
 		valueCheckbox.setText(parameter.getDescription());
+		valueCheckbox.setTooltip(new Tooltip(parameter.getTooltip()));
 	}
 	
 	@Override

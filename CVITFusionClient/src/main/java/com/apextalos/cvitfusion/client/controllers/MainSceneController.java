@@ -422,15 +422,17 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	}
 	
 	private void fillParameterTable(Process process, Type type) {
+		// read-only
 		model.getTableItems().clear();
 		model.getTableItems().add(new ParameterModel("Process", String.format("%s %d", type.getName(), process.getProcessID())));	
 		model.getTableItems().add(new ParameterModel("Version", String.valueOf(type.getVersion())));
 		if(process.hasChildren())
-			model.getTableItems().add(new ParameterModel("Children", String.format("%s", process.getChildren().size())));
+			model.getTableItems().add(new ParameterModel("# Children", String.format("%s", process.getChildren().size())));
 		else
 			model.getTableItems().add(new ParameterModel("Children", "none"));
-		model.getTableItems().add(new ParameterModel("Notes",   process.getNotes()));
 		model.getTableItems().add(new ParameterModel("Enabled", String.valueOf(process.isEnabled())));
+		
+		// changeable parameters
 		for(Parameter parameter : type.getParameters()) {
 			model.getTableItems().add(new ParameterModel(
 					parameter,

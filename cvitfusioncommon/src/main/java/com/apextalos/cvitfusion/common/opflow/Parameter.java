@@ -16,6 +16,7 @@ public class Parameter {
 	
 	private String parameterID;
 	private String description;
+	private String tooltip;
 	private Form form;
 	private String defaultValue;
 	private List<String> choices;
@@ -31,6 +32,12 @@ public class Parameter {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public String getTooltip() {
+		return tooltip;
+	}
+	public void setTooltip(String tooltip) {
+		this.tooltip = tooltip;
 	}
 	public Form getForm() {
 		return form;
@@ -54,10 +61,11 @@ public class Parameter {
 	public Parameter() {
 	}
 	
-	public Parameter(String parameterID, String description, Form form, String defaultValue, List<String> choices) {
+	public Parameter(String parameterID, String description, Form form, String defaultValue, String tooltip, List<String> choices) {
 		super();
 		this.parameterID = parameterID;
 		this.description = description;
+		this.tooltip = tooltip;
 		this.form = form;
 		this.defaultValue = defaultValue;
 		this.choices = choices;

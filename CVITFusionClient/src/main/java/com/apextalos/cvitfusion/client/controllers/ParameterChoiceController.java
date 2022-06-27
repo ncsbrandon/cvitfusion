@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 
 public class ParameterChoiceController extends ParameterBaseController {
 
@@ -20,6 +21,7 @@ public class ParameterChoiceController extends ParameterBaseController {
 		descLabel.setText(parameter.getDescription());
 		
 		valueCombobox.getItems().addAll(parameter.getChoices());
+		valueCombobox.setTooltip(new Tooltip(parameter.getTooltip()));
 	}
     
     @Override
