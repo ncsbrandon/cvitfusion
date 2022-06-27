@@ -361,7 +361,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 		String decoded = "";
 		try {
 			decoded = URLDecoder.decode(payload, "UTF-8");
-			logger.debug(decoded);
+			//logger.debug(decoded);
 		} catch (UnsupportedEncodingException e) {
 			logger.error(String.format("Failure decoding [%s]: %s", topic, e.getMessage()));
 			return;
