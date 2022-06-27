@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
 
 public class ParameterIntegerController extends ParameterBaseController {
@@ -33,6 +34,16 @@ public class ParameterIntegerController extends ParameterBaseController {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// link Controller to View - ensure only numeric input (integers) in text field
+		valueTextfield.setTextFormatter(new TextFormatter<>(change -> {
+			if (change.getText().matches("\\d+") || change.getText().equals("")) {
+				return change;
+			}
+
+			change.setText("");
+			change.setRange(change.getRangeStart(), change.getRangeStart());
+			return change;
+		}));
 	}
 
 	@Override

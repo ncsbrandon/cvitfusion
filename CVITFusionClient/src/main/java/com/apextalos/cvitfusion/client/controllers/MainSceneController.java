@@ -174,19 +174,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 				onEngineStatusSelected(newValue);
 			}
 		});
-		
-		/*
-		// link Controller to View - ensure only numeric input (integers) in text field
-		welcomeTextField.setTextFormatter(new TextFormatter<>(change -> {
-			if (change.getText().matches("\\d+") || change.getText().equals("")) {
-				return change;
-			}
-
-			change.setText("");
-			change.setRange(change.getRangeStart(), change.getRangeStart());
-			return change;
-		}));
-		*/
 
 		// bind heights to create window fill
 		engineStatusListView.prefHeightProperty().bind(enginesVbox.heightProperty());
