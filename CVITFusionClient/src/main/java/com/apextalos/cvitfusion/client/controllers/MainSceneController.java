@@ -178,14 +178,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 					fillStatusList(engineStatusListView.getSelectionModel().getSelectedItem());
 			}
 		});
-		/*
-		engineStatusListView.getFocusModel().focusedItemProperty().addListener(new ChangeListener<EngineStatusModel>() {
-			@Override
-			public void changed(ObservableValue<? extends EngineStatusModel> observable, EngineStatusModel oldValue, EngineStatusModel newValue) {
-				fillStatusList(newValue);
-			}
-		});
-		*/
 		
 		// bind heights to create window fill
 		engineStatusListView.prefHeightProperty().bind(enginesVbox.heightProperty());
