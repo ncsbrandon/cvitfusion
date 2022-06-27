@@ -753,11 +753,15 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		model.getStatusListItems().clear();
 		model.getStatusListItems().add(process.toString());
 		model.getStatusListItems().add(type.toString());
+		
+		ccmt.requestProcessStatus(process.getProcessID(), this);
 	}
 	
 	private void fillStatusList(EngineStatusModel esm) {
 		model.getStatusListItems().clear();
 		model.getStatusListItems().add(esm.toString());
+		
+		ccmt.requestEngineStatus(esm.getIdProperty().getValue(), this);
 	}
 	
 	

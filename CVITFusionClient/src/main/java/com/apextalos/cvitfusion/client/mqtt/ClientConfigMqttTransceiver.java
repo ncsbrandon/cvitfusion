@@ -122,4 +122,12 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		unsubscribe(l.topic());
 		removeSubscriptionListener(l);
 	}
+	
+	public void requestProcessStatus(int processID, EngineConfigResponseGuiListener guiListener) {
+		
+	}
+	
+	public void requestEngineStatus(String engineID, EngineConfigResponseGuiListener guiListener) {
+	
+	}
 }
