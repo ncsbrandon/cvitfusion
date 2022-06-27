@@ -630,8 +630,14 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		model.getParameterListItems().clear();
 		model.getParameterListItems().add(new ParameterModel("Busy", String.format("%b", esm.getBusy())));
 		model.getParameterListItems().add(new ParameterModel("ID", String.format("%s", esm.getIdProperty().getValue())));
-		model.getParameterListItems().add(new ParameterModel("Last updated", String.format("%s", esm.getLastUpdate().toString())));
-		model.getParameterListItems().add(new ParameterModel("Location", String.format("%s", esm.getLocationNameProperty().toString())));
+		model.getParameterListItems().add(new ParameterModel("Last updated", String.format("%s", esm.getSinceLastUpdateProperty().getValue())));
+		model.getParameterListItems().add(new ParameterModel("Location", String.format("%s", esm.getLocationNameProperty().getValue())));
+		model.getParameterListItems().add(new ParameterModel("Elevation", String.format("%s", esm.getElevationProperty().getValue())));
+		model.getParameterListItems().add(new ParameterModel("Longitude", String.format("%s", esm.getLongitudeProperty().getValue())));
+		model.getParameterListItems().add(new ParameterModel("Latitude", String.format("%s", esm.getLatitudeProperty().getValue())));
+		model.getParameterListItems().add(new ParameterModel("LogLevel", String.format("%s", esm.getLogLevelProperty().getValue())));
+		model.getParameterListItems().add(new ParameterModel("Mode", String.format("%s", esm.getModeProperty().getValue())));
+		model.getParameterListItems().add(new ParameterModel("Version", String.format("%s", esm.getVersionProperty().getValue())));
 	}
 	
 	private void onParameterSelected(ParameterModel newValue) {
