@@ -13,9 +13,7 @@ import javafx.scene.layout.VBox;
 
 public class EngineStatusListViewCell extends ListCell<EngineStatusModel> {
 
-	//private static final Logger logger = LogManager.getLogger(EngineStatusListViewCell.class.getSimpleName());
-
-	private ResourceLoader rl = new ResourceLoader();
+	private ResourceLoader resourceLoader = new ResourceLoader();
 	private FXMLLoader loader = null;
 	
 	// View
@@ -36,7 +34,7 @@ public class EngineStatusListViewCell extends ListCell<EngineStatusModel> {
 		}
 			
 		if (loader == null) {
-			FXMLResource fr = rl.createLoader("engineStatusListViewCell.fxml", this);
+			FXMLResource fr = resourceLoader.createLoader("engineStatusListViewCell.fxml", this);
 			loader = fr.getLoader();
 		}	
 
@@ -46,20 +44,6 @@ public class EngineStatusListViewCell extends ListCell<EngineStatusModel> {
 		sinceLabel.textProperty().bind(engineStatus.getSinceLastUpdateProperty());
 		statusImage.imageProperty().bind(engineStatus.getImageProperty());
 		statusImage.rotateProperty().bind(engineStatus.getSpinProperty());
-		//if (engineStatus.getMode().equals(EngineStatus.Mode.ERROR)) {
-		//	modeImage.setImage(errorImage);
-		//} else if (engineStatus.getMode().equals(EngineStatus.Mode.RUNNING)) {
-		//	modeImage.setImage(runningImage);
-		//} else if (engineStatus.getMode().equals(EngineStatus.Mode.STANDBY)) {
-		//	modeImage.setImage(standbyImage);
-		//} else {
-			// UNKNOWN
-		//	modeImage.setImage(unknownImage);
-		//}
-		
-		//statusImage.maxWidth(20);
-		//statusImage.maxHeight(20);			
-
 
 		setText(null);
 		setGraphic(vboxParent);

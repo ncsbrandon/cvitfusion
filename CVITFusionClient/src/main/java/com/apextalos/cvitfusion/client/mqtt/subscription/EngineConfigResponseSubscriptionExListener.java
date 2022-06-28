@@ -41,7 +41,7 @@ public class EngineConfigResponseSubscriptionExListener implements SubscriptionE
 		try {
 			response = mapper.readValue(se.getPayload(), EngineConfigResponse.class);
 		} catch (JsonProcessingException e) {
-			logger.error("Engine config response parsing failure: " + e.getMessage());
+			logger.error("Engine config response parsing failure: {}", e.getMessage());
 			return;
 		}
 

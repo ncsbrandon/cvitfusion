@@ -27,4 +27,8 @@ public class Parameters {
 	public static final Parameter useAuth = new Parameter("USEAUTH", "Use authentication", Form.BOOLEAN, "true", "Often required for internet relay servers", null);
 	public static final Parameter username = new Parameter("USERNAME", "Username", Form.DECIMAL, "username", "Only needed if authentication is enabled", null);
 	public static final Parameter password = new Parameter("PASSWORD", "Password", Form.STRINGLIST, "six", "Only needed if authentication is enabled", passwords);
+	
+	private Parameters() {
+		// prevent instances
+	}
 }

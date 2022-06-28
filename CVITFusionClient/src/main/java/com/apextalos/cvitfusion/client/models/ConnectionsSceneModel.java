@@ -30,7 +30,7 @@ public class ConnectionsSceneModel {
 			sessionsMap = mapper.readValue(json, new TypeReference<Map<String, Connection>>(){});
 			return true;
 		} catch (JsonProcessingException e) {
-			logger.error("Failure decoding sessions list" + e.getMessage());
+			logger.error("Failure decoding sessions list: {}", e.getMessage());
 		}
 		return false;
 	}
@@ -39,7 +39,7 @@ public class ConnectionsSceneModel {
 		try {
 			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(sessionsMap);
 		} catch (JsonProcessingException e) {
-			logger.error("Failure encoding sessions list" + e.getMessage());
+			logger.error("Failure encoding sessions list: {}", e.getMessage());
 		}
 		return "";
 	}

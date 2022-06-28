@@ -122,7 +122,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// create model
-		model = new MainSceneModel(1000d);
+		model = new MainSceneModel();
 
 		// node status view
 		statusListView.setItems(model.getStatusListItems());
@@ -174,7 +174,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		engineStatusListView.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if(newValue) {
+				if(Boolean.TRUE.equals(newValue)) {
 					EngineStatusModel selected = engineStatusListView.getSelectionModel().getSelectedItem();
 					onEngineStatusSelected(selected, false);
 				}		
@@ -482,7 +482,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	}
 	
 	@FXML private void onDesignButtonAddOutput(ActionEvent event) {
-		logger.info("onDesignButtonAddOutput " + ((Type) ((MenuItem) event.getSource()).getUserData()).getName());
+		logger.info("onDesignButtonAddOutput {}", ((Type)((MenuItem) event.getSource()).getUserData()).getName());
 
 		Process parentProcess = (Process) designSelection.getUserData();
 		Type childType = (Type) ((MenuItem) event.getSource()).getUserData();
@@ -522,7 +522,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	}
 	
 	@FXML private void onDesignButtonCreateInput(ActionEvent event) {
-		logger.info("onDesignButtonCreateInput " + ((Type) ((MenuItem) event.getSource()).getUserData()).getName());
+		logger.info("onDesignButtonCreateInput {}", ((Type)((MenuItem) event.getSource()).getUserData()).getName());
 
 		Type type = (Type) ((MenuItem) event.getSource()).getUserData();
 		Process process = new Process(activeDesign.getProcesses().size() + 1, true, type.getTypeID(), null, "", null);
@@ -780,13 +780,6 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			});
 			return;
 		}
-
-		/*
-		 * model.deposit(100); model.getListItems().add("deposit");
-		 * model.getTableItems().clear(); model.getTableItems().add(new
-		 * KeyValuePairModel("last", "deposit")); model.getTableItems().add(new
-		 * KeyValuePairModel("ts", DateTime.now().toString()));
-		 */
 
 		if (e.getChange() == Change.CONNECTING) {
 			clearDesignPane();

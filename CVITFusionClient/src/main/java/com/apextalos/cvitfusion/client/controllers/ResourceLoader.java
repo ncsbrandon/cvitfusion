@@ -40,7 +40,7 @@ public class ResourceLoader {
 		try {
 			// try loading as the jar
 			InputStream in = getClass().getResourceAsStream("/" + name);
-			logger.info(String.format("getResourceAsStream is null: %b", in == null));
+			logger.info("getResourceAsStream is null: {}", in == null);
 			if (in != null) {
 				loader = new FXMLLoader();
 				if(controller != null)
@@ -49,18 +49,18 @@ public class ResourceLoader {
 			} else {
 				// try loading as the debugger
 				URL url = getClass().getResource("../../../../../" + name);
-				logger.info(String.format("getResource is null: %b", url == null));
+				logger.info("getResource is null: {}", url == null);
 				if (url != null) {
 					loader = new FXMLLoader(url);
 					if(controller != null)
 						loader.setController(controller);
 					resource = loader.load();
 				} else {
-					logger.error("Unable to find the fxml " + name);
+					logger.error("Unable to find the fxml {}", name);
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Failure loading fxml ["+name+"]: " + e.getMessage());
+			logger.error("Failure loading fxml [{}]: {}", name, e.getMessage());
 		}
 
 		FXMLResource fr = new FXMLResource(loader, resource);
@@ -79,21 +79,21 @@ public class ResourceLoader {
 		try {
 			// try loading as the jar
 			InputStream in = getClass().getResourceAsStream("/" + name);
-			logger.info(String.format("getResourceAsStream is null: %b", in==null));
+			logger.info("getResourceAsStream is null: {}", in==null);
 			if(in != null) {
 				image = new Image(in);
 			} else {	
 				// try loading as the debugger
 				URL url = getClass().getResource("../../../../../" + name);
-				logger.info(String.format("getResource is null: %b", url==null));
+				logger.info("getResource is null: {}", url==null);
 				if(url != null) {
 					image = new Image(url.toExternalForm());
 				} else {
-					logger.error("unable to find the image " + name);
+					logger.error("unable to find the image {}", name);
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Failure loading fxml ["+name+"]: " + e.getMessage());
+			logger.error("Failure loading fxml [{}]: {}", name, e.getMessage());
 		}
 		
 		nameImageMapCache.put(name, image);

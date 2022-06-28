@@ -14,9 +14,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class DiagramNodeControl extends AnchorPane implements ActionListener {
 
-	// private static final Logger logger = LogManager.getLogger(DiagramNodeControl.class.getSimpleName());
-
-	private ResourceLoader rl = new ResourceLoader();
+	private final ResourceLoader resourceLoader = new ResourceLoader();
 	private DiagramNodeController controller;
 
 	public DiagramNodeController getController() {
@@ -29,7 +27,7 @@ public class DiagramNodeControl extends AnchorPane implements ActionListener {
 		controller = new DiagramNodeController();
 		controller.addActionListener(this);
 
-		FXMLResource res = rl.createLoader("diagramNode.fxml", controller);
+		FXMLResource res = resourceLoader.createLoader("diagramNode.fxml", controller);
 
 		this.getChildren().add(res.getResource());
 	}

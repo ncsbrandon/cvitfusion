@@ -95,7 +95,7 @@ public class App
     		} else if(feature.getType() == Boolean.class) {
     			System.out.print(" (y|N): ");	
     		} else {
-    			logger.error("Unknown feature type " + feature.getType().toString());
+    			logger.error("Unknown feature type {}", feature.getType());
     			continue;
     		}
     		
@@ -119,7 +119,7 @@ public class App
     		} else if(feature.getType() == Boolean.class) {
     			license.setBooleanFeature(feature, response.equalsIgnoreCase("y"));
     		} else {
-    			logger.error("Unknown feature type %s", feature.getType().toString());
+    			logger.error("Unknown feature type {}", feature.getType());
     		}
     	}
     	
@@ -128,11 +128,11 @@ public class App
     	try {
 			licenseKey = lm.generateLicenseKey(license);
 		} catch (IllegalBlockSizeException | IOException e) {
-			logger.error("License key generation failed: " + e.getMessage());
+			logger.error("License key generation failed: {}", e.getMessage());
 			return;
 		}
     	
     	// print to the user
-    	logger.info(String.format("Generated Key: %s", licenseKey));
+    	logger.info("Generated Key: {}", licenseKey);
     }
 }

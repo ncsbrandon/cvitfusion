@@ -5,12 +5,10 @@ import javafx.collections.ObservableList;
 
 public class MainSceneModel {
 
-	//private final DoubleProperty accountBalance;
 	private final ObservableList<String> statusItems;
 	private final ObservableList<ParameterModel> parameterItems;
 
-	public MainSceneModel(Double accountBalance) {
-		//this.accountBalance = new SimpleDoubleProperty(accountBalance);
+	public MainSceneModel() {
 		this.statusItems = FXCollections.observableArrayList();
 		this.parameterItems = FXCollections.observableArrayList();
 	}

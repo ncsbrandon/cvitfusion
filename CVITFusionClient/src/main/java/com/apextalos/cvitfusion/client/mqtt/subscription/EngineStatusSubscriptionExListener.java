@@ -37,7 +37,7 @@ public class EngineStatusSubscriptionExListener implements SubscriptionExListene
 		try {
 			engineStatus = mapper.readValue(se.getPayload(), EngineStatus.class);
 		} catch (JsonProcessingException e) {
-			logger.error("Engine status parsing failure" + e.getMessage());
+			logger.error("Engine status parsing failure: {}", e.getMessage());
 			return;
 		}
 		

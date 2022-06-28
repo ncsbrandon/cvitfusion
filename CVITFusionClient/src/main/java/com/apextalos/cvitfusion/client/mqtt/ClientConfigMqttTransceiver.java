@@ -57,12 +57,12 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		addSubscriptionListener(l);
 		
 		// build the payload
-		logger.debug("Requesting uuid: " + request.getUuid());
+		logger.debug("Requesting uuid: {}", request.getUuid());
 		String requestPayload;
 		try {
 			requestPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
 		} catch (JsonProcessingException e) {
-			logger.error("Engine config request write failure" + e.getMessage());
+			logger.error("Engine config request write failure: {}", e.getMessage());
 			return;
 		}
 		
@@ -95,12 +95,12 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		addSubscriptionListener(l);
 		
 		// build the payload
-		logger.debug("Requesting uuid: " + request.getUuid());
+		logger.debug("Requesting uuid: {}", request.getUuid());
 		String savePayload;
 		try {
 			savePayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
 		} catch (JsonProcessingException e) {
-			logger.error("Engine config request write failure" + e.getMessage());
+			logger.error("Engine config request write failure: {}", e.getMessage());
 			return;
 		}
 		

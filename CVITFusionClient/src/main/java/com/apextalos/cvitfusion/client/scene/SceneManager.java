@@ -12,8 +12,6 @@ import javafx.stage.WindowEvent;
 
 public class SceneManager {
 
-	//private static final Logger logger = LogManager.getLogger(SceneManager.class.getSimpleName());
-	
 	private static SceneManager singleInstance = null;
 
 	public static SceneManager getInstance(ConfigFile cf) {
@@ -84,12 +82,12 @@ public class SceneManager {
 	public void close(Stage stage) {
 		if(controllerMain != null) {
 			controllerMain.end(stage);
-			//controllerMain = null;
+			//set controllerMain = null
 		}
 		
 		if(controllerConnections != null) {
 			controllerConnections.end(stage);
-			//controllerConnections = null;
+			//set controllerConnections = null
 		}
 		
 		stage.close();

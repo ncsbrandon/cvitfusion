@@ -119,7 +119,8 @@ public class EngineStatusModel {
 	}
 	
 	public void setBusy(boolean busy) {
-		if(this.busy == true && busy == false) {
+		if(this.busy && !busy) {
+			// return to 0 degrees once no longer busy
 			spinProperty.set(0);
 		}
 		

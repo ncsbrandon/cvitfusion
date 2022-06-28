@@ -61,7 +61,7 @@ public class DiagramNodeController extends BaseController {
 
 	@FXML
 	protected void onMouseClicked(MouseEvent mouseEvent) {
-		logger.debug("onMouseClicked " + mouseEvent.toString());
+		logger.debug("onMouseClicked {}", mouseEvent);
 		mouseEvent.consume();
 		actionPerformed(this, EventType.SELECTED);
 	}

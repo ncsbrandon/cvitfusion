@@ -51,7 +51,7 @@ public class DiagramBuilder {
 		
 		int nextX = 0;
 		for (Process topProcess : processes) {
-			logger.info(String.format("layout top process ID [%d] Type [%d]", topProcess.getProcessID(), topProcess.getTypeID()));
+			logger.info("layout top process ID {} Type {}", topProcess.getProcessID(), topProcess.getTypeID());
 			
 			// restart each at the top
 			pos.setY(0);
