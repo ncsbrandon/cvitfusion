@@ -19,7 +19,8 @@ For each project:
 java -cp target/cvitfusionlicenseutil-0.0.1-SNAPSHOT-jar-with-dependencies.jar com.apextalos.cvitfusionlicenseutil.app.App
 
 ## Development tools
-- Eclipse IDE and plugins (https://download.eclipse.org/efxclipse/updates-released/3.8.0/site/)
+- Eclipse IDE (https://download.eclipse.org/efxclipse/updates-released/3.8.0/site/)
+  - Sonarlint
 - Github Desktop
 - SceneBuilder
 - JavaFX
