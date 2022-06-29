@@ -13,7 +13,6 @@ public class Process {
 	private int typeID;
 	private List<Process> children;
 	private String notes;
-	//private int status;
 	private Properties properties;
 	private List<String> changedProperties = new ArrayList<>();
 
@@ -61,14 +60,6 @@ public class Process {
 		this.notes = notes;
 	}
 
-	//public int getStatus() {
-	//	return status;
-	//}
-
-	//public void setStatus(int status) {
-	//	this.status = status;
-	//}
-
 	public Properties getProperties() {
 		return properties;
 	}
@@ -87,7 +78,6 @@ public class Process {
 		this.typeID = typeID;
 		this.children = children;
 		this.notes = notes;
-		//this.status = status;
 		this.properties = properties;
 	}
 	

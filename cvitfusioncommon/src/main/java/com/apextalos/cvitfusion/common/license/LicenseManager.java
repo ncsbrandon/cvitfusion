@@ -66,7 +66,7 @@ public class LicenseManager {
 		do {
 			NetworkInterface network = networks.nextElement();
 			if (network.getHardwareAddress() != null)
-				logger.debug(network.getName() + " " + ByteUtils.bytesToHex(network.getHardwareAddress()));
+				logger.debug("{} {}", network.getName(), ByteUtils.bytesToHex(network.getHardwareAddress()));
 			else
 				logger.debug(network.getName());
 			count++;
@@ -86,7 +86,7 @@ public class LicenseManager {
 		// get the network interface
 		NetworkInterface network = NetworkInterface.getByName(ifname);
 		if (network == null) {
-			logger.error("Unable to create NetworkInterface for " + ifname);
+			logger.error("Unable to create NetworkInterface for {}", ifname);
 			return null;
 		}
 
@@ -96,7 +96,7 @@ public class LicenseManager {
 			hardwareAddress = new byte[] { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66 };
 			logger.debug("using generated hardware address");
 		} else {
-			logger.debug(ifname + " " + ByteUtils.bytesToHex(hardwareAddress));
+			logger.debug("{} {}", ifname, ByteUtils.bytesToHex(hardwareAddress));
 		}
 
 		// object to encrypt
@@ -134,7 +134,7 @@ public class LicenseManager {
 
 		// convert to a string
 		String idstring = ByteUtils.bytesToHex(idbytes);
-		logger.debug("encrypted string: " + idstring);
+		logger.debug("encrypted string: {}", idstring);
 		return idstring;
 	}
 
@@ -166,7 +166,7 @@ public class LicenseManager {
 		// get the network interface and MAC
 		NetworkInterface network = NetworkInterface.getByName(ifname);
 		if (network == null) {
-			logger.error("Unable to create NetworkInterface for " + ifname);
+			logger.error("Unable to create NetworkInterface for {}", ifname);
 			return false;
 		}
 
@@ -176,7 +176,7 @@ public class LicenseManager {
 			hardwareAddress = new byte[] { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66 };
 			logger.debug("using generated hardware address");
 		} else {
-			logger.debug(ifname + " " + ByteUtils.bytesToHex(hardwareAddress));
+			logger.debug("{} {}", ifname, ByteUtils.bytesToHex(hardwareAddress));
 		}
 
 		// get the mac of the device

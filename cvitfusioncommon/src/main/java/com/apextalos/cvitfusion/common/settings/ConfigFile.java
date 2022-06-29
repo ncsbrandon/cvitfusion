@@ -48,13 +48,13 @@ public class ConfigFile {
 
 		// open the file
 		try (FileInputStream fis = new FileInputStream(configFilename)) {
-			logger.info("Loading config file: " + configFilename);
+			logger.info("Loading config file: {}", configFilename);
 			p.load(fis);
 		} catch (FileNotFoundException e) {
-			logger.error("FileNotFoundException while loading the configuration: " + e.getMessage());
+			logger.error("FileNotFoundException while loading the configuration: {}", e.getMessage());
 			return false;
 		} catch (IOException e) {
-			logger.error("IOException while loading the configuration: " + e.getMessage());
+			logger.error("IOException while loading the configuration: {}", e.getMessage());
 			return false;
 		}
 
@@ -111,18 +111,18 @@ public class ConfigFile {
 
 			// hide passwords in the log
 			if (!key.contains("PWD"))
-				logger.debug(key + " set to " + value);
+				logger.debug("{} set to {}", key, value);
 
 			return;
 		}
 
 		if (allowBlank) {
 			p.setProperty(key, "");
-			logger.debug(key + " set to blank");
+			logger.debug("{} set to blank", key);
 			return;
 		}
 
-		logger.debug(key + " NOT set because value is null or blank");
+		logger.debug("{} NOT set because value is null or blank", key);
 	}
 
 	public String getString(String key, String defaultValue) {

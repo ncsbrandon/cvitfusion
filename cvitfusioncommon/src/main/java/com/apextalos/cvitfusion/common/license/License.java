@@ -69,7 +69,7 @@ public class License {
 
 	public String getStringFeature(Feature feature) {
 		if (props == null || !props.containsKey(feature.getId())) {
-			logger.info(feature.getDescription() + " [" + feature.getId() + "] not found");
+			logger.info("{} [{}] not found", feature.getDescription(), feature.getId());
 			return feature.getDefaultValue();
 		}
 

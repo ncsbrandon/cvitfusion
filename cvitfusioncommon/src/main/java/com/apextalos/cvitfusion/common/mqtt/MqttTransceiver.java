@@ -120,9 +120,9 @@ public abstract class MqttTransceiver implements MqttCallback {
 	}
 	
 	public boolean certsExist() {
-		//String folder = BackupRestore.APP_FOLDER;
-		//if(OSDetect.isWindows())
-		//	folder = "C:\\temp\\";
+		//String folder = BackupRestore.APP_FOLDER
+		//if OSDetect.isWindows(
+		//	folder = "C:\\temp\\"
 		
 		File caCertFile = new File(caCert);
 		File clientCrtFile = new File(clientCrt);
@@ -138,20 +138,20 @@ public abstract class MqttTransceiver implements MqttCallback {
 			this.clientCrt = clientCrt;
 			this.clientKey = clientKey;
 			useCerts = certsExist();
-			logger.info("MQTT certificates " + useCerts);
+			logger.info("MQTT certificates {}", useCerts);
 			return useCerts;
 		} 
 		
 		// no certs
 		useCerts = false;
-		logger.info("MQTT certificates " + useCerts);
+		logger.info("MQTT certificates {}", useCerts);
 		return useCerts;
 	}
 	
 	public void clearCerts() {
 		// no certs
 		useCerts = false;
-		logger.info("MQTT certificates " + useCerts);
+		logger.info("MQTT certificates {}", useCerts);
 	}
 
 	public boolean isConnected() {
@@ -189,7 +189,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 				connOpts.setSocketFactory(socketFactory);				
 			}
 
-			logger.debug("Connecting to broker: " + broker);
+			logger.debug("Connecting to broker: {}", broker);
 			connectionChanged(new ConnectionEvent(Change.CONNECTING, "Connecting to " + broker + "..."));
 			client.connect(connOpts);
 			logger.debug("Connected");
@@ -211,7 +211,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 	public void disconnect(boolean clearPubSubs) {
 		try {
 			if(client != null) {
-				logger.debug("Disconnecting from broker: " + broker);
+				logger.debug("Disconnecting from broker: {}", broker);
 				client.setCallback(null);
 				if(client.isConnected())
 					client.disconnect();
@@ -225,16 +225,16 @@ public abstract class MqttTransceiver implements MqttCallback {
 			}
 			connectionChanged(new ConnectionEvent(Change.DISCONNECT, "Connection lost"));
 		} catch (MqttException e) {
-			logger.error("disonnection failure reason " + e.getReasonCode());
-			logger.error("msg " + e.getMessage());
-			logger.error("cause " + e.getCause());
+			logger.error("disonnection failure reason: {}", e.getReasonCode());
+			logger.error("msg: {}", e.getMessage());
+			logger.error("cause: {}", e.getCause());
 			
 			try {
 				client.disconnectForcibly();
 				client.close(true);
 				client = null;
 			} catch (MqttException e1) {
-				logger.error("disonnection FORCED failure reason " + e.getReasonCode());
+				logger.error("disonnection FORCED failure reason: {}", e.getReasonCode());
 			}
 		}
 	}
@@ -252,7 +252,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 			return false;
 		}
 
-		logger.debug("Publishing message [" + content.length() + "]: " + topic);
+		logger.debug("Publishing message [{}]: {}", content.length(), topic);
 		MqttMessage message = new MqttMessage(content.getBytes());
 		message.setQos(QOS);
 		message.setRetained(retained);
@@ -265,9 +265,9 @@ public abstract class MqttTransceiver implements MqttCallback {
 			// logger.debug("Message published");
 			sentCount++;
 		} catch (MqttException e) {
-			logger.error("publish failure reason " + e.getReasonCode());
-			logger.error("msg " + e.getMessage());
-			logger.error("cause " + e.getCause());
+			logger.error("publish failure reason: {}", e.getReasonCode());
+			logger.error("msg: {}", e.getMessage());
+			logger.error("cause: {}", e.getCause());
 			return false; // failure to publish
 		}
 		
@@ -279,13 +279,13 @@ public abstract class MqttTransceiver implements MqttCallback {
 			return;
 		
 		try {
-			logger.debug("subscribing: " + topicFilter);
+			logger.debug("subscribing: {}", topicFilter);
 			activeSubscriptions.add(topicFilter);
 			client.subscribe(topicFilter);
 		} catch (MqttException e) {
-			logger.error("subscription failure reason " + e.getReasonCode());
-			logger.error("msg " + e.getMessage());
-			logger.error("cause " + e.getCause());
+			logger.error("subscription failure reason: {}", e.getReasonCode());
+			logger.error("msg: {}", e.getMessage());
+			logger.error("cause: {}", e.getCause());
 		}
 	}
 	
@@ -294,25 +294,25 @@ public abstract class MqttTransceiver implements MqttCallback {
 			return;
 		
 		try {
-			logger.debug("subscribing: " + Arrays.toString(topicFilters));
+			logger.debug("subscribing: {}", Arrays.toString(topicFilters));
 			activeSubscriptions.addAll(Arrays.asList(topicFilters));
 			client.subscribe(topicFilters);
 		} catch (MqttException e) {
-			logger.error("subscription failure reason %s", e.getReasonCode());
-			logger.error("msg %s", e.getMessage());
-			logger.error("cause %s", e.getCause());
+			logger.error("subscription failure reason: {}", e.getReasonCode());
+			logger.error("msg: {}", e.getMessage());
+			logger.error("cause: {}", e.getCause());
 		}
 	}
 	
 	public boolean resubscribe() {
 		for(String topic : activeSubscriptions) {
-			logger.debug("resubscribing: " + topic);
+			logger.debug("resubscribing: {}", topic);
 			try {
 				client.subscribe(topic);
 			} catch (MqttException e) {
-				logger.error("reubscription failure reason " + e.getReasonCode());
-				logger.error("msg " + e.getMessage());
-				logger.error("cause " + e.getCause());
+				logger.error("reubscription failure reason: {}", e.getReasonCode());
+				logger.error("msg: {}", e.getMessage());
+				logger.error("cause: {}", e.getCause());
 				return false;
 			}
 		}
@@ -325,13 +325,13 @@ public abstract class MqttTransceiver implements MqttCallback {
 			return;
 		
 		try {
-			logger.debug("subscribing: " + topicFilter);
+			logger.debug("subscribing: {}", topicFilter);
 			activeSubscriptions.remove(topicFilter);
 			client.unsubscribe(topicFilter);
 		} catch (MqttException e) {
-			logger.error("unsubscription failure reason " + e.getReasonCode());
-			logger.error("msg " + e.getMessage());
-			logger.error("cause " + e.getCause());
+			logger.error("unsubscription failure reason: {}", e.getReasonCode());
+			logger.error("msg: {}", e.getMessage());
+			logger.error("cause: {}", e.getCause());
 		}
 	}
 

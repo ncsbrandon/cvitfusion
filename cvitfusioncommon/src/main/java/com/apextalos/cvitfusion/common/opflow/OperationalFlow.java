@@ -99,9 +99,8 @@ public class OperationalFlow {
 			return true;
 		
 		for (Process procIter : processes) {
-			if(procIter.getChildren() != null) {
-				if(removeProcessRecur(procIter.getChildren(), process))
-					return true;
+			if(procIter.getChildren() != null && removeProcessRecur(procIter.getChildren(), process)) {
+				return true;
 			}
 		}
 		
@@ -244,9 +243,8 @@ public class OperationalFlow {
 			
 			procIter.clearChangedProperties();
 			
-			if(procIter.getChildren() != null) {
-				if(clearChangesRecur(procIter.getChildren()))
-					return true;
+			if(procIter.getChildren() != null && clearChangesRecur(procIter.getChildren())) {
+				return true;
 			}
 		}
 		

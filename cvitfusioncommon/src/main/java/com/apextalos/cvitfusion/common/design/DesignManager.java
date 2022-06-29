@@ -47,7 +47,7 @@ public class DesignManager {
 		try {
 			resultPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(processes);
 		} catch (JsonProcessingException e) {
-			logger.error("Processes encode failure: " + e.getMessage());
+			logger.error("Processes encode failure: {}", e.getMessage());
 			return false;
 		}
 		
@@ -70,7 +70,7 @@ public class DesignManager {
 		try {
 			processes = mapper.readValue(processJson, new TypeReference<List<Process>>(){});
 		} catch (JsonProcessingException e) {
-			logger.error("Processes decode failure: " + e.getMessage());
+			logger.error("Processes decode failure: {}", e.getMessage());
 		}
 		
 		return processes;
