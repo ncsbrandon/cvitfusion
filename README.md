@@ -23,7 +23,7 @@ java -cp target/cvitfusionlicenseutil-0.0.1-SNAPSHOT-jar-with-dependencies.jar c
   - Sonarlint
 - Github Desktop
 - SceneBuilder
-- JavaFX
+- JavaFX (https://gluonhq.com/products/javafx/) deployed to /usr/lib/jvm
 - JDK 11 or greater (sudo apt install default-jdk)
 - remarkable
 
