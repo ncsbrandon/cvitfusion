@@ -46,7 +46,7 @@ public class EngineConfigSaveSubscriptionExListener implements SubscriptionExLis
 		try {
 			request = mapper.readValue(se.getPayload(), EngineSaveRequest.class);
 		} catch (JsonProcessingException e) {
-			logger.error("Engine config result parsing failure: " + e.getMessage());
+			logger.error("Engine config result parsing failure: {}", e.getMessage());
 			return;
 		}
 
@@ -70,7 +70,7 @@ public class EngineConfigSaveSubscriptionExListener implements SubscriptionExLis
 		try {
 			resultPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(result);
 		} catch (JsonProcessingException e) {
-			logger.error("Engine config result write failure: " + e.getMessage());
+			logger.error("Engine config result write failure: {}", e.getMessage());
 			return;
 		}
 		

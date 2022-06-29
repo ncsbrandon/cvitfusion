@@ -83,13 +83,9 @@ public class DiagramBuilder {
 			Line l = new Line(parentOutputPos.getX(), parentOutputPos.getY(), inputPos.getX(), inputPos.getY());
 			l.setStrokeWidth(4);
 			l.setUserData(new ProcessLink(parentProcess, process));
-			l.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-				@Override
-				public void handle(MouseEvent arg0) {
-					arg0.consume();
-					listener.onActionPerformed(l, EventType.SELECTED);
-				}
+			l.addEventHandler(MouseEvent.MOUSE_CLICKED, (arg0) -> {
+				arg0.consume();
+				listener.onActionPerformed(l, EventType.SELECTED);
 			});
 			dncs.add(l);
 		}

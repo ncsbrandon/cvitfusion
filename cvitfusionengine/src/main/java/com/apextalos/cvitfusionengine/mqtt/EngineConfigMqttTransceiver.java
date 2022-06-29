@@ -30,8 +30,9 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 	}
 
 	@Override
-	public void start() {
-		super.start();
+	public boolean start() {
+		if(!super.start())
+			return false;
 		
 		// listen for config requests
 		logger.info("creating config request listener");
@@ -44,6 +45,8 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 		EngineConfigSaveSubscriptionExListener save = new EngineConfigSaveSubscriptionExListener(cf, this, design);
 		subscribe(save.topic());
 		addSubscriptionListener(save);
+		
+		return true;
 	}
 
 	@Override

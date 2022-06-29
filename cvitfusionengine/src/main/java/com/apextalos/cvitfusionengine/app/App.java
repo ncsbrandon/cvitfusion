@@ -39,7 +39,7 @@ public class App {
 		        try {
 					mainThread.join();
 				} catch (InterruptedException e) {
-					logger.error("Shutdown hook interrupted: " + e.getMessage());
+					logger.error("Shutdown hook interrupted: {}", e.getMessage());
 				}
 		    }
 		});
@@ -54,7 +54,7 @@ public class App {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				logger.error("App main loop interrupted: " + e.getMessage());
+				logger.error("App main loop interrupted: {}", e.getMessage());
 			}
 		}
 		
@@ -80,9 +80,9 @@ public class App {
 		logger.info("configuration loaded");
 		
 		// if we don't have a device UUID at startup, create one
-		if(!cf.hasKey(ConfigItems.DEVICE_UUID_CONFIG)) {
+		if(cf.isEmpty(ConfigItems.DEVICE_UUID_CONFIG)) {
 			cf.setString(ConfigItems.DEVICE_UUID_CONFIG, UUID.randomUUID().toString(), false);
-			logger.info("Created device UUID: " + cf.getString(ConfigItems.DEVICE_UUID_CONFIG, ConfigItems.DEVICE_UUID_DEFAULT));
+			logger.info("Created device UUID: {}", cf.getString(ConfigItems.DEVICE_UUID_CONFIG, ConfigItems.DEVICE_UUID_DEFAULT));
 		}
 		
 		// get the license manager instance
@@ -96,7 +96,7 @@ public class App {
 		}
 		
 		// if we don't have a license ID, create one
-		if(!cf.hasKey(ConfigItems.DEVICE_LICENSEID_CONFIG)) {	
+		if(cf.isEmpty(ConfigItems.DEVICE_LICENSEID_CONFIG)) {	
 			String iface;
 			try {
 				iface = lm.getFirstInterface();
@@ -108,19 +108,19 @@ public class App {
 			try {		
 				String licenseID = lm.generateLicenseID(iface, Version.getInstance().getVersion());
 				cf.setString(ConfigItems.DEVICE_LICENSEID_CONFIG, licenseID, false);
-				logger.error("license id created: " + licenseID);
+				logger.error("license id created: {}", licenseID);
 				
 				// save and exit
 				cf.save();
 				return false;
 			} catch (IllegalBlockSizeException | IOException e) {
-				logger.error("Unable to create license id for: " + iface);
+				logger.error("Unable to create license id for: {}", iface);
 				return false;
 			}
 		}
 		
 		// check for a license key
-		if(!cf.hasKey(ConfigItems.DEVICE_LICENSEKEY_CONFIG)) {
+		if(cf.isEmpty(ConfigItems.DEVICE_LICENSEKEY_CONFIG)) {
 			logger.error("No license key provided");
 			// help the user by creating an empty entry
 			cf.setString(ConfigItems.DEVICE_LICENSEKEY_CONFIG, "", true);	
@@ -130,18 +130,11 @@ public class App {
 			return false;
 		}
 		
-		// if it's blank
-		if(cf.getString(ConfigItems.DEVICE_LICENSEKEY_CONFIG, "").isBlank()) {
-			logger.error("license key is blank");
-			// help the user by creating an empty entry
-			return false;
-		}
-		
 		// load the license key
 		License licenseKey = null;
 		try {
 			licenseKey = lm.loadLicense(cf.getString(ConfigItems.DEVICE_LICENSEKEY_CONFIG, ConfigItems.DEVICE_LICENSEKEY_DEFAULT));
-			logger.info("license key property count: " + licenseKey.getProperties().size());
+			logger.info("license key property count: {}", licenseKey.getProperties().size());
 		} catch (ClassNotFoundException | IllegalBlockSizeException | BadPaddingException | IOException e) {
 			logger.error("Unable to load license key");
 			return false;
@@ -149,7 +142,7 @@ public class App {
 		
 		// what interface is being requested
 		String iface = licenseKey.getStringFeature(FeatureManager.FEATURE_INTERFACE);
-		logger.info("using interface: " + iface);
+		logger.info("using interface: {}", iface);
 		
 		try {
 			if(!lm.verifyAddress(iface, licenseKey)) {
@@ -163,7 +156,7 @@ public class App {
 		
 		// report the visible features of this key
 		for(Entry<Feature, String> featureValue : licenseKey.getVisibleFeatures().entrySet()) {
-    		logger.info(featureValue.getKey().toString() + ": " + featureValue.getValue());
+    		logger.info("{}: {}", featureValue.getKey(), featureValue.getValue());
     	}
 		
 		// load the design
@@ -178,7 +171,7 @@ public class App {
 		// validate it before we proceed
 		String validationFailure = design.validate();
 		if(!validationFailure.isBlank()) {
-			logger.error("Validation failure: " + validationFailure);
+			logger.error("Validation failure: {}", validationFailure);
 			return false;
 		}
 		logger.info("No design validation issues found");
@@ -187,7 +180,10 @@ public class App {
 		cmt = new EngineConfigMqttTransceiver(cf, design);
 		
 		// in the engine, the handlers are autonomous; they don't need listeners
-		cmt.start();
+		if(!cmt.start()) {
+			logger.error("unable to start");
+			return false;
+		}
 		
 		logger.info("app started");
 		return true;

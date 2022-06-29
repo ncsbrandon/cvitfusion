@@ -27,7 +27,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 
 	public abstract String buildStatusPayload() throws JsonProcessingException;
 
-	public void start() {
+	public boolean start() {
 		// check for TLS certs
 		setCerts(
 				cf.getString(ConfigItems.CONFIG_MQTT_CACERT, ConfigItems.CONFIG_MQTT_CACERT_DEFAULT),
@@ -43,14 +43,14 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 		// connect
 		if (!connect()) {
 			logger.error("ConfigMqttTransceiver connection failed");
-			return;
+			return false;
 		}
 
 		// create the thread for periodic summary reports
 		int freqsec = cf.getInt(ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC, ConfigItems.CONFIG_MQTT_PERIODIC_FREQ_SEC_DEFAULT);
 		if (freqsec == 0) {
 			logger.info("MQTT status reporting disabled");
-			return;
+			return true;
 		}
 
 		// status thread
@@ -63,7 +63,7 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 					try {
 						publish(statusTopic(), buildStatusPayload(), true);
 					} catch (JsonProcessingException e) {
-						logger.error("Unable to build status payload: " + e.getMessage());
+						logger.error("Unable to build status payload: {}", e.getMessage());
 					}
 					
 					// wait until the next run, or interrupted
@@ -73,6 +73,8 @@ public abstract class ConfigMqttTransceiver extends MqttTransceiver {
 			}
 		};
 		statusTask.start();
+		
+		return true;
 	}
 
 	public void stop() {

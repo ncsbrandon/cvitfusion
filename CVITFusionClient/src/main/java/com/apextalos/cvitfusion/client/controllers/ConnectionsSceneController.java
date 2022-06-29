@@ -57,30 +57,27 @@ public class ConnectionsSceneController extends BaseController {
 	public void initialize(URL location, ResourceBundle resources) {
 		model = new ConnectionsSceneModel();
 				
-		sessionList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				// get the session from the map
-				Connection session = model.getSessionsMap().get(newValue);
-				if(session == null) {
-					String error = "Missing session [" + newValue + "] selected";
-					showError(error);
-					logger.error(error);
-					return;
-				}
-				
-				// fill the fields
-				nameTextField.setText(newValue);
-				urlTextField.setText(session.getUrl());
-				clientIdTextField.setText(session.getClientId());
-				tlsEnabledCheckBox.setSelected(session.isUseTls());
-				caCertTextField.setText(session.getCaCertFile());
-				clientCertTextField.setText(session.getClientCertFile());
-				clientKeyTextField.setText(session.getClientKeyFile());
-				pwdEnabledCheckBox.setSelected(session.isUsePassword());
-				usernameTextField.setText(session.getUsername());
-				passwordTextField.setText(session.getPassword());
+		sessionList.getSelectionModel().selectedItemProperty().addListener( (observable, oldValue, newValue) -> {
+			// get the session from the map
+			Connection session = model.getSessionsMap().get(newValue);
+			if(session == null) {
+				String error = "Missing session [" + newValue + "] selected";
+				showError(error);
+				logger.error(error);
+				return;
 			}
+				
+			// fill the fields
+			nameTextField.setText(newValue);
+			urlTextField.setText(session.getUrl());
+			clientIdTextField.setText(session.getClientId());
+			tlsEnabledCheckBox.setSelected(session.isUseTls());
+			caCertTextField.setText(session.getCaCertFile());
+			clientCertTextField.setText(session.getClientCertFile());
+			clientKeyTextField.setText(session.getClientKeyFile());
+			pwdEnabledCheckBox.setSelected(session.isUsePassword());
+			usernameTextField.setText(session.getUsername());
+			passwordTextField.setText(session.getPassword());
 		});
 		
 		caCertTextField.disableProperty().bind(tlsEnabledCheckBox.selectedProperty().not());
@@ -206,12 +203,7 @@ public class ConnectionsSceneController extends BaseController {
 		
 		// sort the session list from the model
 		ArrayList<String> names = new ArrayList<>(model.getSessionsMap().keySet());	
-		Collections.sort(names, new Comparator<String>() {
-			@Override
-			public int compare(String o1, String o2) {
-				return o1.compareToIgnoreCase(o2);
-			}
-		});
+		Collections.sort(names, (o1, o2) -> o1.compareToIgnoreCase(o2));
 		
 		// fill the list
 		sessionList.getItems().addAll(names);

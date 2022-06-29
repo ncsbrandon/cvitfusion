@@ -88,6 +88,13 @@ public class ConfigFile {
 	public boolean hasKey(String key) {
 		return p.containsKey(key);
 	}
+	
+	public boolean isEmpty(String key) {
+		if(!p.containsKey(key))
+			return true;
+		
+		return p.getProperty(key, "").isBlank();
+	}
 
 	public void removeKey(String key) {
 		p.remove(key);

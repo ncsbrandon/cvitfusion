@@ -350,17 +350,17 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	
 	@Override
 	public void onActionPerformed(Object o, EventType et) {
-		if (et == EventType.SELECTED && o instanceof Line) {
+		if (et == EventType.SELECTED && o instanceof Line line) {
 			onActionPerformed(null, EventType.DESELECTED);
-			onLineSelection((Line) o);
-		} else if (et == EventType.SELECTED && o instanceof DiagramNodeControl) {
+			onLineSelection(line);
+		} else if (et == EventType.SELECTED && o instanceof DiagramNodeControl dnc) {
 			onActionPerformed(null, EventType.DESELECTED);
-			onProcessSelection((DiagramNodeControl) o);
+			onProcessSelection(dnc);
 		} else if (et == EventType.DESELECTED) {
-			if (designSelection instanceof Line) {
-				onLineDeselection((Line) designSelection);
-			} else if (designSelection instanceof DiagramNodeControl) {
-				onProcessDeselection((DiagramNodeControl) designSelection);
+			if (designSelection instanceof Line line) {
+				onLineDeselection(line);
+			} else if (designSelection instanceof DiagramNodeControl dnc) {
+				onProcessDeselection(dnc);
 			}
 		}
 	}
@@ -410,7 +410,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 					continue; // probably it wasn't licensed
 				MenuItem mi = new MenuItem(outputType.getName());
 				mi.setUserData(outputType);
-				mi.setOnAction(e -> onDesignButtonAddOutput(e));
+				mi.setOnAction(this::onDesignButtonAddOutput);
 				designButtonAddOutput.getItems().add(mi);
 			}
 		}
@@ -563,7 +563,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 			for (Type topLevelType : topLevelTypes) {
 				MenuItem mi = new MenuItem(topLevelType.getName());
 				mi.setUserData(topLevelType);
-				mi.setOnAction(e -> onDesignButtonCreateInput(e));
+				mi.setOnAction(this::onDesignButtonCreateInput);
 				designButtonCreateInput.getItems().add(mi);
 			}
 		}

@@ -45,7 +45,7 @@ public class EngineConfigRequestSubscriptionExListener implements SubscriptionEx
 		try {
 			request = mapper.readValue(se.getPayload(), EngineRequest.class);
 		} catch (JsonProcessingException e) {
-			logger.error("Engine config request parsing failure: " + e.getMessage());
+			logger.error("Engine config request parsing failure: {}", e.getMessage());
 			return;
 		}
 		
@@ -57,7 +57,7 @@ public class EngineConfigRequestSubscriptionExListener implements SubscriptionEx
 		try {
 			responsePayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(response);
 		} catch (JsonProcessingException e) {
-			logger.error("Engine config response write failure: " + e.getMessage());
+			logger.error("Engine config response write failure: {}", e.getMessage());
 			return;
 		}
 		
