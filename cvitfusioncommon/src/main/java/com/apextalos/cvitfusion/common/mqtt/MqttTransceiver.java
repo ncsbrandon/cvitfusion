@@ -172,9 +172,9 @@ public abstract class MqttTransceiver implements MqttCallback {
 			
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setCleanSession(true);
-			//connOpts.setConnectionTimeout(60);
-			//connOpts.setKeepAliveInterval(60);
-			//connOpts.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
+			//connOpts setConnectionTimeout 60)
+			//connOpts setKeepAliveInterval 60)
+			//connOpts setMqttVersion MqttConnectOptions MQTT_VERSION_3_1)
 			connOpts.setHttpsHostnameVerificationEnabled(false);
 			
 			if (useAuth) {
@@ -198,11 +198,11 @@ public abstract class MqttTransceiver implements MqttCallback {
 			return true;
 		} catch (MqttException e) {
 			client = null;
-			logger.error("connection failure [" + e.getReasonCode() + "] " + e.getMessage() + ": " + e.getCause());
+			logger.error("connection failure [{}] {}: {}", e.getReasonCode(), e.getMessage(), e.getCause());
 			connectionChanged(new ConnectionEvent(Change.CONNECTFAILURE, e.getMessage() + ": " + e.getCause()));
 		} catch (UnrecoverableKeyException | KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException | IOException e) {
 			client = null;
-			logger.error("TLS socket creation failure: " + e.getMessage());
+			logger.error("TLS socket creation failure: {}", e.getMessage());
 			connectionChanged(new ConnectionEvent(Change.CONNECTFAILURE, String.format("TLS failure %s", e.getMessage())));
 		}
 		return false;
@@ -262,7 +262,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 		
 		try {
 			client.publish(topic, message);
-			// logger.debug("Message published");
+			logger.debug("Message published");
 			sentCount++;
 		} catch (MqttException e) {
 			logger.error("publish failure reason: {}", e.getReasonCode());
@@ -337,7 +337,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 
 	@Override
 	public void connectionLost(Throwable arg0) {
-		logger.debug("Connection lost: " + arg0.getMessage());
+		logger.debug("Connection lost: {}", arg0.getMessage());
 		
 		// cleanup this connection
 		disconnect(false);
@@ -349,7 +349,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken arg0) {
-		// logger.debug("Delivery complete");
+		logger.debug("Delivery complete");
 	}
 
 	@Override
@@ -361,7 +361,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 		String decoded = "";
 		try {
 			decoded = URLDecoder.decode(payload, "UTF-8");
-			//logger.debug(decoded);
 		} catch (UnsupportedEncodingException e) {
 			logger.error(String.format("Failure decoding [%s]: %s", topic, e.getMessage()));
 			return;

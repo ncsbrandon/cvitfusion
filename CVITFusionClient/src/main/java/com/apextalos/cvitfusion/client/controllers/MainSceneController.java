@@ -350,17 +350,17 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	
 	@Override
 	public void onActionPerformed(Object o, EventType et) {
-		if (et == EventType.SELECTED && o instanceof Line line) {
+		if (et == EventType.SELECTED && o instanceof Line) {
 			onActionPerformed(null, EventType.DESELECTED);
-			onLineSelection(line);
-		} else if (et == EventType.SELECTED && o instanceof DiagramNodeControl dnc) {
+			onLineSelection((Line)o);
+		} else if (et == EventType.SELECTED && o instanceof DiagramNodeControl) {
 			onActionPerformed(null, EventType.DESELECTED);
-			onProcessSelection(dnc);
+			onProcessSelection((DiagramNodeControl)o);
 		} else if (et == EventType.DESELECTED) {
-			if (designSelection instanceof Line line) {
-				onLineDeselection(line);
-			} else if (designSelection instanceof DiagramNodeControl dnc) {
-				onProcessDeselection(dnc);
+			if (designSelection instanceof Line) {
+				onLineDeselection((Line)designSelection);
+			} else if (designSelection instanceof DiagramNodeControl) {
+				onProcessDeselection((DiagramNodeControl)designSelection);
 			}
 		}
 	}

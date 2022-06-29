@@ -17,7 +17,6 @@ import com.apextalos.cvitfusion.common.opflow.ProcessLink;
 import com.apextalos.cvitfusion.common.opflow.Style;
 import com.apextalos.cvitfusion.common.opflow.Type;
 
-import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 
@@ -83,7 +82,7 @@ public class DiagramBuilder {
 			Line l = new Line(parentOutputPos.getX(), parentOutputPos.getY(), inputPos.getX(), inputPos.getY());
 			l.setStrokeWidth(4);
 			l.setUserData(new ProcessLink(parentProcess, process));
-			l.addEventHandler(MouseEvent.MOUSE_CLICKED, (arg0) -> {
+			l.addEventHandler(MouseEvent.MOUSE_CLICKED, arg0 -> {
 				arg0.consume();
 				listener.onActionPerformed(l, EventType.SELECTED);
 			});
