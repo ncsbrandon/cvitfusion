@@ -198,8 +198,8 @@ public abstract class MqttTransceiver implements MqttCallback {
 			return true;
 		} catch (MqttException e) {
 			client = null;
-			logger.error("connection failure [{}] {}: {}", e.getReasonCode(), e.getMessage(), e.getCause());
-			connectionChanged(new ConnectionEvent(Change.CONNECTFAILURE, e.getMessage() + ": " + e.getCause()));
+			logger.error("connection failure [{}]: {}", e.getReasonCode(), e.getMessage());
+			connectionChanged(new ConnectionEvent(Change.CONNECTFAILURE, e.getMessage()));
 		} catch (UnrecoverableKeyException | KeyManagementException | CertificateException | KeyStoreException | NoSuchAlgorithmException | IOException e) {
 			client = null;
 			logger.error("TLS socket creation failure: {}", e.getMessage());
@@ -227,7 +227,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 		} catch (MqttException e) {
 			logger.error("disonnection failure reason: {}", e.getReasonCode());
 			logger.error("msg: {}", e.getMessage());
-			logger.error("cause: {}", e.getCause());
 			
 			try {
 				client.disconnectForcibly();
@@ -267,7 +266,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 		} catch (MqttException e) {
 			logger.error("publish failure reason: {}", e.getReasonCode());
 			logger.error("msg: {}", e.getMessage());
-			logger.error("cause: {}", e.getCause());
 			return false; // failure to publish
 		}
 		
@@ -285,7 +283,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 		} catch (MqttException e) {
 			logger.error("subscription failure reason: {}", e.getReasonCode());
 			logger.error("msg: {}", e.getMessage());
-			logger.error("cause: {}", e.getCause());
 		}
 	}
 	
@@ -300,7 +297,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 		} catch (MqttException e) {
 			logger.error("subscription failure reason: {}", e.getReasonCode());
 			logger.error("msg: {}", e.getMessage());
-			logger.error("cause: {}", e.getCause());
 		}
 	}
 	
@@ -312,7 +308,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 			} catch (MqttException e) {
 				logger.error("reubscription failure reason: {}", e.getReasonCode());
 				logger.error("msg: {}", e.getMessage());
-				logger.error("cause: {}", e.getCause());
 				return false;
 			}
 		}
@@ -331,7 +326,6 @@ public abstract class MqttTransceiver implements MqttCallback {
 		} catch (MqttException e) {
 			logger.error("unsubscription failure reason: {}", e.getReasonCode());
 			logger.error("msg: {}", e.getMessage());
-			logger.error("cause: {}", e.getCause());
 		}
 	}
 
@@ -362,7 +356,7 @@ public abstract class MqttTransceiver implements MqttCallback {
 		try {
 			decoded = URLDecoder.decode(payload, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			logger.error(String.format("Failure decoding [%s]: %s", topic, e.getMessage()));
+			logger.error("Failure decoding [{}]: {}", topic, e.getMessage());
 			return;
 		}
 		

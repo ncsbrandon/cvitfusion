@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.common.design.DesignManager;
+import com.apextalos.cvitfusion.common.engine.ProcessingEngine;
 import com.apextalos.cvitfusion.common.mqtt.MqttTransceiver;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineConfigResult;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineSaveRequest;
@@ -25,11 +26,13 @@ public class EngineConfigSaveSubscriptionExListener implements SubscriptionExLis
 	private ConfigFile cf;
 	private MqttTransceiver mt;
 	private OperationalFlow design;
+	private ProcessingEngine pe;
 	
-	public EngineConfigSaveSubscriptionExListener(ConfigFile cf, MqttTransceiver mt, OperationalFlow design) {
+	public EngineConfigSaveSubscriptionExListener(ConfigFile cf, MqttTransceiver mt, OperationalFlow design, ProcessingEngine pe) {
 		this.cf = cf;
 		this.mt = mt;
 		this.design = design;
+		this.pe = pe;
 	}
 	
 	@Override
@@ -64,6 +67,9 @@ public class EngineConfigSaveSubscriptionExListener implements SubscriptionExLis
 		
 		// write to disk
 		cf.save();
+		
+		// restart the engine
+		pe.start();
 	
 		// payload
 		String resultPayload;

@@ -8,6 +8,9 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.common.engine.ProcessorFB;
+import com.apextalos.cvitfusion.common.engine.ProcessorLidar;
+import com.apextalos.cvitfusion.common.engine.ProcessorWWVD;
 import com.apextalos.cvitfusion.common.license.DesignTypeFeature;
 import com.apextalos.cvitfusion.common.license.License;
 import com.apextalos.cvitfusion.common.opflow.Color;
@@ -95,7 +98,7 @@ public class DesignManager {
 		
 		// OUTPUTS -------------
 		Type typeEmail = new Type(100, 1, "Email", emailParameters, null, false);
-		Type typeFB = new Type(101, 1, "Flashing Beacon", parameters, null, false);
+		
 		Type typeDO = new Type(102, 1, "Digital Output", parameters, null, false);
 		Type typeGPIO = new Type(103, 1, "GPIO", parameters, null, false);
 		Type typeRSU = new Type(104, 1, "RSU", parameters, null, false);
@@ -104,13 +107,7 @@ public class DesignManager {
 		Type typeMQTT = new Type(107, 1, "MQTT", parameters, null, false);
 		
 		// LOGICS-------------------------
-		Type typeWWVD = new Type(11, 1, "WWVD", parameters, new ArrayList<>() {{
-			add(Integer.valueOf(typeEmail.getTypeID()));
-			add(Integer.valueOf(typeFB.getTypeID()));
-			add(Integer.valueOf(typeDO.getTypeID()));
-		}}, false);
 		Type typeCS = new Type(12, 1, "Curve Speed", parameters, new ArrayList<>() {{
-			add(Integer.valueOf(typeFB.getTypeID()));
 			add(Integer.valueOf(typeGPIO.getTypeID()));
 			add(Integer.valueOf(typeRSU.getTypeID()));
 		}}, false);
@@ -135,17 +132,8 @@ public class DesignManager {
 			add(Integer.valueOf(typeMQTT.getTypeID()));
 		}}, false);
 		
-		// INPUTS----------------------
-		Type typeLidar = new Type(1, 1, "Lidar", parameters, new ArrayList<>() {{
-			add(Integer.valueOf(typeWWVD.getTypeID()));
-			add(Integer.valueOf(typeCS.getTypeID()));
-			add(Integer.valueOf(typeQD.getTypeID()));
-			add(Integer.valueOf(typeVRU.getTypeID()));
-			add(Integer.valueOf(typeStopbar.getTypeID()));
-			add(Integer.valueOf(typeOHVD.getTypeID()));
-		}}, true);
+		// INPUTS----------------------	
 		Type typeCamera = new Type(2, 1, "Camera", parameters, new ArrayList<>() {{
-			add(Integer.valueOf(typeWWVD.getTypeID()));
 			add(Integer.valueOf(typeCS.getTypeID()));
 			add(Integer.valueOf(typeQD.getTypeID()));
 			add(Integer.valueOf(typeVRU.getTypeID()));
@@ -153,7 +141,6 @@ public class DesignManager {
 			add(Integer.valueOf(typeOHVD.getTypeID()));
 		}}, true);
 		Type typeRadar = new Type(3, 1, "Radar", parameters, new ArrayList<>() {{
-			add(Integer.valueOf(typeWWVD.getTypeID()));
 			add(Integer.valueOf(typeCS.getTypeID()));
 			add(Integer.valueOf(typeQD.getTypeID()));
 			add(Integer.valueOf(typeVRU.getTypeID()));
@@ -161,7 +148,6 @@ public class DesignManager {
 			add(Integer.valueOf(typeOHVD.getTypeID()));
 		}}, true);
 		Type typeBSM = new Type(4, 1, "BSM", parameters, new ArrayList<>() {{
-			add(Integer.valueOf(typeWWVD.getTypeID()));
 			add(Integer.valueOf(typeCS.getTypeID()));
 			add(Integer.valueOf(typeQD.getTypeID()));
 			add(Integer.valueOf(typeVRU.getTypeID()));
@@ -169,7 +155,6 @@ public class DesignManager {
 			add(Integer.valueOf(typeOHVD.getTypeID()));
 		}}, true);
 		Type typeOHVLaser = new Type(5, 1, "OHV Laser", parameters, new ArrayList<>() {{
-			add(Integer.valueOf(typeWWVD.getTypeID()));
 			add(Integer.valueOf(typeCS.getTypeID()));
 			add(Integer.valueOf(typeQD.getTypeID()));
 			add(Integer.valueOf(typeVRU.getTypeID()));
@@ -178,7 +163,7 @@ public class DesignManager {
 		}}, true);
 		
 		checkLicense(typeEmail, types, license);
-		checkLicense(typeFB, types, license);
+		checkLicense(ProcessorFB.getType(), types, license);
 		checkLicense(typeDO, types, license);
 		checkLicense(typeGPIO, types, license);
 		checkLicense(typeRSU, types, license);
@@ -186,14 +171,14 @@ public class DesignManager {
 		checkLicense(typeSDLC, types, license);
 		checkLicense(typeMQTT, types, license);
 		
-		checkLicense(typeWWVD, types, license);
+		checkLicense(ProcessorWWVD.getType(), types, license);
 		checkLicense(typeCS, types, license);
 		checkLicense(typeQD, types, license);
 		checkLicense(typeVRU, types, license);
 		checkLicense(typeStopbar, types, license);
 		checkLicense(typeOHVD, types, license);
 		
-		checkLicense(typeLidar, types, license);
+		checkLicense(ProcessorLidar.getType(), types, license);
 		checkLicense(typeCamera, types, license);
 		checkLicense(typeRadar, types, license);
 		checkLicense(typeBSM, types, license);

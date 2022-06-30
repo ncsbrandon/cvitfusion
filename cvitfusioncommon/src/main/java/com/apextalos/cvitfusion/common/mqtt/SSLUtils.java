@@ -48,7 +48,7 @@ public class SSLUtils {
 		try(BufferedInputStream bis = new BufferedInputStream(fis)) {
 			while (bis.available() > 0) {
 				caCert = (X509Certificate) cf.generateCertificate(bis);
-				logger.info("cacert {}", caCert);
+				//logger.info("cacert {}", caCert);
 			}
 		}
 
@@ -57,7 +57,7 @@ public class SSLUtils {
 		try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream(crtFile))) {
 			while (bis.available() > 0) {
 				cert = (X509Certificate) cf.generateCertificate(bis);
-				logger.info("cert {}", cert);
+				//logger.info("cert {}", cert);
 			}
 		}
 

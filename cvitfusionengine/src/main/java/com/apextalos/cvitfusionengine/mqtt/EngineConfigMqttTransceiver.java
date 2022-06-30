@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 
+import com.apextalos.cvitfusion.common.engine.ProcessingEngine;
 import com.apextalos.cvitfusion.common.mqtt.ConfigMqttTransceiver;
 import com.apextalos.cvitfusion.common.mqtt.message.Coordinate;
 import com.apextalos.cvitfusion.common.mqtt.message.EngineStatus;
@@ -23,10 +24,12 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 	private static final Logger logger = LogManager.getLogger(EngineConfigMqttTransceiver.class.getSimpleName());
 
 	private OperationalFlow design;
+	private ProcessingEngine pe;
 	
-	public EngineConfigMqttTransceiver(ConfigFile cf, OperationalFlow design) {
+	public EngineConfigMqttTransceiver(ConfigFile cf, OperationalFlow design, ProcessingEngine pe) {
 		super(cf);
 		this.design = design;
+		this.pe = pe;
 	}
 
 	@Override
@@ -42,7 +45,7 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 		
 		// listen for config saves
 		logger.info("creating config save listener");
-		EngineConfigSaveSubscriptionExListener save = new EngineConfigSaveSubscriptionExListener(cf, this, design);
+		EngineConfigSaveSubscriptionExListener save = new EngineConfigSaveSubscriptionExListener(cf, this, design, pe);
 		subscribe(save.topic());
 		addSubscriptionListener(save);
 		

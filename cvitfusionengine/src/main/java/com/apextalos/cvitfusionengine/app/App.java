@@ -179,7 +179,7 @@ public class App {
 		logger.info("No design validation issues found");
 		
 		// the processing engine
-		pe = new ProcessingEngine(design, cf, licenseKey);
+		pe = new ProcessingEngine(design, cf);
 		if(!pe.start()) {
 			logger.error("unable to start PE");
 			return false;
@@ -188,7 +188,7 @@ public class App {
 		
 		// main transceiver
 		// in the engine, the handlers are autonomous; they don't need listeners
-		cmt = new EngineConfigMqttTransceiver(cf, design);
+		cmt = new EngineConfigMqttTransceiver(cf, design, pe);
 		if(!cmt.start()) {
 			logger.error("unable to start MQTT");
 			return false;

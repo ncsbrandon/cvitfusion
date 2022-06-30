@@ -71,13 +71,13 @@ public class ConfigFile {
 
 		// store to file
 		try (FileOutputStream fos = new FileOutputStream(configFilename)) {
-			logger.info("Saving config file %s", configFilename);
+			logger.info("Saving config file {}", configFilename);
 			p.store(fos, ConfigFile.class.getName());
 		} catch (FileNotFoundException e) {
-			logger.error("FileNotFoundException while saving the configuration: %s", e.getMessage());
+			logger.error("FileNotFoundException while saving the configuration: {}", e.getMessage());
 			return false;
 		} catch (IOException e) {
-			logger.error("IOException while saving the configuration: %s", e.getMessage());
+			logger.error("IOException while saving the configuration: {}", e.getMessage());
 			return false;
 		}
 

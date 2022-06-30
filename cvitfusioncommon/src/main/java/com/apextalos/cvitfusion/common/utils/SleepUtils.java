@@ -19,7 +19,7 @@ public class SleepUtils {
 			if (strThreadName == null || strThreadName.length() == 0)
 				strThreadName = String.format("No name (ID=%d)", Thread.currentThread().getId());
 
-			logger.info(String.format("Thread '%s' was interrupted", strThreadName));
+			logger.info("Thread [{}] was interrupted", strThreadName);
 			return false;
 		}
 

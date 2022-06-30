@@ -94,7 +94,7 @@ public class DiagramBuilder {
 		try {
 			r = new DiagramNodeControl();
 		} catch (IOException e) {
-			logger.error("DiagramNodeCOntrol creation failure %s", e.getMessage());
+			logger.error("DiagramNodeControl creation failure {}", e.getMessage());
 			return;
 		}
 		r.setLayoutX(x);
