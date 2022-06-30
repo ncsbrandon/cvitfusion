@@ -20,6 +20,7 @@ public class ProcessorWWVD extends Processor {
 
 		return new Type(11, 1, "WWVD", parameters, new ArrayList<>() {{
 			add(Integer.valueOf(ProcessorFB.getType().getTypeID()));
+			add(Integer.valueOf(ProcessorDigitalOutput.getType().getTypeID()));
 		}}, false);
 	}
 	

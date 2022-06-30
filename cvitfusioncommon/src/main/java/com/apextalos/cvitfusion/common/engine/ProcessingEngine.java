@@ -51,6 +51,7 @@ public class ProcessingEngine {
 		if(ProcessorLidar.getType().getTypeID() == child.getTypeID()) 	loadProcessor(new ProcessorLidar(child.getProperties(), cf), parent, child);		
 		if(ProcessorWWVD.getType().getTypeID() == child.getTypeID()) 	loadProcessor(new ProcessorWWVD(child.getProperties(), cf), parent, child);		
 		if(ProcessorFB.getType().getTypeID() == child.getTypeID()) 		loadProcessor(new ProcessorFB(child.getProperties(), cf), parent, child);
+		if(ProcessorDigitalOutput.getType().getTypeID() == child.getTypeID()) 		loadProcessor(new ProcessorDigitalOutput(child.getProperties(), cf), parent, child);
 	}
 	
 	private void loadProcessor(Processor processor, Processor parent, Process child) {
