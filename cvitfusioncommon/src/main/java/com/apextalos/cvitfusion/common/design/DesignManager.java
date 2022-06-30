@@ -41,7 +41,7 @@ public class DesignManager {
 		// must use singleton
 	}
 	
-	public boolean setProcesses(List<Process> processes, ConfigFile cf) {
+	public boolean setProcessesInConfig(List<Process> processes, ConfigFile cf) {
 		// encode as JSON
 		String resultPayload;
 		try {
@@ -59,7 +59,7 @@ public class DesignManager {
 		return true;
 	}
 	
-	public List<Process> getProcesses(ConfigFile cf) {
+	public List<Process> getProcessesFromConfig(ConfigFile cf) {
 		List<Process> processes = new ArrayList<>();
 		
 		String processJson = cf.getString(ConfigItems.ENGINE_DESIGN_CONFIG, ConfigItems.ENGINE_DESIGN_DEFAULT);

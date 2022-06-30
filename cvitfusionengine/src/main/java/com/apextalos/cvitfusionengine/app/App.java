@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.common.design.DesignManager;
+import com.apextalos.cvitfusion.common.engine.ProcessingEngine;
 import com.apextalos.cvitfusion.common.license.Feature;
 import com.apextalos.cvitfusion.common.license.FeatureManager;
 import com.apextalos.cvitfusion.common.license.License;
@@ -28,7 +29,7 @@ public class App {
 	
 	private static final Logger logger = LogManager.getLogger(App.class.getSimpleName());
 
-	static volatile boolean keepRunning = true;
+	private static volatile boolean keepRunning = true;
 	public static void main(String[] args) {
 		// create the shutdown hook		
 		final Thread mainThread = Thread.currentThread();
@@ -54,7 +55,7 @@ public class App {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				logger.error("App main loop interrupted: {}", e.getMessage());
+				logger.error("App interrupted: {}", e.getMessage());
 			}
 		}
 		
@@ -65,6 +66,7 @@ public class App {
 	
 	private ConfigFile cf;
 	private EngineConfigMqttTransceiver cmt;
+	private ProcessingEngine pe;
 	
 	public boolean start() {
 		logger.info("----------------------------------");
@@ -162,7 +164,7 @@ public class App {
 		// load the design
 		DesignManager dm = DesignManager.getInstance();
 		OperationalFlow design = new OperationalFlow(
-			dm.getProcesses(cf),
+			dm.getProcessesFromConfig(cf),
 			dm.getTypes(licenseKey),
 			dm.getStyles(),
 			dm.getTypeStyleMap()
@@ -175,23 +177,31 @@ public class App {
 			return false;
 		}
 		logger.info("No design validation issues found");
-			
-		// main transceiver
-		cmt = new EngineConfigMqttTransceiver(cf, design);
 		
-		// in the engine, the handlers are autonomous; they don't need listeners
-		if(!cmt.start()) {
-			logger.error("unable to start");
+		// the processing engine
+		pe = new ProcessingEngine(design, cf, licenseKey);
+		if(!pe.start()) {
+			logger.error("unable to start PE");
 			return false;
 		}
+		logger.info("PE started");
 		
-		logger.info("app started");
+		// main transceiver
+		// in the engine, the handlers are autonomous; they don't need listeners
+		cmt = new EngineConfigMqttTransceiver(cf, design);
+		if(!cmt.start()) {
+			logger.error("unable to start MQTT");
+			return false;
+		}
+		logger.info("MQTT started");
+		
 		return true;
 	}
 	
 	public void stop() {
 		logger.info("app stopping");
 		
+		pe.stop();
 		cmt.stop();
 		cf.save();
 		

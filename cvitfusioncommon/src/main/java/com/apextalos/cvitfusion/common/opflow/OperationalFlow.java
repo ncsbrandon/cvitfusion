@@ -91,7 +91,7 @@ public class OperationalFlow {
 	}
 	
 	@JsonIgnore
-	public boolean removeProcessRecur(List<Process> processes, Process process) {
+	private boolean removeProcessRecur(List<Process> processes, Process process) {
 		if(process == null)
 			return false;
 		
@@ -237,12 +237,9 @@ public class OperationalFlow {
 	}
 	
 	@JsonIgnore
-	private boolean clearChangesRecur(List<Process> processes) {
-				
-		for (Process procIter : processes) {
-			
-			procIter.clearChangedProperties();
-			
+	private boolean clearChangesRecur(List<Process> processes) {				
+		for (Process procIter : processes) {		
+			procIter.clearChangedProperties();			
 			if(procIter.getChildren() != null && clearChangesRecur(procIter.getChildren())) {
 				return true;
 			}

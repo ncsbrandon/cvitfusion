@@ -55,20 +55,20 @@ public class EngineConfigSaveSubscriptionExListener implements SubscriptionExLis
 		design.setTypes(request.getData().getTypes());
 		design.setTypeStyleMap(request.getData().getTypeStyleMap());
 		
+		// now build a response
+		EngineConfigResult configResult = new EngineConfigResult(request.getUuid());
+				
 		// decode and set in the config
 		DesignManager dm = DesignManager.getInstance();
-		dm.setProcesses(design.getProcesses(), cf);
+		configResult.setSuccess(dm.setProcessesInConfig(design.getProcesses(), cf));
 		
 		// write to disk
 		cf.save();
-		
-		// now build a response
-		EngineConfigResult result = new EngineConfigResult(request.getUuid());
-		result.setSuccess(dm.setProcesses(request.getData().getProcesses(), cf));
 	
+		// payload
 		String resultPayload;
 		try {
-			resultPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(result);
+			resultPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(configResult);
 		} catch (JsonProcessingException e) {
 			logger.error("Engine config result write failure: {}", e.getMessage());
 			return;
