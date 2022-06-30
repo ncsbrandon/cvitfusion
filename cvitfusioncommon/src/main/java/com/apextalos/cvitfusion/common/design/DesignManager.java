@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.common.engine.ProcessorDigitalOutput;
 import com.apextalos.cvitfusion.common.engine.ProcessorFB;
 import com.apextalos.cvitfusion.common.engine.ProcessorLidar;
 import com.apextalos.cvitfusion.common.engine.ProcessorWWVD;
@@ -98,8 +99,6 @@ public class DesignManager {
 		
 		// OUTPUTS -------------
 		Type typeEmail = new Type(100, 1, "Email", emailParameters, null, false);
-		
-		Type typeDO = new Type(102, 1, "Digital Output", parameters, null, false);
 		Type typeGPIO = new Type(103, 1, "GPIO", parameters, null, false);
 		Type typeRSU = new Type(104, 1, "RSU", parameters, null, false);
 		Type typeVMS = new Type(105, 1, "VMS", parameters, null, false);
@@ -164,7 +163,7 @@ public class DesignManager {
 		
 		checkLicense(typeEmail, types, license);
 		checkLicense(ProcessorFB.getType(), types, license);
-		checkLicense(typeDO, types, license);
+		checkLicense(ProcessorDigitalOutput.getType(), types, license);
 		checkLicense(typeGPIO, types, license);
 		checkLicense(typeRSU, types, license);
 		checkLicense(typeVMS, types, license);
