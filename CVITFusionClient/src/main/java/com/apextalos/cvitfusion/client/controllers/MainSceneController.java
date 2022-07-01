@@ -24,6 +24,7 @@ import com.apextalos.cvitfusion.client.models.ParameterModel;
 import com.apextalos.cvitfusion.client.mqtt.ClientConfigMqttTransceiver;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResponseGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResultGuiListener;
+import com.apextalos.cvitfusion.client.mqtt.subscription.EngineProcessStatusResponseGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusGuiListener;
 import com.apextalos.cvitfusion.client.scene.SceneManager;
 import com.apextalos.cvitfusion.common.mqtt.connection.ConnectionEvent;
@@ -69,7 +70,9 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class MainSceneController extends BaseController implements EngineStatusGuiListener, EngineConfigResponseGuiListener, EngineConfigResultGuiListener {
+public class MainSceneController extends BaseController implements
+	EngineStatusGuiListener, EngineConfigResponseGuiListener, EngineConfigResultGuiListener, 
+	EngineProcessStatusResponseGuiListener {
 
 	private static final Logger logger = LogManager.getLogger(MainSceneController.class.getSimpleName());
 
@@ -398,8 +401,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		Type type = activeDesign.lookupType(process.getTypeID());
 		
 		fillParameterTable(process, type);
-		fillStatusList(process, type);
-		
+				
 		// add output button
 		designButtonAddOutput.setVisible(type.hasSupportedOutputs());
 		designButtonAddOutput.getItems().clear();
@@ -421,6 +423,13 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		
 		// remove button
 		designButtonRemove.setVisible(true);
+		
+		// get the engine ID
+		EngineStatusModel esm = engineStatusListView.getSelectionModel().getSelectedItem();
+		if(esm == null)
+			return;
+		
+		fillStatusList(esm.getIdProperty().getValue(), process, type);
 	}
 	
 	private void onProcessDeselection(DiagramNodeControl dnc) {
@@ -750,12 +759,13 @@ public class MainSceneController extends BaseController implements EngineStatusG
 	// *********************
 	// NODE STATUS EVENTS
 	// *********************
-	private void fillStatusList(Process process, Type type) {
+	private void fillStatusList(String engineID, Process process, Type type) {
 		model.getStatusListItems().clear();
 		model.getStatusListItems().add(process.toString());
 		model.getStatusListItems().add(type.toString());
 		
-		ccmt.requestProcessStatus(process.getProcessID(), this);
+		// create a subscription, publish a request, and callback on the response
+		ccmt.requestProcessStatus(engineID, process.getProcessID(), this);
 	}
 	
 	private void fillStatusList(EngineStatusModel esm) {
@@ -902,5 +912,10 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		
 		// no changes to save
 		designButtonSave.setDisable(true);
+	}
+
+	@Override
+	public void onProcessStatusResponse(String engineID, String topic, String payload, String status) {
+		model.getStatusListItems().add(status);
 	}
 }

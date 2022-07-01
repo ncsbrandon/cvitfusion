@@ -2,37 +2,54 @@ package com.apextalos.cvitfusion.common.mqtt.topics;
 
 public class TopicBuilder {
 	
-	public static final String REQUESTCONFIGTOPIC = "/apextalos/cvitfusion/requestconfig/";
-	public static final String RESPONDCONFIGTOPIC = "/apextalos/cvitfusion/respondconfig/";
-	public static final String SAVECONFIGTOPIC = "/apextalos/cvitfusion/saveconfig/";
-	public static final String RESULTCONFIGTOPIC = "/apextalos/cvitfusion/resultconfig/";
-	public static final String ENGINESTATUSTOPIC = "/apextalos/cvitfusion/enginestatus/";
+	public static final String REQUEST_PROCESS_STATUS_TOPIC = "/apextalos/cvitfusion/request_process_status/";
+	public static final String RESPOND_PROCESS_STATUS_TOPIC = "/apextalos/cvitfusion/respond_process_status/";
+	
+	public static final String REQUEST_ENGINE_CONFIG_TOPIC = "/apextalos/cvitfusion/request_engine_config/";
+	public static final String RESPOND_ENGINE_CONFIG_TOPIC = "/apextalos/cvitfusion/respond_engine_config/";
+	
+	public static final String SAVE_ENGINE_CONFIG_TOPIC = "/apextalos/cvitfusion/save_engine_config/";
+	public static final String RESULT_ENGINE_CONFIG_TOPIC = "/apextalos/cvitfusion/result_engine_config/";
+	
+	public static final String ENGINE_STATUS_TOPIC = "/apextalos/cvitfusion/enginestatus/";
 	
 	private TopicBuilder() {
 		// prevent instance
 	}
 
+	public static String requestProcessStatusAny(String engineID) {
+		return String.format("%s%s/#", REQUEST_PROCESS_STATUS_TOPIC, engineID);
+	}
+	
+	public static String requestProcessStatus(String engineID, int processID) {
+		return String.format("%s%s/%d", REQUEST_PROCESS_STATUS_TOPIC, engineID, processID);
+	}
+	
+	public static String respondProcessStatus(String engineID, int processID) {
+		return String.format("%s%s/%d", RESPOND_PROCESS_STATUS_TOPIC, engineID, processID);
+	}
+	
 	public static String requestConfig(String engineID) {
-		return String.format("%s%s", REQUESTCONFIGTOPIC, engineID);
+		return String.format("%s%s", REQUEST_ENGINE_CONFIG_TOPIC, engineID);
 	}
 
 	public static String respondConfig(String engineID) {
-		return String.format("%s%s", RESPONDCONFIGTOPIC, engineID);
+		return String.format("%s%s", RESPOND_ENGINE_CONFIG_TOPIC, engineID);
 	}
 	
 	public static String saveConfig(String engineID) {
-		return String.format("%s%s", SAVECONFIGTOPIC, engineID);
+		return String.format("%s%s", SAVE_ENGINE_CONFIG_TOPIC, engineID);
 	}
 
 	public static String resultConfig(String engineID) {
-		return String.format("%s%s", RESULTCONFIGTOPIC, engineID);
+		return String.format("%s%s", RESULT_ENGINE_CONFIG_TOPIC, engineID);
 	}
 
 	public static String engineStatus(String engineID) {
-		return String.format("%s%s", ENGINESTATUSTOPIC, engineID);
+		return String.format("%s%s", ENGINE_STATUS_TOPIC, engineID);
 	}
 
 	public static String engineStatusAny() {
-		return String.format("%s#", ENGINESTATUSTOPIC);
+		return String.format("%s#", ENGINE_STATUS_TOPIC);
 	}
 }

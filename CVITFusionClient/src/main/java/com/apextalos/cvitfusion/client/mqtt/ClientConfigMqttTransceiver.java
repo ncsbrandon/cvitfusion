@@ -7,6 +7,8 @@ import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResponseGui
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResponseSubscriptionExListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResultGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineConfigResultSubscriptionExListener;
+import com.apextalos.cvitfusion.client.mqtt.subscription.EngineProcessStatusResponseGuiListener;
+import com.apextalos.cvitfusion.client.mqtt.subscription.EngineProcessStatusResultSubscriptionExListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusGuiListener;
 import com.apextalos.cvitfusion.client.mqtt.subscription.EngineStatusSubscriptionExListener;
 import com.apextalos.cvitfusion.common.mqtt.ConfigMqttTransceiver;
@@ -123,8 +125,28 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		removeSubscriptionListener(l);
 	}
 	
-	public void requestProcessStatus(int processID, EngineConfigResponseGuiListener guiListener) {
+	public void requestProcessStatus(String engineID, int processID, EngineProcessStatusResponseGuiListener guiListener) {
+		// create a new request with a new UUID
+		EngineRequest request = new EngineRequest();
 		
+		// create a subscription for the response
+		EngineProcessStatusResultSubscriptionExListener l = new EngineProcessStatusResultSubscriptionExListener(guiListener, processID, engineID, request);
+		subscribe(l.topic());
+		addSubscriptionListener(l);
+		
+		// build the payload
+		logger.debug("Requesting uuid: {}", request.getUuid());
+		String requestPayload;
+		try {
+			requestPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
+		} catch (JsonProcessingException e) {
+			logger.error("Engine config request write failure: {}", e.getMessage());
+			return;
+		}
+		
+		// make the request
+		String requestTopic = TopicBuilder.requestProcessStatus(engineID, processID);
+		publish(requestTopic, requestPayload, false);
 	}
 	
 	public void requestEngineStatus(String engineID, EngineConfigResponseGuiListener guiListener) {
