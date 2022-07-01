@@ -48,10 +48,10 @@ public class ProcessingEngine {
 	}
 
 	private void createProcessRecur(Process child, Processor parent) {
-		if(ProcessorLidar.getType().getTypeID() == child.getTypeID()) 	loadProcessor(new ProcessorLidar(child.getProperties(), cf), parent, child);		
-		if(ProcessorWWVD.getType().getTypeID() == child.getTypeID()) 	loadProcessor(new ProcessorWWVD(child.getProperties(), cf), parent, child);		
-		if(ProcessorFB.getType().getTypeID() == child.getTypeID()) 		loadProcessor(new ProcessorFB(child.getProperties(), cf), parent, child);
-		if(ProcessorDigitalOutput.getType().getTypeID() == child.getTypeID()) 		loadProcessor(new ProcessorDigitalOutput(child.getProperties(), cf), parent, child);
+		if(ProcessorLidar.getType().getTypeID() == child.getTypeID()) 			loadProcessor(new ProcessorLidar(child, cf), parent, child);		
+		if(ProcessorWWVD.getType().getTypeID() == child.getTypeID()) 			loadProcessor(new ProcessorWWVD(child, cf), parent, child);		
+		if(ProcessorFB.getType().getTypeID() == child.getTypeID()) 				loadProcessor(new ProcessorFB(child, cf), parent, child);
+		if(ProcessorDigitalOutput.getType().getTypeID() == child.getTypeID()) 	loadProcessor(new ProcessorDigitalOutput(child, cf), parent, child);
 	}
 	
 	private void loadProcessor(Processor processor, Processor parent, Process child) {

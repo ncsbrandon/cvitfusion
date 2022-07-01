@@ -2,12 +2,12 @@ package com.apextalos.cvitfusion.common.engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.common.opflow.Parameter;
+import com.apextalos.cvitfusion.common.opflow.Process;
 import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 
@@ -23,12 +23,12 @@ public class ProcessorLidar extends Processor {
 		}}, true);
 	}
 
-	public ProcessorLidar(Properties properties, ConfigFile cf) {
-		super(properties, cf);
+	public ProcessorLidar(Process process, ConfigFile cf) {
+		super(process, cf);
 	}
 
 	@Override
-	public void start() {
+	public void enabled() {
 		logger.info("starting ProcessorLidar");
 	}
 

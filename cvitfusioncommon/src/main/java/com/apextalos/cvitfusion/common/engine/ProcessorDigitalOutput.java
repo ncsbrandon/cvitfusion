@@ -2,12 +2,12 @@ package com.apextalos.cvitfusion.common.engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.apextalos.cvitfusion.common.opflow.Parameter;
+import com.apextalos.cvitfusion.common.opflow.Process;
 import com.apextalos.cvitfusion.common.opflow.Type;
 import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.thread.SimpleThread;
@@ -26,12 +26,12 @@ public class ProcessorDigitalOutput extends Processor {
 		return new Type(102, 1, "Digital Output", parameters, null, false);
 	}
 	
-	protected ProcessorDigitalOutput(Properties properties, ConfigFile cf) {
-		super(properties, cf);
+	protected ProcessorDigitalOutput(Process process, ConfigFile cf) {
+		super(process, cf);
 	}
 
 	@Override
-	public void start() {
+	public void enabled() {
 		logger.info("starting ProcessorDigitalOutput");
 		
 		t = new SimpleThread() {
@@ -51,7 +51,8 @@ public class ProcessorDigitalOutput extends Processor {
 	public void stop() {
 		logger.info("stopping ProcessorDigitalOutput");
 		
-		t.setStopAndJoin(0);
+		if(t != null)
+			t.setStopAndJoin(0);
 	}
 
 }

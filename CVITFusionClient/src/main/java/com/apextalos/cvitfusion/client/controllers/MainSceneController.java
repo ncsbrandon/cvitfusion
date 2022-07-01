@@ -445,6 +445,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 
 		// toggle the enabled status
 		process.setEnabled(!process.isEnabled());
+		process.putChangedProperty("ENABLED");
 		
 		// update the design
 		fillDesignPane();
