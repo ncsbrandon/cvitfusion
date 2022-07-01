@@ -486,7 +486,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 
 		Process parentProcess = (Process) designSelection.getUserData();
 		Type childType = (Type) ((MenuItem) event.getSource()).getUserData();
-		Process childProcess = new Process(parentProcess.nextChildID(), true, childType.getTypeID(), null, "", new Properties());
+		Process childProcess = new Process(parentProcess.nextChildID(), true, childType.getTypeID(), null, new Properties());
 
 		// add it to the children
 		if (parentProcess.getChildren() == null)
@@ -525,7 +525,7 @@ public class MainSceneController extends BaseController implements EngineStatusG
 		logger.info("onDesignButtonCreateInput {}", ((Type)((MenuItem) event.getSource()).getUserData()).getName());
 
 		Type type = (Type) ((MenuItem) event.getSource()).getUserData();
-		Process process = new Process(activeDesign.getProcesses().size() + 1, true, type.getTypeID(), null, "", null);
+		Process process = new Process(activeDesign.getProcesses().size() + 1, true, type.getTypeID(), null, null);
 
 		// add it to the top level
 		activeDesign.getProcesses().add(process);

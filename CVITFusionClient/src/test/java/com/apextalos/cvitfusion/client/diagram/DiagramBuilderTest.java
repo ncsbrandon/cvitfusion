@@ -22,28 +22,28 @@ public class DiagramBuilderTest {
 
 		List<Parameter> parameters = new ArrayList<>();
 		
-		Process n111 = new Process(111, true, 1, null, "", new Properties());
-		Process n112 = new Process(112, true, 1, null, "", new Properties());
-		Process n121 = new Process(121, true, 1, null, "", new Properties());
-		Process n122 = new Process(122, true, 1, null, "", new Properties());
+		Process n111 = new Process(111, true, 1, null, new Properties());
+		Process n112 = new Process(112, true, 1, null, new Properties());
+		Process n121 = new Process(121, true, 1, null, new Properties());
+		Process n122 = new Process(122, true, 1, null, new Properties());
 		Process n12 = new Process(12, true, 1, new ArrayList<>() {
 			{
 				add(n121);
 				add(n122);
 			}
-		}, "", new Properties());
+		}, new Properties());
 		Process n11 = new Process(11, true, 1, new ArrayList<>() {
 			{
 				add(n111);
 				add(n112);
 			}
-		}, "", new Properties());
+		}, new Properties());
 		Process n1 = new Process(1, true, 1, new ArrayList<>() {
 			{
 				add(n11);
 				add(n12);
 			}
-		}, "", new Properties());
+		}, new Properties());
 
 		of.getProcesses().add(n1);
 

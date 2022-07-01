@@ -12,7 +12,6 @@ public class Process {
 	private boolean enabled;
 	private int typeID;
 	private List<Process> children;
-	private String notes;
 	private Properties properties;
 	private List<String> changedProperties = new ArrayList<>();
 
@@ -52,14 +51,6 @@ public class Process {
 		this.children = children;
 	}
 
-	public String getNotes() {
-		return notes;
-	}
-
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
-
 	public Properties getProperties() {
 		return properties;
 	}
@@ -71,13 +62,12 @@ public class Process {
 	public Process() {
 	}
 	
-	public Process(int processID, boolean enabled, int typeID, List<Process> children, String notes, Properties properties) {
+	public Process(int processID, boolean enabled, int typeID, List<Process> children, Properties properties) {
 		super();
 		this.processID = processID;
 		this.enabled = enabled;
 		this.typeID = typeID;
 		this.children = children;
-		this.notes = notes;
 		this.properties = properties;
 	}
 	
