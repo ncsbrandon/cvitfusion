@@ -10,15 +10,23 @@ public abstract class Processor {
 
 	private Process process;
 	private ConfigFile cf;
-	private List<Processor> children = new ArrayList<>();
+	private List<Processor> listeners = new ArrayList<>();
 	
 	protected Processor(Process process, ConfigFile cf) {
 		this.process = process;
 		this.cf = cf;
 	}
 	
-	public void addListener(Processor child) {
-		children.add(child);
+	public void addListener(Processor listener) {
+		listeners.add(listener);
+	}
+	
+	public void clearListeners() {
+		listeners.clear();
+	}
+	
+	public Process getProcess() {
+		return process;
 	}
 	
 	public void start() {

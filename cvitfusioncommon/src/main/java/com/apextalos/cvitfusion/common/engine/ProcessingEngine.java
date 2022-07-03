@@ -62,4 +62,13 @@ public class ProcessingEngine {
 		if(child.hasChildren())
 			child.getChildren().forEach(process -> createProcessRecur(process, parent));
 	}
+	
+	public Processor getProcessor(int processID) {
+		for(Processor processor : processors) {
+			if(processID == processor.getProcess().getProcessID())
+				return processor;
+		}
+		
+		return null;
+	}
 }

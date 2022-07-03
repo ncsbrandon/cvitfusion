@@ -32,6 +32,13 @@ public class TopicParser {
 			return topic;
 		}
 		
+		if(topic.contains(TopicBuilder.STOP_PROCESS_STATUS_TOPIC)) {
+			topic = topic.replace(TopicBuilder.STOP_PROCESS_STATUS_TOPIC, "");
+			int index = topic.indexOf('/');
+			topic = topic.substring(0, index);
+			return topic;
+		}
+		
 		if(topic.contains(TopicBuilder.REQUEST_ENGINE_CONFIG_TOPIC))
 			return topic.replace(TopicBuilder.REQUEST_ENGINE_CONFIG_TOPIC, "");
 		
@@ -58,6 +65,12 @@ public class TopicParser {
 		}
 		
 		if(topic.contains(TopicBuilder.RESPOND_PROCESS_STATUS_TOPIC)) {
+			int index = topic.lastIndexOf('/');
+			topic = topic.substring(index+1);
+			return Integer.valueOf(topic);
+		}
+		
+		if(topic.contains(TopicBuilder.STOP_PROCESS_STATUS_TOPIC)) {
 			int index = topic.lastIndexOf('/');
 			topic = topic.substring(index+1);
 			return Integer.valueOf(topic);

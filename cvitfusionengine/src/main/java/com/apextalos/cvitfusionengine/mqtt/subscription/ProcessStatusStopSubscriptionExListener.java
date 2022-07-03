@@ -15,7 +15,7 @@ import com.apextalos.cvitfusion.common.settings.ConfigFile;
 import com.apextalos.cvitfusion.common.settings.ConfigItems;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class ProcessStatusRequestSubscriptionExListener implements SubscriptionExListener {
+public class ProcessStatusStopSubscriptionExListener implements SubscriptionExListener{
 
 	private static final Logger logger = LogManager.getLogger(ProcessStatusRequestSubscriptionExListener.class.getSimpleName());
 
@@ -26,22 +26,22 @@ public class ProcessStatusRequestSubscriptionExListener implements SubscriptionE
 	private OperationalFlow design;
 	private ProcessingEngine pe;
 	
-	public ProcessStatusRequestSubscriptionExListener(ConfigFile cf, MqttTransceiver mt, OperationalFlow design, ProcessingEngine pe) {
+	public ProcessStatusStopSubscriptionExListener(ConfigFile cf, MqttTransceiver mt, OperationalFlow design, ProcessingEngine pe) {
 		this.cf = cf;
 		this.mt = mt;
 		this.design = design;
 		this.pe = pe;
 	}
-	
+
 	@Override
 	public String topic() {
-		return TopicBuilder.requestProcessStatusAny(cf.getString(ConfigItems.DEVICE_UUID_CONFIG, ConfigItems.DEVICE_UUID_DEFAULT));
+		return TopicBuilder.stopProcessStatusAny(cf.getString(ConfigItems.DEVICE_UUID_CONFIG, ConfigItems.DEVICE_UUID_DEFAULT));
 	}
 
 	@Override
 	public void incomingMessage(SubscriptionExEvent se) {
 		int processID = TopicParser.getProcessID(se.getTopic());
-		logger.debug("incoming process [{}] status request", processID);
+		logger.debug("incoming process [{}] status stop", processID);
 		
 		Processor processor = pe.getProcessor(processID);
 		if(processor == null) {
@@ -49,7 +49,6 @@ public class ProcessStatusRequestSubscriptionExListener implements SubscriptionE
 			return;
 		}
 		
-		//processor.publishStatus();
+		//processor.stopStatus();
 	}
-
 }

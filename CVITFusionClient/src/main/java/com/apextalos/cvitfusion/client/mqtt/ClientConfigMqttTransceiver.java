@@ -140,12 +140,36 @@ public class ClientConfigMqttTransceiver extends ConfigMqttTransceiver {
 		try {
 			requestPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
 		} catch (JsonProcessingException e) {
-			logger.error("Engine config request write failure: {}", e.getMessage());
+			logger.error("request process status write failure: {}", e.getMessage());
 			return;
 		}
 		
 		// make the request
 		String requestTopic = TopicBuilder.requestProcessStatus(engineID, processID);
+		publish(requestTopic, requestPayload, false);
+	}
+	
+	public void stopProcessStatus(String engineID, int processID) {
+		// remove the subscription by topic
+		EngineProcessStatusResultSubscriptionExListener l = new EngineProcessStatusResultSubscriptionExListener(null, processID, engineID, null);
+		unsubscribe(l.topic());
+		removeSubscriptionListener(l);
+		
+		// create a new request with a new UUID
+		EngineRequest request = new EngineRequest();
+		
+		// build the payload
+		logger.debug("Requesting uuid: {}", request.getUuid());
+		String requestPayload;
+		try {
+			requestPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
+		} catch (JsonProcessingException e) {
+			logger.error("stop process status write failure: {}", e.getMessage());
+			return;
+		}
+		
+		// make the request
+		String requestTopic = TopicBuilder.stopProcessStatus(engineID, processID);
 		publish(requestTopic, requestPayload, false);
 	}
 	

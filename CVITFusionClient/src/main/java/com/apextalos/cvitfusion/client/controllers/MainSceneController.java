@@ -428,13 +428,24 @@ public class MainSceneController extends BaseController implements
 		EngineStatusModel esm = engineStatusListView.getSelectionModel().getSelectedItem();
 		if(esm == null)
 			return;
+		String engineID = esm.getIdProperty().getValue();
 		
-		fillStatusList(esm.getIdProperty().getValue(), process, type);
+		fillStatusList(engineID, process, type);
 	}
 	
 	private void onProcessDeselection(DiagramNodeControl dnc) {
 		dnc.getController().select(false);
 		noDesignSelection();
+		
+		// get the engine ID
+		EngineStatusModel esm = engineStatusListView.getSelectionModel().getSelectedItem();
+		if(esm == null)
+			return;
+		String engineID = esm.getIdProperty().getValue();
+		
+		int processID = Integer.parseInt(dnc.getController().getModel().getIDProperty().get());
+		
+		ccmt.stopProcessStatus(engineID, processID);
 	}
 	
 	private void noDesignSelection() {

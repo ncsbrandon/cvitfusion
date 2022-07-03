@@ -18,6 +18,7 @@ import com.apextalos.cvitfusionengine.app.Version;
 import com.apextalos.cvitfusionengine.mqtt.subscription.EngineConfigRequestSubscriptionExListener;
 import com.apextalos.cvitfusionengine.mqtt.subscription.EngineConfigSaveSubscriptionExListener;
 import com.apextalos.cvitfusionengine.mqtt.subscription.ProcessStatusRequestSubscriptionExListener;
+import com.apextalos.cvitfusionengine.mqtt.subscription.ProcessStatusStopSubscriptionExListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
@@ -51,10 +52,16 @@ public class EngineConfigMqttTransceiver extends ConfigMqttTransceiver {
 		addSubscriptionListener(engineConfigSave);
 		
 		// listen for process status requests
-		logger.info("creating process status listener");
+		logger.info("creating process status request listener");
 		ProcessStatusRequestSubscriptionExListener processStatusRequest = new ProcessStatusRequestSubscriptionExListener(cf, this, design, pe);
 		subscribe(processStatusRequest.topic());
 		addSubscriptionListener(processStatusRequest);
+		
+		// listen for process status requests
+		logger.info("creating process status stop listener");
+		ProcessStatusStopSubscriptionExListener processStatusStop = new ProcessStatusStopSubscriptionExListener(cf, this, design, pe);
+		subscribe(processStatusStop.topic());
+		addSubscriptionListener(processStatusStop);
 		
 		return true;
 	}
