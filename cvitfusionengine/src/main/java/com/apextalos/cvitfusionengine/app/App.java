@@ -180,15 +180,16 @@ public class App {
 		
 		// the processing engine
 		pe = new ProcessingEngine(design, cf);
-		if(!pe.start()) {
+		// main transceiver
+		// in the engine, the handlers are autonomous; they don't need listeners
+		cmt = new EngineConfigMqttTransceiver(cf, design, pe);
+						
+		if(!pe.start(cmt)) {
 			logger.error("unable to start PE");
 			return false;
 		}
 		logger.info("PE started");
 		
-		// main transceiver
-		// in the engine, the handlers are autonomous; they don't need listeners
-		cmt = new EngineConfigMqttTransceiver(cf, design, pe);
 		if(!cmt.start()) {
 			logger.error("unable to start MQTT");
 			return false;

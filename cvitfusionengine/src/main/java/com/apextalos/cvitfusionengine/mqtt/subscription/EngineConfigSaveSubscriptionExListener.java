@@ -69,7 +69,7 @@ public class EngineConfigSaveSubscriptionExListener implements SubscriptionExLis
 		cf.save();
 		
 		// restart the engine
-		pe.start();
+		pe.start(mt);
 	
 		// payload
 		String resultPayload;

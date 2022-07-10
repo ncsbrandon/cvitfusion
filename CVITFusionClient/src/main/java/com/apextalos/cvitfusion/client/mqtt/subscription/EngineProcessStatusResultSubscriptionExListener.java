@@ -47,15 +47,17 @@ public class EngineProcessStatusResultSubscriptionExListener implements Subscrip
 			return;
 		}
 
+		/*
 		// validate that it matches our request id and came in a timely manner
 		if(0 != request.getUuid().compareToIgnoreCase(response.getUuid())) {
-			logger.debug("Process status response does not match request");
+			logger.debug("Process status response does not match request {} {}", request.getUuid(), response.getUuid());
 			return;
 		}
+		*/
 		
 		// pass to the GUI
 		if (guiListener != null) {
-			guiListener.onProcessStatusResponse(engineID, se.getTopic(), se.getPayload(), "INSERT STATUS HERE");
+			guiListener.onProcessStatusResponse(engineID, se.getTopic(), se.getPayload(), response.getContents());
 		}
 	}
 	

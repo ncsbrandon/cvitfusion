@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.apextalos.cvitfusion.common.mqtt.MqttTransceiver;
 import com.apextalos.cvitfusion.common.opflow.Parameter;
 import com.apextalos.cvitfusion.common.opflow.Process;
 import com.apextalos.cvitfusion.common.opflow.Type;
@@ -23,17 +24,12 @@ public class ProcessorLidar extends Processor {
 		}}, true);
 	}
 
-	public ProcessorLidar(Process process, ConfigFile cf) {
-		super(process, cf);
+	public ProcessorLidar(String engineID, Process process, ConfigFile cf, MqttTransceiver mt) {
+		super(engineID, process, cf, mt);
 	}
 
 	@Override
-	public void enabled() {
-		logger.info("starting ProcessorLidar");
-	}
-
-	@Override
-	public void stop() {
-		logger.info("stopping ProcessorLidar");
+	public void loop() {
+		//logger.info("loop");
 	}
 }

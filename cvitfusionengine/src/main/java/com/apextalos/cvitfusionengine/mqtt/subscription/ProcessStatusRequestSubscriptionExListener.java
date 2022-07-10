@@ -49,7 +49,6 @@ public class ProcessStatusRequestSubscriptionExListener implements SubscriptionE
 			return;
 		}
 		
-		//processor.publishStatus();
+		processor.setPublishingStatus(true);
 	}
-
 }

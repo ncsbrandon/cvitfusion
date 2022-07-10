@@ -49,6 +49,6 @@ public class ProcessStatusStopSubscriptionExListener implements SubscriptionExLi
 			return;
 		}
 		
-		//processor.stopStatus();
+		processor.setPublishingStatus(false);
 	}
 }
